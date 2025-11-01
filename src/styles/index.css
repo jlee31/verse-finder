@@ -2,10 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom styles for the Christian Verse Finder app */
 @layer base {
   body {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: "Gill Sans", sans-serif;
   }
 }
 
