@@ -49,6 +49,14 @@ async def search_verses(request: PromptRequest):
     
     Returns the received data for now - you can add your ML processing here
     """
+    # PRINT DATA TO TERMINAL - Check your backend terminal window
+    print("=" * 60)
+    print("BACKEND RECEIVED POST REQUEST")
+    print("=" * 60)
+    print(f"User Prompt: {request.mainPrompt}")
+    print(f"Prompt Length: {len(request.mainPrompt)} characters")
+    print("=" * 60)
+    
     # Data is available in request.mainPrompt
     # Add your ML processing logic here
     
