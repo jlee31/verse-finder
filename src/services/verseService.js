@@ -5,65 +5,34 @@
  * Currently uses placeholder/mock data - will connect to real backend when ready
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
 
 /**
  * Find verses based on user prompt and context
- * @param {Object} data - { mainPrompt: string, bulletPoints: string[] }
+ * @param {Object} data - { mainPrompt: string }
  * @returns {Promise<Object>} - Verse recommendations with metadata
  */
 export const findVerses = async (data) => {
   try {
-    // TODO: Replace with actual API call when backend is ready
-    // const response = await fetch(`${API_BASE_URL}/verses/search`, {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(data)
-    // })
-    // return await response.json()
-
-    // Mock response for now
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          success: true,
-          verses: [
-            {
-              id: 1,
-              reference: 'Philippians 4:6-7',
-              text: 'Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God. And the peace of God, which transcends all understanding, will guard your hearts and your minds in Christ Jesus.',
-              book: 'Philippians',
-              chapter: 4,
-              verse: '6-7',
-              relevanceScore: 0.95,
-              theme: 'peace'
-            },
-            {
-              id: 2,
-              reference: 'Matthew 6:34',
-              text: 'Therefore do not worry about tomorrow, for tomorrow will worry about itself. Each day has enough trouble of its own.',
-              book: 'Matthew',
-              chapter: 6,
-              verse: '34',
-              relevanceScore: 0.92,
-              theme: 'worry'
-            },
-            {
-              id: 3,
-              reference: 'Proverbs 3:5-6',
-              text: 'Trust in the LORD with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight.',
-              book: 'Proverbs',
-              chapter: 3,
-              verse: '5-6',
-              relevanceScore: 0.89,
-              theme: 'trust'
-            }
-          ],
-          reflection: 'These verses speak to the heart of anxiety and worry, reminding us to trust in God\'s provision and peace.',
-          timestamp: new Date().toISOString()
-        })
-      }, 1500)
+    const response = await fetch(`${API_BASE_URL}/verses/search`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
     })
+    
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`)
+    }
+    
+    const result = await response.json()
+    
+    // For now, return mock data structure until backend processing is complete
+    // The backend receives the data - you can process it and return verses
+    return {
+      success: true,
+      verses: [],
+      backend_response: result
+    }
   } catch (error) {
     console.error('Error finding verses:', error)
     throw error
