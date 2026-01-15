@@ -12,7 +12,7 @@ app = FastAPI(title="Verse Finder API")
 # CORS middleware to allow frontend requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],  # Vite default port
+    allow_origins=["http://localhost:5173", "http://localhost:3000"],  # Vite ports
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
