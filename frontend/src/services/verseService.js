@@ -14,6 +14,14 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
  */
 export const findVerses = async (data) => {
   try {
+    // PRINT DATA BEING SENT - Check your browser console (F12)
+    console.log('='.repeat(60))
+    console.log('FRONTEND SENDING POST REQUEST')
+    console.log('='.repeat(60))
+    console.log('URL:', `${API_BASE_URL}/verses/search`)
+    console.log('Data being sent:', data)
+    console.log('='.repeat(60))
+    
     const response = await fetch(`${API_BASE_URL}/verses/search`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -25,6 +33,13 @@ export const findVerses = async (data) => {
     }
     
     const result = await response.json()
+    
+    // PRINT RESPONSE RECEIVED - Check your browser console (F12)
+    console.log('='.repeat(60))
+    console.log('FRONTEND RECEIVED RESPONSE')
+    console.log('='.repeat(60))
+    console.log('Backend response:', result)
+    console.log('='.repeat(60))
     
     // For now, return mock data structure until backend processing is complete
     // The backend receives the data - you can process it and return verses

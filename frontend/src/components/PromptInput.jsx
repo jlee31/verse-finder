@@ -1,6 +1,5 @@
-/**
- * PromptInput Component - Simple text input for verse search
- */
+// the text input fro the prompt
+
 import { useState } from 'react'
 
 function PromptInput({ onSubmit, isLoading }) {
@@ -37,7 +36,7 @@ function PromptInput({ onSubmit, isLoading }) {
                 Finding Verses...
               </>
             ) : (
-              'Find Verses'
+              'Find Quote'
             )}
           </button>
         </div>

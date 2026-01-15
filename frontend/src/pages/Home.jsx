@@ -1,6 +1,5 @@
-/**
- * Home Page - Simple verse finder interface
- */
+// home page
+
 import { useState } from 'react'
 import PromptInput from '../components/PromptInput'
 import VerseCard from '../components/VerseCard'
@@ -44,10 +43,10 @@ function Home() {
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold text-gray-800 mb-4">
-            Christian Verse Finder
+            Quote Finder
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Enter your spiritual questions or topics to find meaningful verses
+            Enter how you are feeling and we will try to match a quote to your feelings
           </p>
         </div>
 
@@ -62,7 +61,7 @@ function Home() {
             {verses.length > 0 && (
               <div>
                 <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-                  Recommended Verses
+                  Recommended Quote
                 </h2>
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {verses.map((verse) => (
