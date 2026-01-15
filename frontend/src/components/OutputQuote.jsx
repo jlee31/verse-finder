@@ -1,12 +1,8 @@
-/**
- * VerseCard Component
- * 
- * Reusable UI component for displaying Bible verses with metadata
- * Features: verse text, reference, relevance score, theme badges
- */
+// creating the output quote card
+
 import { useNavigate } from 'react-router-dom'
 
-function VerseCard({ verse, showScore = true, clickable = true }) {
+function OutputQuote({ verse, showScore = true, clickable = true }) {
   const navigate = useNavigate()
 
   const handleClick = () => {
@@ -52,14 +48,8 @@ function VerseCard({ verse, showScore = true, clickable = true }) {
         </div>
       )}
 
-      {/* Book Info */}
-      <div className="mt-3 pt-3 border-t border-gray-200">
-        <p className="text-sm text-gray-600">
-          📖 {verse.book} {verse.chapter}:{verse.verse}
-        </p>
-      </div>
     </div>
   )
 }
 
-export default VerseCard
+export default OutputQuote

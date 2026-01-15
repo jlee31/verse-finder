@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import PromptInput from '../components/PromptInput'
-import VerseCard from '../components/VerseCard'
+import VerseCard from '../components/OutputQuote'
 import ReflectionCard from '../components/ReflectionCard'
 import { findVerses, generateReflection } from '../services/verseService'
 

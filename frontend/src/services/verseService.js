@@ -1,9 +1,13 @@
-/**
- * API Service for Verse Finder
- * 
- * Handles all API calls to the backend Flask server
- * Currently uses placeholder/mock data - will connect to real backend when ready
- */
+// api service for the quote finder
+
+// right now it uses mock data
+// will be replaced with actual api calls when ready
+
+// mock data is stored in the data folder
+// and is loaded into the app when the app starts
+// the mock data is used to display the quote finder
+// and is not used to generate the quote
+// the mock data is used to display the quote finder
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
 
@@ -12,6 +16,7 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
  * @param {Object} data - { mainPrompt: string }
  * @returns {Promise<Object>} - Verse recommendations with metadata
  */
+
 export const findVerses = async (data) => {
   try {
     // PRINT DATA BEING SENT - Check your browser console (F12)
