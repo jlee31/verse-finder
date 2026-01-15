@@ -24,4 +24,5 @@ dist-ssr
 *.sw?
 
 # other
-devnotes.md
+DEVNOTES.md
+HOW_IT_WORKS.txt

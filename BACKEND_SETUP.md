@@ -84,11 +84,3 @@ VITE_API_URL=http://localhost:8000/api
 2. Import and use your existing services from `app/services/`
 3. Return the processed verse data in the response
 4. Update the response model in `PromptResponse` to match your output structure
-
-## CORS Configuration
-
-CORS is configured to allow requests from:
-- `http://localhost:5173` (Vite default)
-- `http://localhost:3000` (alternative React port)
-
-If you need to add more origins, update the `allow_origins` list in `app/main.py`.
