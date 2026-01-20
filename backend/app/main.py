@@ -1,13 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from ml.main import get_quote
 
 app = FastAPI(title="Verse Finder API")
 
 # CORS middleware : used to allow frontend requests from different ports
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],  # Vite ports
+    allow_origins=["http://localhost:5173", "http://localhost:3000", "http://localhost:3001"],  # Vite ports
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -42,13 +43,14 @@ async def search_verses(request: PromptRequest):
 
 
     # processing the user prompt using ml utils
-    
-    
+    quote = get_quote(request.mainPrompt)
+    print(f"Quote: {quote}")
+
     return PromptResponse(
         success=True,
         message="Data received successfully",
         received_data={
             "mainPrompt": request.mainPrompt,
-            "prompt_length": len(request.mainPrompt)
+            "quote": quote,
         }
     )
