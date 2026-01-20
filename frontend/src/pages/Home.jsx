@@ -35,8 +35,8 @@ function Home() {
         <PromptInput onSubmit={handleSubmitPrompt} isLoading={isLoading} />
 
         {quote && (
-          <div className="mt-8 bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-500">
-            <blockquote className="text-xl text-gray-700 italic">
+          <div className="mt-8 bg-white rounded-lg shadow-md p-6">
+            <blockquote className="text-xl text-gray-700 italic text-center">
               "{quote}"
             </blockquote>
           </div>

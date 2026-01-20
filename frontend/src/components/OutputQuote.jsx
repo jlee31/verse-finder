@@ -13,7 +13,7 @@ function OutputQuote({ verse, showScore = true, clickable = true }) {
 
   return (
     <div 
-      className={`bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-500 transition-all hover:shadow-lg ${
+      className={`bg-white rounded-lg shadow-md p-6 transition-all hover:shadow-lg ${
         clickable ? 'cursor-pointer hover:scale-[1.02]' : ''
       }`}
       onClick={handleClick}
@@ -25,7 +25,7 @@ function OutputQuote({ verse, showScore = true, clickable = true }) {
         </h3>
         {showScore && verse.relevanceScore && (
           <div className="flex items-center gap-1 bg-purple-100 px-3 py-1 rounded-full">
-            <span className="text-sm font-semibold text-purple-700">
+            <span className="text-sm font-semibold">
               {Math.round(verse.relevanceScore * 100)}%
             </span>
             <span className="text-xs text-purple-600">match</span>
@@ -34,7 +34,7 @@ function OutputQuote({ verse, showScore = true, clickable = true }) {
       </div>
 
       {/* Verse Text */}
-      <blockquote className="text-gray-700 leading-relaxed mb-4 italic border-l-2 border-purple-200 pl-4">
+      <blockquote className="text-gray-700 leading-relaxed mb-4 italic pl-4">
         "{verse.text}"
       </blockquote>
 

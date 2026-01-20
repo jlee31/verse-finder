@@ -62,7 +62,7 @@ function VerseDetail() {
         </button>
 
         {/* Main Verse Card */}
-        <div className="bg-white rounded-xl shadow-lg p-8 mb-8 border-l-4 border-purple-500">
+        <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
           <div className="text-center mb-6">
             <h1 className="text-4xl font-bold text-purple-700 mb-2">
               {verse.reference}
@@ -72,7 +72,7 @@ function VerseDetail() {
             </p>
           </div>
 
-          <blockquote className="text-xl text-gray-800 leading-relaxed text-center italic mb-6 border-l-4 border-purple-200 pl-6">
+          <blockquote className="text-xl text-gray-800 leading-relaxed text-center italic mb-6">
             "{verse.text}"
           </blockquote>
 
@@ -108,7 +108,7 @@ function VerseDetail() {
                 </div>
               )}
               
-              <div className="bg-purple-50 rounded-lg p-4 border-2 border-purple-300">
+              <div className="bg-purple-50 rounded-lg p-4">
                 <p className="text-sm font-semibold text-purple-700 mb-2">Current Verse:</p>
                 <p className="text-gray-800 font-medium">{verse.text}</p>
               </div>
