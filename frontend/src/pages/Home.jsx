@@ -1,38 +1,20 @@
-// home page
-
 import { useState } from 'react'
 import PromptInput from '../components/PromptInput'
-import VerseCard from '../components/OutputQuote'
-import ReflectionCard from '../components/ReflectionCard'
-import { findVerses, generateReflection } from '../services/verseService'
+import { findQuote } from '../services/verseService'
 
 function Home() {
   const [isLoading, setIsLoading] = useState(false)
-  const [reflection, setReflection] = useState(null)
-  const [verses, setVerses] = useState([])
+  const [quote, setQuote] = useState(null)
 
   const handleSubmitPrompt = async (submissionData) => {
     setIsLoading(true)
-    setReflection(null)
-    setVerses([])
+    setQuote(null)
 
     try {
-      const result = await findVerses(submissionData)
-      
-      if (result.success) {
-        setVerses(result.verses)
-        
-        const reflectionResult = await generateReflection({
-          verses: result.verses,
-          userPrompt: submissionData.mainPrompt
-        })
-        
-        if (reflectionResult.success) {
-          setReflection(reflectionResult.reflection)
-        }
-      }
+      const result = await findQuote(submissionData.mainPrompt)
+      setQuote(result)
     } catch (error) {
-      console.error('Error processing prompt:', error)
+      console.error('Error:', error)
     } finally {
       setIsLoading(false)
     }
@@ -52,24 +34,11 @@ function Home() {
 
         <PromptInput onSubmit={handleSubmitPrompt} isLoading={isLoading} />
 
-        {(verses.length > 0 || reflection) && (
-          <div className="space-y-6">
-            {reflection && (
-              <ReflectionCard reflection={reflection} verses={verses} />
-            )}
-            
-            {verses.length > 0 && (
-              <div>
-                <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-                  Recommended Quote
-                </h2>
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                  {verses.map((verse) => (
-                    <VerseCard key={verse.id} verse={verse} />
-                  ))}
-                </div>
-              </div>
-            )}
+        {quote && (
+          <div className="mt-8 bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-500">
+            <blockquote className="text-xl text-gray-700 italic">
+              "{quote}"
+            </blockquote>
           </div>
         )}
       </div>

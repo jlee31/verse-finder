@@ -4,41 +4,13 @@
  * Displays detailed information about a specific Bible verse
  * Features: verse context, related verses, themes, navigation
  */
-import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { getVerseDetails } from '../services/verseService'
+import { useNavigate } from 'react-router-dom'
 
 function VerseDetail() {
-  const { reference } = useParams()
   const navigate = useNavigate()
-  const [verse, setVerse] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
-
-  useEffect(() => {
-    const fetchVerseDetails = async () => {
-      setIsLoading(true)
-      setError(null)
-      
-      try {
-        const result = await getVerseDetails(decodeURIComponent(reference))
-        if (result.success) {
-          setVerse(result.verse)
-        } else {
-          setError('Failed to load verse details')
-        }
-      } catch (err) {
-        console.error('Error fetching verse details:', err)
-        setError('An error occurred while loading the verse')
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    if (reference) {
-      fetchVerseDetails()
-    }
-  }, [reference])
+  const verse = null
+  const isLoading = false
+  const error = 'This feature is not available yet'
 
   const handleBack = () => {
     navigate(-1)
