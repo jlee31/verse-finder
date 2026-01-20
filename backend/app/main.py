@@ -1,15 +1,10 @@
-"""
-Simple FastAPI backend for verse finder
-Receives user prompts and returns data for ML processing
-"""
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 app = FastAPI(title="Verse Finder API")
 
-# CORS middleware to allow frontend requests
+# CORS middleware : used to allow frontend requests from different ports
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://localhost:3000"],  # Vite ports
@@ -36,29 +31,18 @@ def root():
     """Health check endpoint"""
     return {"status": "ok", "message": "Verse Finder API is running"}
 
-
+# recieving user prompt in string format
 @app.post("/api/verses/search", response_model=PromptResponse)
 async def search_verses(request: PromptRequest):
-    """
-    Receives user prompt data
-    
-    Request body:
-    {
-        "mainPrompt": "string - user's input text"
-    }
-    
-    Returns the received data for now - you can add your ML processing here
-    """
-    # PRINT DATA TO TERMINAL - Check your backend terminal window
-    print("=" * 60)
+
     print("BACKEND RECEIVED POST REQUEST")
-    print("=" * 60)
     print(f"User Prompt: {request.mainPrompt}")
     print(f"Prompt Length: {len(request.mainPrompt)} characters")
     print("=" * 60)
+
+
+    # processing the user prompt using ml utils
     
-    # Data is available in request.mainPrompt
-    # Add your ML processing logic here
     
     return PromptResponse(
         success=True,
