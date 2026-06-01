@@ -1,0 +1,115 @@
+:root {
+  --bg: #0f1115;
+  --card: #1a1d24;
+  --accent: #d98e5a;
+  --text: #e8e6e1;
+  --muted: #9aa0aa;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  padding: 3rem 1rem;
+  min-height: 100vh;
+}
+
+main {
+  width: 100%;
+  max-width: 640px;
+}
+
+h1 {
+  font-size: 1.8rem;
+  margin: 0 0 0.25rem;
+}
+
+p.sub {
+  color: var(--muted);
+  margin: 0 0 2rem;
+  font-size: 0.95rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+textarea {
+  width: 100%;
+  min-height: 90px;
+  padding: 0.9rem;
+  border-radius: 10px;
+  border: 1px solid #2a2e38;
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  resize: vertical;
+}
+
+button {
+  align-self: flex-start;
+  padding: 0.6rem 1.4rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #1a1d24;
+  font: inherit;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.reflection {
+  margin-top: 2rem;
+  padding: 1.4rem;
+  background: var(--card);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.sources {
+  margin-top: 1.5rem;
+}
+
+.sources h2 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.source {
+  padding: 0.7rem 0;
+  border-top: 1px solid #2a2e38;
+  font-size: 0.95rem;
+}
+
+.source .author {
+  color: var(--accent);
+}
+
+.source .score {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.error {
+  color: #e07a7a;
+  margin-top: 1.5rem;
+}
