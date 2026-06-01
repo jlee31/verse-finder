@@ -23,6 +23,15 @@ dist-ssr
 *.sln
 *.sw?
 
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# secrets
+.env
+
 # other
 DEVNOTES.md
 BACKEND_SETUP.md
