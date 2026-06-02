@@ -3,60 +3,8 @@
 You type how you're feeling; the app finds the most relevant quotes and has
 Claude write a short reflection grounded in them.
 
-This is a minimal, readable **RAG** (Retrieval-Augmented Generation) system —
-each part is small enough to understand and explain.
 
-## How it works
-
-```
-You type something
-      │
-      ▼
-┌──────────────────────────────────────────────┐
-│ retriever.py   — the "R" (Retrieval)          │
-│  • embed your text (sentence-transformers)    │
-│  • cosine-similarity vs ~1600 quote embeddings│
-│  • return the top-3 quotes + scores           │
-└──────────────────────────────────────────────┘
-      │  top-3 quotes as context
-      ▼
-┌──────────────────────────────────────────────┐
-│ generator.py   — the "AG" (Augmented Gen.)    │
-│  • build a prompt: "here are relevant quotes" │
-│  • call Claude Haiku → grounded reflection    │
-└──────────────────────────────────────────────┘
-      │
-      ▼
-┌──────────────────────────────────────────────┐
-│ main.py (FastAPI)                             │
-│  POST /api/verses/search                      │
-│  → { reflection, sources: [quotes] }          │
-└──────────────────────────────────────────────┘
-```
-
-Returning `sources` alongside the `reflection` is the point of RAG: the answer
-is *grounded* in retrieved text you can inspect, not made up from thin air.
-
-## Project layout
-
-```
-backend/
-  app/
-    main.py          FastAPI app + the one endpoint
-    rag/
-      retriever.py   Retrieval: embeddings + cosine similarity (top-k)
-      generator.py   Generation: Claude Haiku, grounded in the quotes
-  ml/
-    train.py         One-time script that built the quote embeddings (.npy)
-    quote_embeddings_mpnet.npy
-    quotes_list.json
-data/quotes.json     The ~1600 source quotes
-frontend/index.html  A single static page — no build step
-```
-
-## Run it
-
-### 1. Backend
+### 1. Backend (from scratch)
 
 ```bash
 cd backend
@@ -81,3 +29,13 @@ It's a single static file. Just open `frontend/index.html` in your browser
 cd backend/ml
 python train.py
 ```
+
+# to run (refresher)
+
+front end:
+
+```python -m http.server 3000 ```
+
+backend:
+
+```uvicorn app.main:app --reload --port 8000```
