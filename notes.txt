@@ -1,0 +1,17 @@
+# Reflection (needs the API key)
+curl -s localhost:8000/api/verses/search -H 'Content-Type: application/json' \
+  -d '{"mainPrompt":"i feel lonely but i still have hope"}' | python -m json.tool
+
+# Explainability (no key needed — pure retrieval + LIME)
+curl -s localhost:8000/api/verses/explain -H 'Content-Type: application/json' \
+  -d '{"mainPrompt":"i feel lonely but i still have hope"}' | python -m json.tool
+
+# to run
+
+front end:
+
+python -m http.server 3000 
+
+backend:
+
+uvicorn app.main:app --reload --port 8000      
