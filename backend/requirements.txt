@@ -15,3 +15,6 @@ sentence-transformers==2.6.1
 
 # Explainability: which query words drove the retrieval (the "R" in RAG)
 lime==0.2.0.1
+
+# Eval harness (evals/) — run: pytest evals -q
+pytest==9.1.1
