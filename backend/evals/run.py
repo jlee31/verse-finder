@@ -32,6 +32,18 @@ def display_path(path: Path) -> str:
         return str(path)
 
 
+def default_out_path(retriever: str, judged: bool) -> Path:
+    """Where a run writes when `--out` isn't given.
+
+    A `--no-judge` run must NOT land on `<retriever>.json`: that file is the
+    committed reference baseline, and an unjudged smoke run has `summary: null`
+    and no coverage numbers. Writing it there silently destroys the numbers
+    every later stage is compared against.
+    """
+    suffix = "" if judged else ".smoke"
+    return RESULTS_DIR / f"{retriever}{suffix}.json"
+
+
 def load_queries(path: Path) -> list[dict]:
     queries = json.loads(path.read_text())
     validate_queries(queries)
@@ -113,7 +125,8 @@ def main() -> int:
                         choices=sorted(retrievers.REGISTRY))
     parser.add_argument("--queries", type=Path, default=EVALS_DIR / "queries.json")
     parser.add_argument("--out", type=Path, default=None,
-                        help="default: evals/results/<retriever>.json")
+                        help="default: evals/results/<retriever>.json "
+                             "(<retriever>.smoke.json with --no-judge)")
     parser.add_argument("--limit", type=int, default=None,
                         help="only score the first N queries")
     parser.add_argument("--no-judge", action="store_true",
@@ -144,7 +157,7 @@ def main() -> int:
         print(metrics.format_table(report["summary"], args.retriever))
         print(f"    judge cache           {judge.hits} hit / {judge.misses} miss")
 
-    out = args.out or RESULTS_DIR / f"{args.retriever}.json"
+    out = args.out or default_out_path(args.retriever, judged=not args.no_judge)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(report, indent=2))
     print(f"\n  wrote {display_path(out)}  ({report['total_seconds']}s)\n")

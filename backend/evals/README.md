@@ -14,6 +14,10 @@ python evals/run.py --retriever baseline --no-judge   # retrieval only, no API c
 python evals/run.py --retriever baseline              # full scoring -> results/baseline.json
 ```
 
+A `--no-judge` run writes `results/<retriever>.smoke.json`, not
+`<retriever>.json` — it has no coverage numbers, and landing it on the tracked
+baseline would wipe the reference every later stage is compared against.
+
 ## The metric
 
 **Facet coverage** — each query in `queries.json` is labeled with the distinct

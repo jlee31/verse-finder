@@ -17,6 +17,23 @@ Two stages turn a free-text message into a grounded reflection:
 query ──▶ retrieve(k=3) ──▶ quotes ──▶ generate_reflection() ──▶ reflection
 ```
 
+## Tools (`tools.py`)
+
+`retrieve()` runs exactly once per request, so a message naming two feelings is
+averaged into one vector that matches neither. `tools.py` exposes the same
+retrieval as a tool the agent can call *repeatedly* — once per emotional facet —
+which is what fixes that. It wraps `retriever.py` without touching it.
+
+- `SEARCH_QUOTES_TOOL` — the schema sent in `tools=[...]`. The description says
+  *when* to call, not just what it does; that sentence is what drives the
+  decomposition behaviour.
+- `search_quotes(query, k=3)` — the plain function.
+- `run_tool(name, input) -> (content, is_error)` — dispatch that never raises,
+  because an exception inside the agent loop ends the run instead of letting the
+  model correct its call.
+
+Nothing calls this yet — the loop that does arrives in `agent.py`.
+
 ## Data files
 
 Both live in `backend/ml/` and must stay row-aligned:

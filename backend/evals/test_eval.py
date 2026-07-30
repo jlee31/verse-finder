@@ -13,7 +13,14 @@ import pytest
 
 from evals import metrics
 from evals.judge import Judge, _align, _cache_key
-from evals.run import BACKEND_DIR, EVALS_DIR, display_path, load_queries, validate_queries
+from evals.run import (
+    BACKEND_DIR,
+    EVALS_DIR,
+    default_out_path,
+    display_path,
+    load_queries,
+    validate_queries,
+)
 
 
 # --------------------------------------------------------------------------
@@ -114,6 +121,16 @@ def test_display_path_handles_paths_outside_backend():
     # `--out /tmp/x.json` used to crash here, after the results file had
     # already been written — a traceback and a nonzero exit on a successful run.
     assert display_path(Path("/tmp/cold.json")) == "/tmp/cold.json"
+
+
+def test_a_smoke_run_cannot_clobber_the_reference_baseline():
+    # `--no-judge` produces summary: null. Landing that on baseline.json wipes
+    # the numbers every later stage is measured against — which is exactly what
+    # happened once.
+    judged = default_out_path("baseline", judged=True)
+    smoke = default_out_path("baseline", judged=False)
+    assert judged.name == "baseline.json"
+    assert judged != smoke
 
 
 @pytest.mark.parametrize("bad, msg", [
