@@ -28,6 +28,12 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+.pytest_cache/
+.ruff_cache/
+
+# eval harness — judge verdicts are derived, and re-fetchable from the API.
+# evals/results/ IS tracked: those numbers are the reference baseline.
+backend/evals/.cache/
 
 # secrets
 .env

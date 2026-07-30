@@ -1,0 +1,102 @@
+[
+  {
+    "id": "grief-anger",
+    "text": "i'm grieving my dad and angry at my family",
+    "facets": ["grief over losing a parent", "anger toward family"]
+  },
+  {
+    "id": "burnout-fear",
+    "text": "i'm burned out at work but scared to quit",
+    "facets": ["burnout and exhaustion from work", "fear of making a change"]
+  },
+  {
+    "id": "lonely-hope",
+    "text": "i feel lonely but i still have hope",
+    "facets": ["loneliness", "holding onto hope"]
+  },
+  {
+    "id": "college-fear-excitement",
+    "text": "i'm terrified about starting college but also really excited",
+    "facets": ["fear of a new beginning", "excitement and anticipation"]
+  },
+  {
+    "id": "failure-persistence",
+    "text": "i failed my exam and i don't know if i should keep trying",
+    "facets": ["failure and setback", "perseverance despite difficulty"]
+  },
+  {
+    "id": "heartbreak-worth",
+    "text": "my girlfriend left me and i feel worthless",
+    "facets": ["heartbreak and lost love", "low self-worth"]
+  },
+  {
+    "id": "envy-ambition",
+    "text": "everyone i know is doing better than me and it makes me want to work harder",
+    "facets": ["envy and comparison to others", "ambition and drive"]
+  },
+  {
+    "id": "guilt-forgiveness",
+    "text": "i hurt someone i love and i can't forgive myself",
+    "facets": ["guilt and regret", "self-forgiveness"]
+  },
+  {
+    "id": "change-nostalgia",
+    "text": "i'm moving away and i miss how things used to be",
+    "facets": ["facing change", "nostalgia for the past"]
+  },
+  {
+    "id": "overwhelm-gratitude",
+    "text": "i have too much going on but i know i'm lucky",
+    "facets": ["feeling overwhelmed", "gratitude"]
+  },
+  {
+    "id": "patience-frustration",
+    "text": "i've been working at this for years and nothing has changed",
+    "facets": ["persistence over a long time", "frustration at lack of progress"]
+  },
+  {
+    "id": "courage-doubt",
+    "text": "i want to start my own thing but i doubt myself",
+    "facets": ["courage to begin something", "self-doubt"]
+  },
+  {
+    "id": "newcity-connection",
+    "text": "i moved to a new city and i haven't made any friends",
+    "facets": ["loneliness in an unfamiliar place", "wanting friendship and connection"]
+  },
+  {
+    "id": "aging-acceptance",
+    "text": "i'm getting older and i haven't done what i wanted",
+    "facets": ["aging and time passing", "accepting the life one has"]
+  },
+  {
+    "id": "death-meaning",
+    "text": "my friend died young and none of it makes sense",
+    "facets": ["death of a loved one", "searching for meaning"]
+  },
+  {
+    "id": "tired-lonely-meaningless",
+    "text": "i'm tired, lonely, and i don't see the point anymore",
+    "facets": ["exhaustion", "loneliness", "loss of meaning"]
+  },
+  {
+    "id": "job-money-family",
+    "text": "i lost my job, i'm broke, and my family is disappointed in me",
+    "facets": ["losing work", "financial worry", "disappointing people you love"]
+  },
+  {
+    "id": "single-anxiety",
+    "text": "i feel anxious all the time",
+    "facets": ["anxiety and worry"]
+  },
+  {
+    "id": "single-anger",
+    "text": "i'm so angry at my boss",
+    "facets": ["anger"]
+  },
+  {
+    "id": "single-identity",
+    "text": "i don't know who i am anymore",
+    "facets": ["identity and self-discovery"]
+  }
+]
