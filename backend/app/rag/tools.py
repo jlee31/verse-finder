@@ -6,13 +6,14 @@ Three things live here, and the split matters for the loop in Stage 2:
 
 - `SEARCH_QUOTES_TOOL` — the schema sent to the API in `tools=[...]`
 - `search_quotes()`    — the Python function, usable and testable on its own
-- `run_tool()`         — dispatch that **never raises**, returning the
-  `(content, is_error)` pair a `tool_result` block needs
+- `dispatch()`         — execution that **never raises**, returning everything a
+  `tool_result` block needs
 
 That last one is the point. A tool that throws inside the agent loop kills the
 whole request; the recoverable behaviour is to hand the model an error it can
 read and retry differently.
 """
+from dataclasses import dataclass, field
 
 DEFAULT_K = 3
 MAX_K = 10
@@ -112,24 +113,48 @@ def format_results(quotes: list[dict]) -> str:
     return "\n".join(lines)
 
 
-def run_tool(name: str, tool_input: dict) -> tuple[str, bool]:
-    """Execute a tool call from the model. Returns (content, is_error).
+@dataclass
+class ToolOutcome:
+    """One executed tool call.
 
-    Never raises. Everything the model got wrong comes back as text it can act
-    on, because a raised exception here would end the agent run instead of
-    giving it a chance to correct the call.
+    `content` and `is_error` are what the API needs in a `tool_result` block.
+    `quotes` is for the harness: the agent builds its source list from the
+    structured results, which the rendered text has already flattened away.
+    """
+
+    content: str
+    is_error: bool = False
+    quotes: list[dict] = field(default_factory=list)
+
+
+def dispatch(name: str, tool_input: dict) -> ToolOutcome:
+    """Execute a tool call from the model. Never raises.
+
+    Everything the model got wrong comes back as text it can act on, because a
+    raised exception here would end the agent run instead of giving it a chance
+    to correct the call.
     """
     if name != SEARCH_QUOTES_TOOL["name"]:
-        return f"Unknown tool {name!r}. Available: {SEARCH_QUOTES_TOOL['name']}.", True
+        return ToolOutcome(
+            f"Unknown tool {name!r}. Available: {SEARCH_QUOTES_TOOL['name']}.",
+            is_error=True,
+        )
 
     if not isinstance(tool_input, dict):
-        return "Tool input must be an object.", True
+        return ToolOutcome("Tool input must be an object.", is_error=True)
 
     try:
         quotes = search_quotes(tool_input.get("query"), tool_input.get("k", DEFAULT_K))
     except ValueError as e:
-        return f"Invalid arguments: {e}", True
+        return ToolOutcome(f"Invalid arguments: {e}", is_error=True)
     except Exception as e:  # retrieval itself failed — model can't fix it, but shouldn't crash
-        return f"Search failed: {type(e).__name__}: {e}", True
+        return ToolOutcome(f"Search failed: {type(e).__name__}: {e}", is_error=True)
 
-    return format_results(quotes), False
+    return ToolOutcome(format_results(quotes), is_error=False, quotes=quotes)
+
+
+def run_tool(name: str, tool_input: dict) -> tuple[str, bool]:
+    """`dispatch()` as the (content, is_error) pair, for callers that only
+    need what goes on the wire."""
+    outcome = dispatch(name, tool_input)
+    return outcome.content, outcome.is_error

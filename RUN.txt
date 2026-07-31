@@ -35,8 +35,9 @@ fast.
 2. RUN THE TESTS
 ----------------
 
-    pytest -q                 fast tests. No model, no network. ~0.1s.
+    pytest -q                 fast tests. No model, no network. ~0.3s.
     pytest -q -m slow         loads the mpnet model (~20s). Real retrieval.
+    pytest -q -m live         makes real API calls. Costs money. Skipped by default.
     pytest -q -m ""           everything.
 
 Run "pytest -q" after any change. It's fast enough that there's no reason not
@@ -62,6 +63,15 @@ This scores a retriever on how much of what a person said it actually answers.
         The real thing. Uses claude-opus-5 to grade coverage.
         Writes results/baseline.json.
 
+Retrievers you can pass to --retriever:
+
+    baseline        one search, top 3. The current app.
+    baseline-wide   one search, top 12. The volume control — the agent returns
+                    about this many quotes, so this separates "searched better"
+                    from "just returned more".
+    agentic         the hand-rolled agent loop (stage 2). Slow, ~15 min, and it
+                    makes real API calls for every query.
+
 Verdicts are cached in evals/.cache/, so re-running is nearly free and gives
 identical numbers. The first judged run takes about 80s; after that, ~5s.
 
@@ -69,17 +79,25 @@ Other flags:
     --limit 3        only score the first 3 queries (quick check)
     --out FILE       write somewhere else
 
-The current baseline (the number every later stage is measured against):
+Where things stand (20 queries, compound-only coverage is the number that
+matters — those are the queries the agent exists to fix):
 
-    facet coverage                0.500
-    compound only (17 queries)    0.412
-    fully covered                 0.300
-    mean top-1 score              0.473
+                        baseline   baseline-wide   agentic
+    facet coverage        0.500        0.758        0.900
+    compound only         0.412        0.716        0.882
+    mean top-1 score      0.473        0.473        0.629
+    API calls / query         0            0          2.7
+    seconds / query         0.4          0.4           16
+
+baseline-wide is the control: the same dumb single search, just returning 12
+quotes instead of 3. It exists so you can tell "searched better" apart from
+"returned more" — most of the agent's raw gain is volume, and this is how you
+see that.
 
 More detail: backend/evals/README.md
 
 
-4. TRY THE AGENT TOOL BY HAND        (added in stage 1)
+4. TRY THE TOOL BY HAND              (added in stage 1)
 -----------------------------------
 
     PYTHONPATH=. python -c "
@@ -90,6 +108,29 @@ More detail: backend/evals/README.md
 Compare that against what the plain pipeline returns for a compound query — the
 tool finds anger quotes at 0.45-0.49 that the compound query never surfaces.
 That gap is the whole reason the agent exists.
+
+
+5. RUN THE AGENT BY HAND             (added in stage 2)
+----------------------------------
+
+This makes real API calls, so it costs money. About 30-60 seconds per run.
+
+    PYTHONPATH=. python -c "
+    from dotenv import load_dotenv; load_dotenv('.env')
+    from app.rag.agent import reflect
+    r = reflect(\"i'm grieving my dad and angry at my family\")
+    print(f'searches={r.searches} api_calls={r.api_calls}')
+    for s in r.trace:
+        print(f\"  {s['step']}. {s['query']}  ({s['returned']} back, top {s['top_score']})\")
+    print()
+    print(r.reflection)
+    "
+
+What you're looking for in the trace: it should search two or more times, with
+different wording each time. That is the agent deciding to look again — the one
+thing the plain pipeline cannot do.
+
+Nothing in the web app calls this yet. That's stage 4.
 
 
 IF SOMETHING BREAKS

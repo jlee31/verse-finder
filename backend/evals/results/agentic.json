@@ -1,0 +1,2308 @@
+{
+  "retriever": "agentic",
+  "judged": true,
+  "total_seconds": 405.8,
+  "summary": {
+    "n_queries": 20,
+    "facet_coverage": 0.9,
+    "facet_coverage_compound_only": 0.8823529411764706,
+    "n_compound": 17,
+    "fully_covered_rate": 0.8,
+    "mean_top_score": 0.6294386893510818,
+    "mean_api_calls": 2.7
+  },
+  "rows": [
+    {
+      "id": "grief-anger",
+      "text": "i'm grieving my dad and angry at my family",
+      "n_facets": 2,
+      "coverage": 0.5,
+      "top_score": 0.5819878578186035,
+      "api_calls": 3,
+      "seconds": 21.19,
+      "quotes": [
+        {
+          "text": "The greatest obstacle to connecting with our joy is resentment.",
+          "author": "Pema Chodron",
+          "score": 0.5819878578186035
+        },
+        {
+          "text": "Don't grieve. Anything you lose comes round in another form.",
+          "author": "Rumi",
+          "score": 0.5544207096099854
+        },
+        {
+          "text": "Don't cry because it's over. Smile because it happened.",
+          "author": "Dr. Seuss",
+          "score": 0.5036785006523132
+        },
+        {
+          "text": "The pain passes, but the beauty remains.",
+          "author": "Pierre Auguste Renoir",
+          "score": 0.48087596893310547
+        },
+        {
+          "text": "Better to have loved and lost, than to have never loved at all.",
+          "author": "St. Augustine",
+          "score": 0.4750973880290985
+        },
+        {
+          "text": "When anger use your energy to do something productive.",
+          "author": "C. Pulsifer",
+          "score": 0.4735186696052551
+        },
+        {
+          "text": "The really unhappy person is the one who leaves undone what they can do, and starts doing what they don't understand; no wonder they come to grief.",
+          "author": "Johann Wolfgang von Goethe",
+          "score": 0.4697141945362091
+        },
+        {
+          "text": "If one is estranged from oneself, then one is estranged from others too. If one is out of touch with oneself, then one cannot touch others.",
+          "author": "Anne Lindbergh",
+          "score": 0.43086695671081543
+        },
+        {
+          "text": "That's the risk you take if you change: that people you've been involved with won't like the new you. But other people who do will come along.",
+          "author": "Lisa Alther",
+          "score": 0.4236909747123718
+        },
+        {
+          "text": "Sadness may be part of life but there is no need to let it dominate your entire life.",
+          "author": "Byron Pulsifer",
+          "score": 0.39078569412231445
+        },
+        {
+          "text": "Sadness flies away on the wings of time.",
+          "author": "Jean de la Fontaine",
+          "score": 0.3842211067676544
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_quotes",
+          "query": "grief over losing a father",
+          "returned": 3,
+          "top_score": 0.515
+        },
+        {
+          "step": 2,
+          "tool": "search_quotes",
+          "query": "anger and resentment toward one's own family",
+          "returned": 3,
+          "top_score": 0.582
+        },
+        {
+          "step": 3,
+          "tool": "search_quotes",
+          "query": "mourning the death of someone I loved",
+          "returned": 4,
+          "top_score": 0.554
+        },
+        {
+          "step": 4,
+          "tool": "search_quotes",
+          "query": "feeling let down and hurt by the people closest to me",
+          "returned": 4,
+          "top_score": 0.441
+        }
+      ],
+      "verdicts": [
+        {
+          "facet": "grief over losing a parent",
+          "covered": true,
+          "quote": "Don't grieve. Anything you lose comes round in another form.",
+          "reason": "Several quotes address grief and loss directly, though not parental specifically."
+        },
+        {
+          "facet": "anger toward family",
+          "covered": false,
+          "quote": "",
+          "reason": "Anger quotes are generic and none address family conflict or resentment toward relatives."
+        }
+      ]
+    },
+    {
+      "id": "burnout-fear",
+      "text": "i'm burned out at work but scared to quit",
+      "n_facets": 2,
+      "coverage": 0.5,
+      "top_score": 0.6455429792404175,
+      "api_calls": 2,
+      "seconds": 12.92,
+      "quotes": [
+        {
+          "text": "What you fear is that which requires action to overcome.",
+          "author": "Byron Pulsifer",
+          "score": 0.6455429792404175
+        },
+        {
+          "text": "Fear is a darkroom where negatives develop.",
+          "author": "Usman Asif",
+          "score": 0.6076221466064453
+        },
+        {
+          "text": "Nothing in life is to be feared. It is only to be understood.",
+          "author": "Marie Curie",
+          "score": 0.591881513595581
+        },
+        {
+          "text": "Everything you want is on the other side of fear.",
+          "author": "Jack Canfield",
+          "score": 0.5557675361633301
+        },
+        {
+          "text": "A day of worry is more exhausting than a day of work.",
+          "author": "John Lubbock",
+          "score": 0.5150591731071472
+        },
+        {
+          "text": "Be miserable. Or motivate yourself. Whatever has to be done, it's always your choice.",
+          "author": "Wayne Dyer",
+          "score": 0.4977850317955017
+        },
+        {
+          "text": "See the positive side, the potential, and make an effort.",
+          "author": "Dalai Lama",
+          "score": 0.48786014318466187
+        },
+        {
+          "text": "The best way out is always through.",
+          "author": "Robert Frost",
+          "score": 0.4792555868625641
+        },
+        {
+          "text": "The first step to getting the things you want out of life is this: decide what you want.",
+          "author": "Ben Stein",
+          "score": 0.47482216358184814
+        },
+        {
+          "text": "When anger use your energy to do something productive.",
+          "author": "C. Pulsifer",
+          "score": 0.4498300552368164
+        },
+        {
+          "text": "The trick is in what one emphasizes. We either make ourselves miserable, or we make ourselves happy. The amount of work is the same.",
+          "author": "Carlos Castaneda",
+          "score": 0.4060646891593933
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_quotes",
+          "query": "exhaustion and burnout from work",
+          "returned": 4,
+          "top_score": 0.515
+        },
+        {
+          "step": 2,
+          "tool": "search_quotes",
+          "query": "fear of leaving the safe familiar thing for the unknown",
+          "returned": 4,
+          "top_score": 0.646
+        },
+        {
+          "step": 3,
+          "tool": "search_quotes",
+          "query": "feeling trapped with no way out",
+          "returned": 4,
+          "top_score": 0.498
+        }
+      ],
+      "verdicts": [
+        {
+          "facet": "burnout and exhaustion from work",
+          "covered": false,
+          "quote": "",
+          "reason": "Only tangential mentions of worry/work, nothing addressing burnout or exhaustion."
+        },
+        {
+          "facet": "fear of making a change",
+          "covered": true,
+          "quote": "Everything you want is on the other side of fear.",
+          "reason": "Several quotes directly address fear blocking desired action."
+        }
+      ]
+    },
+    {
+      "id": "lonely-hope",
+      "text": "i feel lonely but i still have hope",
+      "n_facets": 2,
+      "coverage": 1.0,
+      "top_score": 0.566657304763794,
+      "api_calls": 3,
+      "seconds": 14.76,
+      "quotes": [
+        {
+          "text": "Hope arouses, as nothing else can arouse, a passion for the possible.",
+          "author": "William Sloane Coffin",
+          "score": 0.566657304763794
+        },
+        {
+          "text": "True silence is the rest of the mind; it is to the spirit what sleep is to the body, nourishment and refreshment.",
+          "author": "William Penn",
+          "score": 0.5559102892875671
+        },
+        {
+          "text": "Once you choose hope, anythings possible.",
+          "author": "Christopher Reeve",
+          "score": 0.5213386416435242
+        },
+        {
+          "text": "He who lives in harmony with himself lives in harmony with the world.",
+          "author": "Marcus Aurelius",
+          "score": 0.5151560306549072
+        },
+        {
+          "text": "The greatest antidote to insecurity and the sense of fear is compassion it brings one back to the basis of one's inner strength",
+          "author": "Dalai Lama",
+          "score": 0.5099124908447266
+        },
+        {
+          "text": "Learn from yesterday, live for today, hope for tomorrow.",
+          "author": "Albert Einstein",
+          "score": 0.49259769916534424
+        },
+        {
+          "text": "If one is estranged from oneself, then one is estranged from others too. If one is out of touch with oneself, then one cannot touch others.",
+          "author": "Anne Lindbergh",
+          "score": 0.47644251585006714
+        },
+        {
+          "text": "Feeling and longing are the motive forces behind all human endeavor and human creations.",
+          "author": "Albert Einstein",
+          "score": 0.45076239109039307
+        },
+        {
+          "text": "In order to live free and happily you must sacrifice boredom. It is not always an easy sacrifice.",
+          "author": "Richard Bach",
+          "score": 0.43840813636779785
+        },
+        {
+          "text": "You cannot be lonely if you like the person you're alone with.",
+          "author": "Wayne Dyer",
+          "score": 0.4326441287994385
+        },
+        {
+          "text": "The time you think you're missing, misses you too.",
+          "author": "Ymber Delecto",
+          "score": 0.40388211607933044
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_quotes",
+          "query": "loneliness",
+          "returned": 3,
+          "top_score": 0.451
+        },
+        {
+          "step": 2,
+          "tool": "search_quotes",
+          "query": "holding onto hope",
+          "returned": 3,
+          "top_score": 0.567
+        },
+        {
+          "step": 3,
+          "tool": "search_quotes",
+          "query": "feeling alone and disconnected from other people",
+          "returned": 3,
+          "top_score": 0.476
+        },
+        {
+          "step": 4,
+          "tool": "search_quotes",
+          "query": "being at peace in solitude",
+          "returned": 3,
+          "top_score": 0.556
+        }
+      ],
+      "verdicts": [
+        {
+          "facet": "loneliness",
+          "covered": true,
+          "quote": "You cannot be lonely if you like the person you're alone with.",
+          "reason": "Directly addresses loneliness."
+        },
+        {
+          "facet": "holding onto hope",
+          "covered": true,
+          "quote": "Once you choose hope, anythings possible.",
+          "reason": "Speaks directly to hope."
+        }
+      ]
+    },
+    {
+      "id": "college-fear-excitement",
+      "text": "i'm terrified about starting college but also really excited",
+      "n_facets": 2,
+      "coverage": 1.0,
+      "top_score": 0.603726863861084,
+      "api_calls": 2,
+      "seconds": 10.97,
+      "quotes": [
+        {
+          "text": "What you fear is that which requires action to overcome.",
+          "author": "Byron Pulsifer",
+          "score": 0.603726863861084
+        },
+        {
+          "text": "The greatest barrier to success is the fear of failure.",
+          "author": "Eriksson",
+          "score": 0.589664101600647
+        },
+        {
+          "text": "Fear of failure is one attitude that will keep you at the same point in your life.",
+          "author": "Byron Pulsifer",
+          "score": 0.5667325258255005
+        },
+        {
+          "text": "Nothing in life is to be feared. It is only to be understood.",
+          "author": "Marie Curie",
+          "score": 0.5619423985481262
+        },
+        {
+          "text": "Keep true to the dreams of thy youth.",
+          "author": "Friedrich von Schiller",
+          "score": 0.5020783543586731
+        },
+        {
+          "text": "The undertaking of a new action brings new strength.",
+          "author": "Richard Evans",
+          "score": 0.4999539256095886
+        },
+        {
+          "text": "Hope arouses, as nothing else can arouse, a passion for the possible.",
+          "author": "William Sloane Coffin",
+          "score": 0.47593292593955994
+        },
+        {
+          "text": "People grow through experience if they meet life honestly and courageously. This is how character is built.",
+          "author": "Eleanor Roosevelt",
+          "score": 0.4620692729949951
+        },
+        {
+          "text": "The biggest adventure you can ever take is to live the life of your dreams.",
+          "author": "Oprah Winfrey",
+          "score": 0.43093886971473694
+        },
+        {
+          "text": "While we try to teach our children all about life, our children teach us what life is all about.",
+          "author": "Angela Schwindt",
+          "score": 0.43064045906066895
+        },
+        {
+          "text": "What separates the winners from the losers is how a person reacts to each new twist of fate.",
+          "author": "Donald Trump",
+          "score": 0.41458529233932495
+        },
+        {
+          "text": "Feeling and longing are the motive forces behind all human endeavor and human creations.",
+          "author": "Albert Einstein",
+          "score": 0.40555912256240845
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_quotes",
+          "query": "fear of starting something new and unknown",
+          "returned": 4,
+          "top_score": 0.604
+        },
+        {
+          "step": 2,
+          "tool": "search_quotes",
+          "query": "excitement and anticipation about a new chapter",
+          "returned": 4,
+          "top_score": 0.5
+        },
+        {
+          "step": 3,
+          "tool": "search_quotes",
+          "query": "leaving home and growing up",
+          "returned": 4,
+          "top_score": 0.502
+        }
+      ],
+      "verdicts": [
+        {
+          "facet": "fear of a new beginning",
+          "covered": true,
+          "quote": "Nothing in life is to be feared. It is only to be understood.",
+          "reason": "Directly addresses fear, and quote 6 frames new undertakings as strengthening."
+        },
+        {
+          "facet": "excitement and anticipation",
+          "covered": true,
+          "quote": "Hope arouses, as nothing else can arouse, a passion for the possible.",
+          "reason": "Captures eager anticipation of what's ahead, alongside the 'biggest adventure' line."
+        }
+      ]
+    },
+    {
+      "id": "failure-persistence",
+      "text": "i failed my exam and i don't know if i should keep trying",
+      "n_facets": 2,
+      "coverage": 1.0,
+      "top_score": 0.6510066390037537,
+      "api_calls": 3,
+      "seconds": 16.02,
+      "quotes": [
+        {
+          "text": "I don't believe in failure. It is not failure if you enjoyed the process.",
+          "author": "Oprah Winfrey",
+          "score": 0.6510066390037537
+        },
+        {
+          "text": "I don't believe in failure. It's not failure if you enjoyed the process.",
+          "author": "Oprah Winfrey",
+          "score": 0.6366114616394043
+        },
+        {
+          "text": "Many of life's failures are people who did not realize how close they were to success when they gave up.",
+          "author": "Thomas Edison",
+          "score": 0.6338566541671753
+        },
+        {
+          "text": "Try not to become a man of success, but rather try to become a man of value.",
+          "author": "Albert Einstein",
+          "score": 0.5982356071472168
+        },
+        {
+          "text": "If you're walking down the right path and you're willing to keep walking, eventually you'll make progress.",
+          "author": "Barack Obama",
+          "score": 0.5812296271324158
+        },
+        {
+          "text": "Most great people have attained their greatest success just one step beyond their greatest failure.",
+          "author": "Napoleon Hill",
+          "score": 0.5770344734191895
+        },
+        {
+          "text": "A lot of people give up just before they're about to make it. You know you never know when that next obstacle is going to be the last one.",
+          "author": "Chuck Norris",
+          "score": 0.5768281817436218
+        },
+        {
+          "text": "For every failure, there's an alternative course of action. You just have to find it. When you come to a roadblock, take a detour.",
+          "author": "Mary Kay Ash",
+          "score": 0.5729438066482544
+        },
+        {
+          "text": "Do not overrate what you have received, nor envy others. He who envies others does not obtain peace of mind.",
+          "author": "Buddha",
+          "score": 0.562038242816925
+        },
+        {
+          "text": "Everyone can taste success when the going is easy, but few know how to taste victory when times get tough.",
+          "author": "Byron Pulsifer",
+          "score": 0.5142822265625
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_quotes",
+          "query": "failing at something you worked for",
+          "returned": 3,
+          "top_score": 0.651
+        },
+        {
+          "step": 2,
+          "tool": "search_quotes",
+          "query": "doubting whether to keep going or give up",
+          "returned": 3,
+          "top_score": 0.581
+        },
+        {
+          "step": 3,
+          "tool": "search_quotes",
+          "query": "feeling discouraged and defeated after a setback",
+          "returned": 3,
+          "top_score": 0.533
+        },
+        {
+          "step": 4,
+          "tool": "search_quotes",
+          "query": "your worth is not measured by your achievements",
+          "returned": 3,
+          "top_score": 0.598
+        }
+      ],
+      "verdicts": [
+        {
+          "facet": "failure and setback",
+          "covered": true,
+          "quote": "For every failure, there's an alternative course of action. You just have to find it. When you come to a roadblock, take a detour.",
+          "reason": "Directly addresses experiencing failure and reframing it."
+        },
+        {
+          "facet": "perseverance despite difficulty",
+          "covered": true,
+          "quote": "Many of life's failures are people who did not realize how close they were to success when they gave up.",
+          "reason": "Encourages not giving up when it's hard."
+        }
+      ]
+    },
+    {
+      "id": "heartbreak-worth",
+      "text": "my girlfriend left me and i feel worthless",
+      "n_facets": 2,
+      "coverage": 1.0,
+      "top_score": 0.5478764772415161,
+      "api_calls": 3,
+      "seconds": 16.47,
+      "quotes": [
+        {
+          "text": "Do not waste yourself in rejection, nor bark against the bad, but chant the beauty of the good.",
+          "author": "Ralph Emerson",
+          "score": 0.5478764772415161
+        },
+        {
+          "text": "It is easier to live through someone else than to become complete yourself.",
+          "author": "Betty Friedan",
+          "score": 0.4881799519062042
+        },
+        {
+          "text": "Know that although in the eternal scheme of things you are small, you are also unique and irreplaceable, as are all your fellow humans everywhere in the world.",
+          "author": "Margaret Laurence",
+          "score": 0.4739876389503479
+        },
+        {
+          "text": "Absence makes the heart grow fonder.",
+          "author": "Haynes Bayly",
+          "score": 0.47364017367362976
+        },
+        {
+          "text": "Don't grieve. Anything you lose comes round in another form.",
+          "author": "Rumi",
+          "score": 0.47354623675346375
+        },
+        {
+          "text": "Sometimes the cards we are dealt are not always fair. However you must keep smiling and moving on.",
+          "author": "Tom Jackson",
+          "score": 0.4672887325286865
+        },
+        {
+          "text": "Don't cry because it's over. Smile because it happened.",
+          "author": "Dr. Seuss",
+          "score": 0.4657913148403168
+        },
+        {
+          "text": "You cannot be lonely if you like the person you're alone with.",
+          "author": "Wayne Dyer",
+          "score": 0.45575693249702454
+        },
+        {
+          "text": "The minute you settle for less than you deserve, you get even less than you settled for.",
+          "author": "Maureen Dowd",
+          "score": 0.4480268955230713
+        },
+        {
+          "text": "No one can make you feel inferior without your consent.",
+          "author": "Eleanor Roosevelt",
+          "score": 0.43481436371803284
+        },
+        {
+          "text": "If you accept the expectations of others, especially negative ones, then you never will change the outcome.",
+          "author": "Michael Jordan",
+          "score": 0.4280223846435547
+        },
+        {
+          "text": "Stay away from what might have been and look at what will be.",
+          "author": "Marsha Petrie Sue",
+          "score": 0.42487144470214844
+        },
+        {
+          "text": "Better to have loved and lost, than to have never loved at all.",
+          "author": "St. Augustine",
+          "score": 0.4060552716255188
+        },
+        {
+          "text": "The most important point is to accept yourself and stand on your two feet.",
+          "author": "Shunryu Suzuki",
+          "score": 0.39573121070861816
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_quotes",
+          "query": "heartbreak after being left by a partner",
+          "returned": 4,
+          "top_score": 0.474
+        },
+        {
+          "step": 2,
+          "tool": "search_quotes",
+          "query": "feeling worthless and unlovable",
+          "returned": 4,
+          "top_score": 0.474
+        },
+        {
+          "step": 3,
+          "tool": "search_quotes",
+          "query": "rejection does not define your value",
+          "returned": 4,
+          "top_score": 0.548
+        },
+        {
+          "step": 4,
+          "tool": "search_quotes",
+          "query": "loneliness and emptiness after a relationship ends",
+          "returned": 4,
+          "top_score": 0.488
+        }
+      ],
+      "verdicts": [
+        {
+          "facet": "heartbreak and lost love",
+          "covered": true,
+          "quote": "Better to have loved and lost, than to have never loved at all.",
+          "reason": "Directly addresses lost love and heartbreak."
+        },
+        {
+          "facet": "low self-worth",
+          "covered": true,
+          "quote": "Know that although in the eternal scheme of things you are small, you are also unique and irreplaceable",
+          "reason": "Affirms inherent worth, plus self-acceptance quotes."
+        }
+      ]
+    },
+    {
+      "id": "envy-ambition",
+      "text": "everyone i know is doing better than me and it makes me want to work harder",
+      "n_facets": 2,
+      "coverage": 1.0,
+      "top_score": 0.6358870267868042,
+      "api_calls": 3,
+      "seconds": 16.63,
+      "quotes": [
+        {
+          "text": "Always bear in mind that your own resolution to succeed is more important than any one thing.",
+          "author": "Abraham Lincoln",
+          "score": 0.6358870267868042
+        },
+        {
+          "text": "Continuous effort, not strength or intelligence is the key to unlocking our potential.",
+          "author": "Winston Churchill",
+          "score": 0.6262930631637573
+        },
+        {
+          "text": "The person who makes a success of living is the one who see his goal steadily and aims for it unswervingly. That is dedication.",
+          "author": "Cecil B. DeMille",
+          "score": 0.6133211851119995
+        },
+        {
+          "text": "Do not overrate what you have received, nor envy others. He who envies others does not obtain peace of mind.",
+          "author": "Buddha",
+          "score": 0.5870785713195801
+        },
+        {
+          "text": "No one can make you feel inferior without your consent.",
+          "author": "Eleanor Roosevelt",
+          "score": 0.5420219898223877
+        },
+        {
+          "text": "Be happy, but never satisfied.",
+          "author": "Bruce Lee",
+          "score": 0.5241614580154419
+        },
+        {
+          "text": "A lot of times people look at the negative side of what they feel they can't do. I always look on the positive side of what I can do.",
+          "author": "Chuck Norris",
+          "score": 0.5059019923210144
+        },
+        {
+          "text": "Accept challenges, so that you may feel the exhilaration of victory.",
+          "author": "George Patton",
+          "score": 0.5023205280303955
+        },
+        {
+          "text": "The greatest obstacle to connecting with our joy is resentment.",
+          "author": "Pema Chodron",
+          "score": 0.4907233715057373
+        },
+        {
+          "text": "Happiness is not in the mere possession of money; it lies in the joy of achievement, in the thrill of creative effort.",
+          "author": "Franklin Roosevelt",
+          "score": 0.47717544436454773
+        },
+        {
+          "text": "Know that although in the eternal scheme of things you are small, you are also unique and irreplaceable, as are all your fellow humans everywhere in the world.",
+          "author": "Margaret Laurence",
+          "score": 0.4717332124710083
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_quotes",
+          "query": "envy at other people's success",
+          "returned": 3,
+          "top_score": 0.587
+        },
+        {
+          "step": 2,
+          "tool": "search_quotes",
+          "query": "feeling behind everyone else in life",
+          "returned": 3,
+          "top_score": 0.542
+        },
+        {
+          "step": 3,
+          "tool": "search_quotes",
+          "query": "determination to work harder and improve myself",
+          "returned": 3,
+          "top_score": 0.636
+        },
+        {
+          "step": 4,
+          "tool": "search_quotes",
+          "query": "never feeling good enough no matter what I achieve",
+          "returned": 3,
+          "top_score": 0.524
+        }
+      ],
+      "verdicts": [
+        {
+          "facet": "envy and comparison to others",
+          "covered": true,
+          "quote": "Do not overrate what you have received, nor envy others. He who envies others does not obtain peace of mind.",
+          "reason": "Directly addresses envy and comparison."
+        },
+        {
+          "facet": "ambition and drive",
+          "covered": true,
+          "quote": "Continuous effort, not strength or intelligence is the key to unlocking our potential.",
+          "reason": "Several quotes speak to effort, dedication, and drive."
+        }
+      ]
+    },
+    {
+      "id": "guilt-forgiveness",
+      "text": "i hurt someone i love and i can't forgive myself",
+      "n_facets": 2,
+      "coverage": 1.0,
+      "top_score": 0.7035683989524841,
+      "api_calls": 3,
+      "seconds": 16.53,
+      "quotes": [
+        {
+          "text": "The more you know yourself, the more you forgive yourself.",
+          "author": "Confucius",
+          "score": 0.7035683989524841
+        },
+        {
+          "text": "Mistakes are always forgivable, if one has the courage to admit them.",
+          "author": "Bruce Lee",
+          "score": 0.6429687738418579
+        },
+        {
+          "text": "The weak can never forgive. Forgiveness is the attribute of the strong.",
+          "author": "Mohandas Gandhi",
+          "score": 0.6410446166992188
+        },
+        {
+          "text": "Forgiveness is choosing to love. It is the first skill of self-giving love.",
+          "author": "Mohandas Gandhi",
+          "score": 0.6395862698554993
+        },
+        {
+          "text": "Forgiveness does not change the past, but it does enlarge the future.",
+          "author": "Paul Boese",
+          "score": 0.6276182532310486
+        },
+        {
+          "text": "If you have made mistakes, there is always another chance for you. You may have a fresh start any moment you choose.",
+          "author": "Mary Pickford",
+          "score": 0.5796423554420471
+        },
+        {
+          "text": "Do not be embarrassed by your mistakes. Nothing can teach us better than our understanding of them. This is one of the best ways of self-education.",
+          "author": "Thomas Carlyle",
+          "score": 0.5441573858261108
+        },
+        {
+          "text": "Never apologize for showing feelings. When you do so, you apologize for the truth.",
+          "author": "Benjamin Disraeli",
+          "score": 0.5100961327552795
+        },
+        {
+          "text": "When I let go of what I am, I become what I might be.",
+          "author": "Lao Tzu",
+          "score": 0.4876840114593506
+        },
+        {
+          "text": "It is never too late to be what you might have been.",
+          "author": "George Eliot",
+          "score": 0.4763595461845398
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_quotes",
+          "query": "remorse over hurting someone you love",
+          "returned": 3,
+          "top_score": 0.576
+        },
+        {
+          "step": 2,
+          "tool": "search_quotes",
+          "query": "unable to forgive yourself",
+          "returned": 3,
+          "top_score": 0.704
+        },
+        {
+          "step": 3,
+          "tool": "search_quotes",
+          "query": "shame about who I have become",
+          "returned": 3,
+          "top_score": 0.514
+        },
+        {
+          "step": 4,
+          "tool": "search_quotes",
+          "query": "guilt over a mistake I made",
+          "returned": 3,
+          "top_score": 0.643
+        },
+        {
+          "step": 5,
+          "tool": "search_quotes",
+          "query": "making amends and repairing a relationship",
+          "returned": 3,
+          "top_score": 0.628
+        }
+      ],
+      "verdicts": [
+        {
+          "facet": "guilt and regret",
+          "covered": true,
+          "quote": "Mistakes are always forgivable, if one has the courage to admit them.",
+          "reason": "Speaks to remorse over a mistake and its forgivability."
+        },
+        {
+          "facet": "self-forgiveness",
+          "covered": true,
+          "quote": "The more you know yourself, the more you forgive yourself.",
+          "reason": "Directly addresses forgiving oneself."
+        }
+      ]
+    },
+    {
+      "id": "change-nostalgia",
+      "text": "i'm moving away and i miss how things used to be",
+      "n_facets": 2,
+      "coverage": 1.0,
+      "top_score": 0.5862410664558411,
+      "api_calls": 3,
+      "seconds": 13.8,
+      "quotes": [
+        {
+          "text": "Don't be dismayed by good-byes. A farewell is necessary before you can meet again. And meeting again, after moments or lifetimes, is certain for those who are friends.",
+          "author": "Richard Bach",
+          "score": 0.5862410664558411
+        },
+        {
+          "text": "Feeling and longing are the motive forces behind all human endeavor and human creations.",
+          "author": "Albert Einstein",
+          "score": 0.49285000562667847
+        },
+        {
+          "text": "I love my past. I love my present. I'm not ashamed of what I've had, and I'm not sad because I have it no longer.",
+          "author": "Colette",
+          "score": 0.49273940920829773
+        },
+        {
+          "text": "Be here now. Be someplace else later. Is that so complicated?",
+          "author": "David Bader",
+          "score": 0.47458702325820923
+        },
+        {
+          "text": "The world makes way for the man who knows where he is going.",
+          "author": "Ralph Emerson",
+          "score": 0.4429836571216583
+        },
+        {
+          "text": "Some people thrive on huge, dramatic change. Some people prefer the slow and steady route. Do what's right for you.",
+          "author": "Julie Morgenstern",
+          "score": 0.43073078989982605
+        },
+        {
+          "text": "Rather than wishing for change, you first must be prepared to change.",
+          "author": "Catherine Pulsifer",
+          "score": 0.4185941219329834
+        },
+        {
+          "text": "Though no one can go back and make a brand new start, anyone can start from not and make a brand new ending.",
+          "author": "Carl Bard",
+          "score": 0.4022420048713684
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_quotes",
+          "query": "leaving a place behind and saying goodbye",
+          "returned": 3,
+          "top_score": 0.586
+        },
+        {
+          "step": 2,
+          "tool": "search_quotes",
+          "query": "nostalgia and longing for how things used to be",
+          "returned": 3,
+          "top_score": 0.493
+        },
+        {
+          "step": 3,
+          "tool": "search_quotes",
+          "query": "accepting change when a chapter ends",
+          "returned": 3,
+          "top_score": 0.431
+        }
+      ],
+      "verdicts": [
+        {
+          "facet": "facing change",
+          "covered": true,
+          "quote": "Some people thrive on huge, dramatic change. Some people prefer the slow and steady route. Do what's right for you.",
+          "reason": "Speaks to navigating change, plus the farewell quote addresses leaving."
+        },
+        {
+          "facet": "nostalgia for the past",
+          "covered": true,
+          "quote": "I love my past. I love my present. I'm not ashamed of what I've had, and I'm not sad because I have it no longer.",
+          "reason": "Directly addresses longing for what one had."
+        }
+      ]
+    },
+    {
+      "id": "overwhelm-gratitude",
+      "text": "i have too much going on but i know i'm lucky",
+      "n_facets": 2,
+      "coverage": 1.0,
+      "top_score": 0.5988504886627197,
+      "api_calls": 3,
+      "seconds": 17.91,
+      "quotes": [
+        {
+          "text": "Gratitude makes sense of our past, brings peace for today, and creates a vision for tomorrow.",
+          "author": "Melody Beattie",
+          "score": 0.5988504886627197
+        },
+        {
+          "text": "Gratitude is the fairest blossom which springs from the soul.",
+          "author": "Henry Beecher",
+          "score": 0.5872572660446167
+        },
+        {
+          "text": "Give thanks for a little and you will find a lot.",
+          "author": "Hausa",
+          "score": 0.5864152312278748
+        },
+        {
+          "text": "Complaining doesn't change a thing only taking action does.",
+          "author": "Byron Pulsifer",
+          "score": 0.5323134660720825
+        },
+        {
+          "text": "Do not overrate what you have received, nor envy others. He who envies others does not obtain peace of mind.",
+          "author": "Buddha",
+          "score": 0.48029088973999023
+        },
+        {
+          "text": "You can adopt the attitude there is nothing you can do, or you can see the challenge as your call to action.",
+          "author": "Catherine Pulsifer",
+          "score": 0.4678019881248474
+        },
+        {
+          "text": "Anticipate the difficult by managing the easy.",
+          "author": "Lao Tzu",
+          "score": 0.46362268924713135
+        },
+        {
+          "text": "Chaos is inherent in all compounded things. Strive on with diligence.",
+          "author": "Buddha",
+          "score": 0.462649941444397
+        },
+        {
+          "text": "Be miserable. Or motivate yourself. Whatever has to be done, it's always your choice.",
+          "author": "Wayne Dyer",
+          "score": 0.4581882655620575
+        },
+        {
+          "text": "If you break your neck, if you have nothing to eat, if your house is on fire, then you got a problem. Everything else is inconvenience.",
+          "author": "Robert Fulghum",
+          "score": 0.4553217887878418
+        },
+        {
+          "text": "You can complain because roses have thorns, or you can rejoice because thorns have roses.",
+          "author": "Ziggy",
+          "score": 0.45129314064979553
+        },
+        {
+          "text": "To hell with circumstances; I create opportunities.",
+          "author": "Bruce Lee",
+          "score": 0.44286274909973145
+        },
+        {
+          "text": "Sleep is the real beauty secret, but I don't get enough of that.",
+          "author": "Chelsea Leyland",
+          "score": 0.3954572081565857
+        },
+        {
+          "text": "Tired minds don't plan well. Sleep first, plan later.",
+          "author": "Walter Reisch",
+          "score": 0.39391589164733887
+        },
+        {
+          "text": "Take rest; a field that has rested gives a bountiful crop.",
+          "author": "Ovid",
+          "score": 0.3919677734375
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_quotes",
+          "query": "overwhelmed by too many demands and responsibilities",
+          "returned": 3,
+          "top_score": 0.468
+        },
+        {
+          "step": 2,
+          "tool": "search_quotes",
+          "query": "guilt for struggling when my life is privileged and good",
+          "returned": 3,
+          "top_score": 0.48
+        },
+        {
+          "step": 3,
+          "tool": "search_quotes",
+          "query": "gratitude for what I have",
+          "returned": 3,
+          "top_score": 0.599
+        },
+        {
+          "step": 4,
+          "tool": "search_quotes",
+          "query": "feeling exhausted and unable to admit I need rest",
+          "returned": 3,
+          "top_score": 0.395
+        },
+        {
+          "step": 5,
+          "tool": "search_quotes",
+          "query": "no right to complain about my own difficulties",
+          "returned": 3,
+          "top_score": 0.532
+        }
+      ],
+      "verdicts": [
+        {
+          "facet": "feeling overwhelmed",
+          "covered": true,
+          "quote": "Take rest; a field that has rested gives a bountiful crop.",
+          "reason": "Rest and chaos quotes speak to being stretched too thin."
+        },
+        {
+          "facet": "gratitude",
+          "covered": true,
+          "quote": "Give thanks for a little and you will find a lot.",
+          "reason": "Several quotes directly address gratitude."
+        }
+      ]
+    },
+    {
+      "id": "patience-frustration",
+      "text": "i've been working at this for years and nothing has changed",
+      "n_facets": 2,
+      "coverage": 1.0,
+      "top_score": 0.7013888359069824,
+      "api_calls": 2,
+      "seconds": 11.95,
+      "quotes": [
+        {
+          "text": "A lot of people give up just before they're about to make it. You know you never know when that next obstacle is going to be the last one.",
+          "author": "Chuck Norris",
+          "score": 0.7013888359069824
+        },
+        {
+          "text": "Many of life's failures are people who did not realize how close they were to success when they gave up.",
+          "author": "Thomas Edison",
+          "score": 0.6797330379486084
+        },
+        {
+          "text": "The greatest barrier to success is the fear of failure.",
+          "author": "Eriksson",
+          "score": 0.625805675983429
+        },
+        {
+          "text": "A little more persistence, a little more effort, and what seemed hopeless failure may turn to glorious success.",
+          "author": "Elbert Hubbard",
+          "score": 0.5160802602767944
+        },
+        {
+          "text": "I never see what has been done; I only see what remains to be done.",
+          "author": "Marie Curie",
+          "score": 0.46779870986938477
+        },
+        {
+          "text": "All great achievements require time.",
+          "author": "Maya Angelou",
+          "score": 0.4491300582885742
+        },
+        {
+          "text": "The art of progress is to preserve order amid change, and to preserve change amid order.",
+          "author": "Alfred Whitehead",
+          "score": 0.4431759715080261
+        },
+        {
+          "text": "We are either progressing or retrograding all the while. There is no such thing as remaining stationary in this life.",
+          "author": "James Freeman Clarke",
+          "score": 0.36357802152633667
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_quotes",
+          "query": "years of effort with nothing to show for it",
+          "returned": 3,
+          "top_score": 0.516
+        },
+        {
+          "step": 2,
+          "tool": "search_quotes",
+          "query": "discouragement and the temptation to give up",
+          "returned": 3,
+          "top_score": 0.701
+        },
+        {
+          "step": 3,
+          "tool": "search_quotes",
+          "query": "progress that is invisible while it is happening",
+          "returned": 3,
+          "top_score": 0.443
+        }
+      ],
+      "verdicts": [
+        {
+          "facet": "persistence over a long time",
+          "covered": true,
+          "quote": "All great achievements require time.",
+          "reason": "Speaks to long effort and persistence paying off."
+        },
+        {
+          "facet": "frustration at lack of progress",
+          "covered": true,
+          "quote": "A little more persistence, a little more effort, and what seemed hopeless failure may turn to glorious success.",
+          "reason": "Directly addresses feeling of hopeless lack of results."
+        }
+      ]
+    },
+    {
+      "id": "courage-doubt",
+      "text": "i want to start my own thing but i doubt myself",
+      "n_facets": 2,
+      "coverage": 1.0,
+      "top_score": 0.7144020795822144,
+      "api_calls": 2,
+      "seconds": 11.15,
+      "quotes": [
+        {
+          "text": "Courage is going from failure to failure without losing enthusiasm.",
+          "author": "Winston Churchill",
+          "score": 0.7144020795822144
+        },
+        {
+          "text": "Courage is not about taking risks unknowingly but putting your own being in front of challenges that others may not be able to.",
+          "author": "Byron Pulsifer",
+          "score": 0.6949155330657959
+        },
+        {
+          "text": "Courage is not the absence of fear, but simply moving on with dignity despite that fear.",
+          "author": "Pat Riley",
+          "score": 0.664409875869751
+        },
+        {
+          "text": "Courage doesn't happen when you have all the answers. It happens when you are ready to face the questions you have been avoiding your whole life.",
+          "author": "Shannon L. Alder",
+          "score": 0.6616538166999817
+        },
+        {
+          "text": "When you doubt your power, you give power to your doubt.",
+          "author": "Honore de Balzac",
+          "score": 0.6141587495803833
+        },
+        {
+          "text": "The worst enemy to creativity is self-doubt.",
+          "author": "Sylvia Plath",
+          "score": 0.604189395904541
+        },
+        {
+          "text": "With realization of ones own potential and self-confidence in ones ability, one can build a better world.",
+          "author": "Dalai Lama",
+          "score": 0.5534756183624268
+        },
+        {
+          "text": "With the realization of ones own potential and self-confidence in ones ability, one can build a better world.",
+          "author": "Dalai Lama",
+          "score": 0.5532585382461548
+        },
+        {
+          "text": "I begin with an idea and then it becomes something else.",
+          "author": "Pablo Picasso",
+          "score": 0.5405130982398987
+        },
+        {
+          "text": "The desire to create is one of the deepest yearnings of the human soul.",
+          "author": "Dieter F. Uchtdorf",
+          "score": 0.5388041734695435
+        },
+        {
+          "text": "Feeling and longing are the motive forces behind all human endeavor and human creations.",
+          "author": "Albert Einstein",
+          "score": 0.5358781814575195
+        },
+        {
+          "text": "Begin, be bold, and venture to be wise.",
+          "author": "Horace",
+          "score": 0.5069291591644287
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_quotes",
+          "query": "self-doubt about one's own abilities",
+          "returned": 4,
+          "top_score": 0.614
+        },
+        {
+          "step": 2,
+          "tool": "search_quotes",
+          "query": "longing to begin something of your own",
+          "returned": 4,
+          "top_score": 0.541
+        },
+        {
+          "step": 3,
+          "tool": "search_quotes",
+          "query": "courage to take the first step despite fear of failure",
+          "returned": 4,
+          "top_score": 0.714
+        }
+      ],
+      "verdicts": [
+        {
+          "facet": "courage to begin something",
+          "covered": true,
+          "quote": "Begin, be bold, and venture to be wise.",
+          "reason": "Directly urges bold beginning, plus courage-despite-fear quotes."
+        },
+        {
+          "facet": "self-doubt",
+          "covered": true,
+          "quote": "When you doubt your power, you give power to your doubt.",
+          "reason": "Directly addresses self-doubt."
+        }
+      ]
+    },
+    {
+      "id": "newcity-connection",
+      "text": "i moved to a new city and i haven't made any friends",
+      "n_facets": 2,
+      "coverage": 1.0,
+      "top_score": 0.6411689519882202,
+      "api_calls": 3,
+      "seconds": 20.14,
+      "quotes": [
+        {
+          "text": "Courage is not about taking risks unknowingly but putting your own being in front of challenges that others may not be able to.",
+          "author": "Byron Pulsifer",
+          "score": 0.6411689519882202
+        },
+        {
+          "text": "Sometimes the biggest act of courage is a small one.",
+          "author": "Lauren Raffo",
+          "score": 0.6374326944351196
+        },
+        {
+          "text": "Courage is not the absence of fear, but simply moving on with dignity despite that fear.",
+          "author": "Pat Riley",
+          "score": 0.6031408309936523
+        },
+        {
+          "text": "Feeling and longing are the motive forces behind all human endeavor and human creations.",
+          "author": "Albert Einstein",
+          "score": 0.5643990635871887
+        },
+        {
+          "text": "If you have made mistakes, there is always another chance for you. You may have a fresh start any moment you choose.",
+          "author": "Mary Pickford",
+          "score": 0.5497758984565735
+        },
+        {
+          "text": "No matter how hard the past, you can always begin again.",
+          "author": "Buddha",
+          "score": 0.5395488739013672
+        },
+        {
+          "text": "Some people thrive on huge, dramatic change. Some people prefer the slow and steady route. Do what's right for you.",
+          "author": "Julie Morgenstern",
+          "score": 0.5353855490684509
+        },
+        {
+          "text": "I am not bothered by the fact that I am unknown. I am bothered when I do not know others.",
+          "author": "Confucius",
+          "score": 0.5280560851097107
+        },
+        {
+          "text": "Friendship with oneself is all important because without it one cannot be friends with anybody else in the world.",
+          "author": "Eleanor Roosevelt",
+          "score": 0.49654045701026917
+        },
+        {
+          "text": "Absence makes the heart grow fonder.",
+          "author": "Haynes Bayly",
+          "score": 0.49264609813690186
+        },
+        {
+          "text": "As we grow as unique persons, we learn to respect the uniqueness of others.",
+          "author": "Robert Schuller",
+          "score": 0.47108083963394165
+        },
+        {
+          "text": "By accepting yourself and being fully what you are, your presence can make others happy.",
+          "author": "Jane Roberts",
+          "score": 0.43997880816459656
+        },
+        {
+          "text": "In order to live free and happily you must sacrifice boredom. It is not always an easy sacrifice.",
+          "author": "Richard Bach",
+          "score": 0.43840813636779785
+        },
+        {
+          "text": "You cannot be lonely if you like the person you're alone with.",
+          "author": "Wayne Dyer",
+          "score": 0.4326441287994385
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_quotes",
+          "query": "loneliness",
+          "returned": 3,
+          "top_score": 0.451
+        },
+        {
+          "step": 2,
+          "tool": "search_quotes",
+          "query": "being a stranger in an unfamiliar place",
+          "returned": 3,
+          "top_score": 0.528
+        },
+        {
+          "step": 3,
+          "tool": "search_quotes",
+          "query": "longing for connection and friendship",
+          "returned": 3,
+          "top_score": 0.564
+        },
+        {
+          "step": 4,
+          "tool": "search_quotes",
+          "query": "courage to take the first step toward strangers",
+          "returned": 3,
+          "top_score": 0.641
+        },
+        {
+          "step": 5,
+          "tool": "search_quotes",
+          "query": "starting over somewhere new, patience with a slow beginning",
+          "returned": 3,
+          "top_score": 0.55
+        }
+      ],
+      "verdicts": [
+        {
+          "facet": "loneliness in an unfamiliar place",
+          "covered": true,
+          "quote": "You cannot be lonely if you like the person you're alone with.",
+          "reason": "Directly addresses loneliness, though about being alone."
+        },
+        {
+          "facet": "wanting friendship and connection",
+          "covered": true,
+          "quote": "I am not bothered by the fact that I am unknown. I am bothered when I do not know others.",
+          "reason": "Speaks to the desire to know others and to friendship."
+        }
+      ]
+    },
+    {
+      "id": "aging-acceptance",
+      "text": "i'm getting older and i haven't done what i wanted",
+      "n_facets": 2,
+      "coverage": 1.0,
+      "top_score": 0.6454746127128601,
+      "api_calls": 2,
+      "seconds": 12.54,
+      "quotes": [
+        {
+          "text": "No matter how hard the past, you can always begin again.",
+          "author": "Buddha",
+          "score": 0.6454746127128601
+        },
+        {
+          "text": "Many of life's failures are people who did not realize how close they were to success when they gave up.",
+          "author": "Thomas Edison",
+          "score": 0.6197812557220459
+        },
+        {
+          "text": "If you have made mistakes, there is always another chance for you. You may have a fresh start any moment you choose.",
+          "author": "Mary Pickford",
+          "score": 0.6185781359672546
+        },
+        {
+          "text": "It is never too late to be what you might have been.",
+          "author": "George Eliot",
+          "score": 0.6112809181213379
+        },
+        {
+          "text": "Make it a rule of life never to regret and never to look back. Regret is an appalling waste of energy; you can't build on it; it's only for wallowing in.",
+          "author": "Katherine Mansfield",
+          "score": 0.5747190117835999
+        },
+        {
+          "text": "Never regret. If it's good, it's wonderful. If it's bad, it's experience.",
+          "author": "Victoria Holt",
+          "score": 0.5569636821746826
+        },
+        {
+          "text": "See the positive side, the potential, and make an effort.",
+          "author": "Dalai Lama",
+          "score": 0.5561950206756592
+        },
+        {
+          "text": "Dreams come true. Without that possibility, nature would not incite us to have them.",
+          "author": "John Updike",
+          "score": 0.543563723564148
+        },
+        {
+          "text": "Failure doesn't mean you are a failure it just means you haven't succeeded yet.",
+          "author": "Robert Schuller",
+          "score": 0.5364660024642944
+        },
+        {
+          "text": "The best thing in every noble dream is the dreamer...",
+          "author": "Moncure Conway",
+          "score": 0.5350745320320129
+        },
+        {
+          "text": "Don't think of it as failure. Think of it as time-released success.",
+          "author": "Robert Orben",
+          "score": 0.5259443521499634
+        },
+        {
+          "text": "Though no one can go back and make a brand new start, anyone can start from not and make a brand new ending.",
+          "author": "Carl Bard",
+          "score": 0.5212134718894958
+        },
+        {
+          "text": "The time you think you're missing, misses you too.",
+          "author": "Ymber Delecto",
+          "score": 0.5135279893875122
+        },
+        {
+          "text": "Time changes everything except something within us which is always surprised by change.",
+          "author": "Thomas Hardy",
+          "score": 0.4916156828403473
+        },
+        {
+          "text": "There is a fountain of youth: it is your mind, your talents, the creativity you bring to your life and the lives of people you love. When you learn to tap this source, you will truly have defeated age.",
+          "author": "Sophia Loren",
+          "score": 0.47264620661735535
+        },
+        {
+          "text": "The years teach much which the days never know.",
+          "author": "Ralph Emerson",
+          "score": 0.46979036927223206
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_quotes",
+          "query": "growing older and feeling time slipping away",
+          "returned": 4,
+          "top_score": 0.514
+        },
+        {
+          "step": 2,
+          "tool": "search_quotes",
+          "query": "regret over dreams never pursued",
+          "returned": 4,
+          "top_score": 0.575
+        },
+        {
+          "step": 3,
+          "tool": "search_quotes",
+          "query": "feeling like a failure compared to what I hoped to become",
+          "returned": 4,
+          "top_score": 0.62
+        },
+        {
+          "step": 4,
+          "tool": "search_quotes",
+          "query": "it is not too late to begin again",
+          "returned": 4,
+          "top_score": 0.645
+        }
+      ],
+      "verdicts": [
+        {
+          "facet": "aging and time passing",
+          "covered": true,
+          "quote": "There is a fountain of youth: it is your mind, your talents, the creativity you bring to your life... you will truly have defeated age.",
+          "reason": "Directly addresses aging, as does 'never too late to be what you might have been.'"
+        },
+        {
+          "facet": "accepting the life one has",
+          "covered": true,
+          "quote": "Never regret. If it's good, it's wonderful. If it's bad, it's experience.",
+          "reason": "Speaks to accepting one's past without regret."
+        }
+      ]
+    },
+    {
+      "id": "death-meaning",
+      "text": "my friend died young and none of it makes sense",
+      "n_facets": 2,
+      "coverage": 1.0,
+      "top_score": 0.5712118148803711,
+      "api_calls": 3,
+      "seconds": 18.63,
+      "quotes": [
+        {
+          "text": "Don't grieve. Anything you lose comes round in another form.",
+          "author": "Rumi",
+          "score": 0.5712118148803711
+        },
+        {
+          "text": "Your mind will answer most questions if you learn to relax and wait for the answer.",
+          "author": "William Burroughs",
+          "score": 0.514696478843689
+        },
+        {
+          "text": "One may say the eternal mystery of the world is its comprehensibility.",
+          "author": "Albert Einstein",
+          "score": 0.48604410886764526
+        },
+        {
+          "text": "While we try to teach our children all about life, our children teach us what life is all about.",
+          "author": "Angela Schwindt",
+          "score": 0.47685450315475464
+        },
+        {
+          "text": "Life is a gift, and it offers us the privilege, opportunity, and responsibility to give something back by becoming more",
+          "author": "Tony Robbins",
+          "score": 0.47297656536102295
+        },
+        {
+          "text": "Sometimes our fate resembles a fruit tree in winter. Who would think that those branches would turn green again and blossom, but we hope it, we know it.",
+          "author": "Johann Wolfgang von Goethe",
+          "score": 0.4666787385940552
+        },
+        {
+          "text": "Don't be dismayed by good-byes. A farewell is necessary before you can meet again. And meeting again, after moments or lifetimes, is certain for those who are friends.",
+          "author": "Richard Bach",
+          "score": 0.44331544637680054
+        },
+        {
+          "text": "The moment one gives close attention to anything, it becomes a mysterious, awesome, indescribably magnificent world in itself.",
+          "author": "Henry Miller",
+          "score": 0.43397238850593567
+        },
+        {
+          "text": "Sometimes the cards we are dealt are not always fair. However you must keep smiling and moving on.",
+          "author": "Tom Jackson",
+          "score": 0.4291476011276245
+        },
+        {
+          "text": "The pain passes, but the beauty remains.",
+          "author": "Pierre Auguste Renoir",
+          "score": 0.42791956663131714
+        },
+        {
+          "text": "A man may fulfil the object of his existence by asking a question he cannot answer, and attempting a task he cannot achieve.",
+          "author": "Oliver Wendell Holmes, Sr.",
+          "score": 0.4099038243293762
+        },
+        {
+          "text": "There is nothing happens to any person but what was in his power to go through with.",
+          "author": "Marcus Aurelius",
+          "score": 0.40843695402145386
+        },
+        {
+          "text": "From wonder into wonder existence opens.",
+          "author": "Lao Tzu",
+          "score": 0.4021044969558716
+        },
+        {
+          "text": "Winners have simply formed the habit of doing things losers don't like to do.",
+          "author": "Albert Gray",
+          "score": 0.3875751495361328
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_quotes",
+          "query": "grief over the death of a close friend",
+          "returned": 3,
+          "top_score": 0.571
+        },
+        {
+          "step": 2,
+          "tool": "search_quotes",
+          "query": "a life cut short too young",
+          "returned": 3,
+          "top_score": 0.477
+        },
+        {
+          "step": 3,
+          "tool": "search_quotes",
+          "query": "the world makes no sense, senselessness of what happened",
+          "returned": 3,
+          "top_score": 0.486
+        },
+        {
+          "step": 4,
+          "tool": "search_quotes",
+          "query": "unfairness, why did this happen to someone who did not deserve it",
+          "returned": 3,
+          "top_score": 0.429
+        },
+        {
+          "step": 5,
+          "tool": "search_quotes",
+          "query": "living with questions that have no answer",
+          "returned": 3,
+          "top_score": 0.515
+        }
+      ],
+      "verdicts": [
+        {
+          "facet": "death of a loved one",
+          "covered": true,
+          "quote": "Don't be dismayed by good-byes. A farewell is necessary before you can meet again. And meeting again, after moments or lifetimes, is certain for those who are friends.",
+          "reason": "Directly addresses loss of a friend and grief."
+        },
+        {
+          "facet": "searching for meaning",
+          "covered": true,
+          "quote": "A man may fulfil the object of his existence by asking a question he cannot answer, and attempting a task he cannot achieve.",
+          "reason": "Speaks to unanswerable questions as part of existence."
+        }
+      ]
+    },
+    {
+      "id": "tired-lonely-meaningless",
+      "text": "i'm tired, lonely, and i don't see the point anymore",
+      "n_facets": 3,
+      "coverage": 0.3333333333333333,
+      "top_score": 0.5971971750259399,
+      "api_calls": 3,
+      "seconds": 24.53,
+      "quotes": [
+        {
+          "text": "Every adversity, every failure, every heartache carries with it the seed of an equal or greater benefit.",
+          "author": "Napoleon Hill",
+          "score": 0.5971971750259399
+        },
+        {
+          "text": "Although there may be tragedy in your life, there's always a possibility to triumph. It doesn't matter who you are, where you come from. The ability to triumph begins with you. Always.",
+          "author": "Oprah Winfrey",
+          "score": 0.5637459754943848
+        },
+        {
+          "text": "Always seek out the seed of triumph in every adversity.",
+          "author": "Og Mandino",
+          "score": 0.5579768419265747
+        },
+        {
+          "text": "Sometimes the most important thing in a whole day is the rest we take between two deep breaths.",
+          "author": "Etty Hillesum",
+          "score": 0.5202903747558594
+        },
+        {
+          "text": "Feeling and longing are the motive forces behind all human endeavor and human creations.",
+          "author": "Albert Einstein",
+          "score": 0.4973307251930237
+        },
+        {
+          "text": "Life is like a sewer. What you get out of it depends on what you put into it.",
+          "author": "Tom Lehrer",
+          "score": 0.48135313391685486
+        },
+        {
+          "text": "Take rest; a field that has rested gives a bountiful crop.",
+          "author": "Ovid",
+          "score": 0.4792763292789459
+        },
+        {
+          "text": "A lot of people give up just before they're about to make it. You know you never know when that next obstacle is going to be the last one.",
+          "author": "Chuck Norris",
+          "score": 0.45787155628204346
+        },
+        {
+          "text": "When one door of happiness closes, another opens; but often we look so long at the closed door that we do not see the one which has been opened for us.",
+          "author": "Helen Keller",
+          "score": 0.45728451013565063
+        },
+        {
+          "text": "The deepest craving of human nature is the need to be appreciated.",
+          "author": "William James",
+          "score": 0.4513595700263977
+        },
+        {
+          "text": "Life's challenges are not supposed to paralyze you, they're supposed to help you discover who you are.",
+          "author": "Bernice Johnson Reagon",
+          "score": 0.4495837092399597
+        },
+        {
+          "text": "If one is estranged from oneself, then one is estranged from others too. If one is out of touch with oneself, then one cannot touch others.",
+          "author": "Anne Lindbergh",
+          "score": 0.4469442665576935
+        },
+        {
+          "text": "Life's challenges are not supposed to paralyse you, they're supposed to help you discover who you are.",
+          "author": "Bernice Johnson Reagon",
+          "score": 0.4360589385032654
+        },
+        {
+          "text": "I am not bothered by the fact that I am unknown. I am bothered when I do not know others.",
+          "author": "Confucius",
+          "score": 0.37529829144477844
+        },
+        {
+          "text": "Don't look back. Something might be gaining on you.",
+          "author": "Satchel Paige",
+          "score": 0.37520939111709595
+        },
+        {
+          "text": "The greatest obstacle to connecting with our joy is resentment.",
+          "author": "Pema Chodron",
+          "score": 0.37112510204315186
+        },
+        {
+          "text": "A day of worry is more exhausting than a day of work.",
+          "author": "John Lubbock",
+          "score": 0.3704755902290344
+        },
+        {
+          "text": "Nothing could be worse than the fear that one had given up too soon, and left one unexpended effort that might have saved the world.",
+          "author": "Jane Addams",
+          "score": 0.37010645866394043
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_quotes",
+          "query": "bone-deep exhaustion, too tired to keep going",
+          "returned": 3,
+          "top_score": 0.458
+        },
+        {
+          "step": 2,
+          "tool": "search_quotes",
+          "query": "loneliness, feeling unseen by everyone",
+          "returned": 3,
+          "top_score": 0.447
+        },
+        {
+          "step": 3,
+          "tool": "search_quotes",
+          "query": "life feels pointless, despair about whether to go on",
+          "returned": 3,
+          "top_score": 0.481
+        },
+        {
+          "step": 4,
+          "tool": "search_quotes",
+          "query": "longing for someone to be there with me",
+          "returned": 3,
+          "top_score": 0.497
+        },
+        {
+          "step": 5,
+          "tool": "search_quotes",
+          "query": "enduring the darkest hour, hope in hopelessness",
+          "returned": 3,
+          "top_score": 0.597
+        },
+        {
+          "step": 6,
+          "tool": "search_quotes",
+          "query": "needing rest, permission to stop and be gentle with yourself",
+          "returned": 3,
+          "top_score": 0.52
+        }
+      ],
+      "verdicts": [
+        {
+          "facet": "exhaustion",
+          "covered": true,
+          "quote": "Take rest; a field that has rested gives a bountiful crop.",
+          "reason": "Directly addresses need for rest and weariness."
+        },
+        {
+          "facet": "loneliness",
+          "covered": false,
+          "quote": "",
+          "reason": "Quotes touch estrangement abstractly but none speak to feeling alone."
+        },
+        {
+          "facet": "loss of meaning",
+          "covered": false,
+          "quote": "",
+          "reason": "Only generic perseverance/triumph platitudes, not meaninglessness."
+        }
+      ]
+    },
+    {
+      "id": "job-money-family",
+      "text": "i lost my job, i'm broke, and my family is disappointed in me",
+      "n_facets": 3,
+      "coverage": 0.6666666666666666,
+      "top_score": 0.6019690632820129,
+      "api_calls": 3,
+      "seconds": 20.71,
+      "quotes": [
+        {
+          "text": "If you accept the expectations of others, especially negative ones, then you never will change the outcome.",
+          "author": "Michael Jordan",
+          "score": 0.6019690632820129
+        },
+        {
+          "text": "When you judge another, you do not define them, you define yourself.",
+          "author": "Wayne Dyer",
+          "score": 0.5635472536087036
+        },
+        {
+          "text": "Never idealize others. They will never live up to your expectations.",
+          "author": "Leo Buscaglia",
+          "score": 0.5530164241790771
+        },
+        {
+          "text": "The poor man is not he who is without a cent, but he who is without a dream.",
+          "author": "Harry Kemp",
+          "score": 0.5420902967453003
+        },
+        {
+          "text": "If you have made mistakes, there is always another chance for you. You may have a fresh start any moment you choose.",
+          "author": "Mary Pickford",
+          "score": 0.5357040166854858
+        },
+        {
+          "text": "I don't believe in failure. It is not failure if you enjoyed the process.",
+          "author": "Oprah Winfrey",
+          "score": 0.5116066932678223
+        },
+        {
+          "text": "I don't believe in failure. It's not failure if you enjoyed the process.",
+          "author": "Oprah Winfrey",
+          "score": 0.5081027150154114
+        },
+        {
+          "text": "Many people think of prosperity that concerns money only to forget that true prosperity is of the mind.",
+          "author": "Byron Pulsifer",
+          "score": 0.4721258580684662
+        },
+        {
+          "text": "There are people who have money and people who are rich.",
+          "author": "Coco Chanel",
+          "score": 0.465070903301239
+        },
+        {
+          "text": "Never regret. If it's good, it's wonderful. If it's bad, it's experience.",
+          "author": "Victoria Holt",
+          "score": 0.38474398851394653
+        },
+        {
+          "text": "The greatest obstacle to connecting with our joy is resentment.",
+          "author": "Pema Chodron",
+          "score": 0.382390558719635
+        },
+        {
+          "text": "Learn to listen. Opportunity could be knocking at your door very softly.",
+          "author": "Frank Tyger",
+          "score": 0.36881953477859497
+        },
+        {
+          "text": "Whenever something negative happens to you, there is a deep lesson concealed within it.",
+          "author": "Eckhart Tolle",
+          "score": 0.36226537823677063
+        },
+        {
+          "text": "Opportunity often comes disguised in the form of misfortune, or temporary defeat.",
+          "author": "Napoleon Hill",
+          "score": 0.3367997705936432
+        },
+        {
+          "text": "The worst bankrupt in the world is the person who has lost his enthusiasm.",
+          "author": "H. W. Arnold",
+          "score": 0.2940642535686493
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_quotes",
+          "query": "losing a job, sudden unemployment",
+          "returned": 3,
+          "top_score": 0.369
+        },
+        {
+          "step": 2,
+          "tool": "search_quotes",
+          "query": "poverty and having no money",
+          "returned": 3,
+          "top_score": 0.542
+        },
+        {
+          "step": 3,
+          "tool": "search_quotes",
+          "query": "shame of disappointing your family",
+          "returned": 3,
+          "top_score": 0.385
+        },
+        {
+          "step": 4,
+          "tool": "search_quotes",
+          "query": "starting over after a setback or failure",
+          "returned": 3,
+          "top_score": 0.536
+        },
+        {
+          "step": 5,
+          "tool": "search_quotes",
+          "query": "feeling judged by others' expectations of you",
+          "returned": 3,
+          "top_score": 0.602
+        }
+      ],
+      "verdicts": [
+        {
+          "facet": "losing work",
+          "covered": false,
+          "quote": "",
+          "reason": "No quote addresses job loss; only vague opportunity platitudes."
+        },
+        {
+          "facet": "financial worry",
+          "covered": true,
+          "quote": "The poor man is not he who is without a cent, but he who is without a dream.",
+          "reason": "Directly reframes being broke."
+        },
+        {
+          "facet": "disappointing people you love",
+          "covered": true,
+          "quote": "If you accept the expectations of others, especially negative ones, then you never will change the outcome.",
+          "reason": "Speaks to others' negative expectations and judgment."
+        }
+      ]
+    },
+    {
+      "id": "single-anxiety",
+      "text": "i feel anxious all the time",
+      "n_facets": 1,
+      "coverage": 1.0,
+      "top_score": 0.6400895714759827,
+      "api_calls": 3,
+      "seconds": 15.27,
+      "quotes": [
+        {
+          "text": "Worry often gives a small thing a big shadow.",
+          "author": "Swedish proverb",
+          "score": 0.6400895714759827
+        },
+        {
+          "text": "If you look into your own heart, and you find nothing wrong there, what is there to worry about? What is there to fear?",
+          "author": "Confucius",
+          "score": 0.5298342108726501
+        },
+        {
+          "text": "A day of worry is more exhausting than a day of work.",
+          "author": "John Lubbock",
+          "score": 0.5214642882347107
+        },
+        {
+          "text": "Don't turn away from possible futures before you're certain you don't have anything to learn from them.",
+          "author": "Richard Bach",
+          "score": 0.5051571130752563
+        },
+        {
+          "text": "Do one thing every day that scares you.",
+          "author": "Eleanor Roosevelt",
+          "score": 0.44435399770736694
+        },
+        {
+          "text": "Today I escaped anxiety. Or no, I discarded it, because it was within me, in my own perceptions \u2014 not outside.",
+          "author": "Marcus Aurelius",
+          "score": 0.44181692600250244
+        },
+        {
+          "text": "What you fear is that which requires action to overcome.",
+          "author": "Byron Pulsifer",
+          "score": 0.4132015109062195
+        },
+        {
+          "text": "Iron rusts from disuse; water loses its purity from stagnation... even so does inaction sap the vigour of the mind.",
+          "author": "Leonardo da Vinci",
+          "score": 0.35726600885391235
+        },
+        {
+          "text": "Take rest; a field that has rested gives a bountiful crop.",
+          "author": "Ovid",
+          "score": 0.3420923352241516
+        },
+        {
+          "text": "An ant on the move does more than a dozing ox",
+          "author": "Lao Tzu",
+          "score": 0.336635947227478
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_quotes",
+          "query": "constant anxiety that never lets up",
+          "returned": 4,
+          "top_score": 0.445
+        },
+        {
+          "step": 2,
+          "tool": "search_quotes",
+          "query": "worrying about things that may never happen",
+          "returned": 4,
+          "top_score": 0.64
+        },
+        {
+          "step": 3,
+          "tool": "search_quotes",
+          "query": "exhausted and worn down from carrying it",
+          "returned": 4,
+          "top_score": 0.362
+        }
+      ],
+      "verdicts": [
+        {
+          "facet": "anxiety and worry",
+          "covered": true,
+          "quote": "Today I escaped anxiety. Or no, I discarded it, because it was within me, in my own perceptions \u2014 not outside.",
+          "reason": "Directly addresses anxiety and worry."
+        }
+      ]
+    },
+    {
+      "id": "single-anger",
+      "text": "i'm so angry at my boss",
+      "n_facets": 1,
+      "coverage": 1.0,
+      "top_score": 0.6318377256393433,
+      "api_calls": 2,
+      "seconds": 11.78,
+      "quotes": [
+        {
+          "text": "He who angers you conquers you.",
+          "author": "Elizabeth Kenny",
+          "score": 0.6318377256393433
+        },
+        {
+          "text": "When anger use your energy to do something productive.",
+          "author": "C. Pulsifer",
+          "score": 0.6036726236343384
+        },
+        {
+          "text": "Holding on to anger is like grasping a hot coal with the intent of throwing it at someone else; you are the one who gets burned.",
+          "author": "Buddha",
+          "score": 0.6013916730880737
+        },
+        {
+          "text": "More often than not, anger is actually an indication of weakness rather than of strength.",
+          "author": "Dalai Lama",
+          "score": 0.576055109500885
+        },
+        {
+          "text": "No one can make you feel inferior without your consent.",
+          "author": "Eleanor Roosevelt",
+          "score": 0.42603468894958496
+        },
+        {
+          "text": "Sometimes the cards we are dealt are not always fair. However you must keep smiling and moving on.",
+          "author": "Tom Jackson",
+          "score": 0.42103633284568787
+        },
+        {
+          "text": "Maxim for life: You get treated in life the way you teach people to treat you.",
+          "author": "Wayne Dyer",
+          "score": 0.33869504928588867
+        },
+        {
+          "text": "Always be smarter than the people who hire you.",
+          "author": "Lena Horne",
+          "score": 0.32545390725135803
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_quotes",
+          "query": "anger at someone who has power over you",
+          "returned": 4,
+          "top_score": 0.632
+        },
+        {
+          "step": 2,
+          "tool": "search_quotes",
+          "query": "feeling treated unfairly at work",
+          "returned": 4,
+          "top_score": 0.426
+        }
+      ],
+      "verdicts": [
+        {
+          "facet": "anger",
+          "covered": true,
+          "quote": "Holding on to anger is like grasping a hot coal with the intent of throwing it at someone else; you are the one who gets burned.",
+          "reason": "Multiple quotes directly address anger."
+        }
+      ]
+    },
+    {
+      "id": "single-identity",
+      "text": "i don't know who i am anymore",
+      "n_facets": 1,
+      "coverage": 1.0,
+      "top_score": 0.7226888537406921,
+      "api_calls": 3,
+      "seconds": 17.66,
+      "quotes": [
+        {
+          "text": "Do you want to know who you are? Don't ask. Act! Action will delineate and define you.",
+          "author": "Thomas Jefferson",
+          "score": 0.7226888537406921
+        },
+        {
+          "text": "Life isn't about finding yourself. Life is about creating yourself.",
+          "author": "George Bernard Shaw",
+          "score": 0.6596713066101074
+        },
+        {
+          "text": "When I let go of what I am, I become what I might be.",
+          "author": "Lao Tzu",
+          "score": 0.6172466278076172
+        },
+        {
+          "text": "At the center of your being you have the answer; you know who you are and you know what you want.",
+          "author": "Lao Tzu",
+          "score": 0.6071556806564331
+        },
+        {
+          "text": "That's the risk you take if you change: that people you've been involved with won't like the new you. But other people who do will come along.",
+          "author": "Lisa Alther",
+          "score": 0.5556901097297668
+        },
+        {
+          "text": "By nature man hates change; seldom will he quit his old home till it has actually fallen around his ears.",
+          "author": "Thomas Carlyle",
+          "score": 0.555199146270752
+        },
+        {
+          "text": "Loss is nothing else but change,and change is Natures delight.",
+          "author": "Marcus Aurelius",
+          "score": 0.5472637414932251
+        },
+        {
+          "text": "The most important point is to accept yourself and stand on your two feet.",
+          "author": "Shunryu Suzuki",
+          "score": 0.5111947655677795
+        },
+        {
+          "text": "Life's challenges are not supposed to paralyze you, they're supposed to help you discover who you are.",
+          "author": "Bernice Johnson Reagon",
+          "score": 0.49422502517700195
+        },
+        {
+          "text": "If you don't know where you are going, you will probably end up somewhere else.",
+          "author": "Lawrence Peter",
+          "score": 0.4571024179458618
+        },
+        {
+          "text": "You got to be careful if you don't know where you're going, because you might not get there.",
+          "author": "Yogi Berra",
+          "score": 0.4532301425933838
+        },
+        {
+          "text": "You cannot find yourself by going into the past. You can find yourself by coming into the present.",
+          "author": "Eckhart Tolle",
+          "score": 0.452401727437973
+        },
+        {
+          "text": "If you do not change direction, you may end up where you are heading.",
+          "author": "Lao Tzu",
+          "score": 0.44618991017341614
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_quotes",
+          "query": "losing your sense of self, not recognizing who you are",
+          "returned": 4,
+          "top_score": 0.511
+        },
+        {
+          "step": 2,
+          "tool": "search_quotes",
+          "query": "feeling lost and disoriented, no direction",
+          "returned": 4,
+          "top_score": 0.457
+        },
+        {
+          "step": 3,
+          "tool": "search_quotes",
+          "query": "the search for identity and becoming yourself",
+          "returned": 4,
+          "top_score": 0.723
+        },
+        {
+          "step": 4,
+          "tool": "search_quotes",
+          "query": "being unmoored by change, the person I used to be is gone",
+          "returned": 4,
+          "top_score": 0.556
+        }
+      ],
+      "verdicts": [
+        {
+          "facet": "identity and self-discovery",
+          "covered": true,
+          "quote": "Do you want to know who you are? Don't ask. Act! Action will delineate and define you.",
+          "reason": "Multiple quotes directly address discovering or creating one's identity."
+        }
+      ]
+    }
+  ]
+}

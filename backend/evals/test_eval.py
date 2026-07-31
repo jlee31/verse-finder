@@ -123,6 +123,18 @@ def test_display_path_handles_paths_outside_backend():
     assert display_path(Path("/tmp/cold.json")) == "/tmp/cold.json"
 
 
+def test_every_registered_retriever_reports_its_registry_name():
+    """`name` picks the results filename.
+
+    A variant that inherited `name = "baseline"` would quietly overwrite the
+    reference numbers the moment it was scored.
+    """
+    from evals import retrievers
+
+    for key in retrievers.REGISTRY:
+        assert retrievers.build(key).name == key
+
+
 def test_a_smoke_run_cannot_clobber_the_reference_baseline():
     # `--no-judge` produces summary: null. Landing that on baseline.json wipes
     # the numbers every later stage is measured against — which is exactly what
