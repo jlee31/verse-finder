@@ -226,6 +226,13 @@ def test_align_restores_requested_order():
     assert out[1]["covered"] is True
 
 
+def test_cache_key_differs_per_model():
+    # Two judges must not read back each other's verdicts. This is also what
+    # lets both sets survive on disk, which is what makes judge_models.py free.
+    assert (_cache_key("x", ["anger"], QUOTES, 0, "claude-opus-5")
+            != _cache_key("x", ["anger"], QUOTES, 0, "claude-sonnet-5"))
+
+
 def test_cache_key_differs_per_round():
     # Rounds sharing a key would read back round 0's verdict and make every
     # vote unanimous by construction — the noise would vanish from the numbers
@@ -373,6 +380,8 @@ QUERY_SET = [{"id": "grief-anger",
 class _FixedJudge:
     """Returns a set verdict without touching the network."""
 
+    model = "test-judge"
+
     def __init__(self, covered):
         self.covered = covered
         self.hits = self.misses = self.split = 0
@@ -400,7 +409,8 @@ def test_rejudge_records_where_it_came_from():
     # Without this a regraded file is indistinguishable from a fresh run, and
     # you cannot tell which rubric produced the number.
     out = rejudge(_report(coverage=0.5), QUERY_SET, _FixedJudge([True, True]))
-    assert out["rejudged_from"] == {"judge_prompt_version": 1, "facet_coverage": 0.5}
+    assert out["rejudged_from"] == {"judge_prompt_version": 1, "judge_model": None,
+                                    "facet_coverage": 0.5}
     assert out["judge_prompt_version"] != 1
 
 
@@ -423,6 +433,80 @@ def test_rejudge_refuses_when_the_dataset_no_longer_has_the_query():
     with pytest.raises(SystemExit, match="dataset has changed"):
         rejudge(_report(), [{"id": "other", "text": "x", "facets": ["y"]}],
                 _FixedJudge([True]))
+
+
+def test_rejudge_records_which_judge_scored_it():
+    # A Sonnet-scored file next to an Opus-scored one, with no way to tell them
+    # apart, is how you end up comparing two different instruments.
+    out = rejudge(_report(), QUERY_SET, _FixedJudge([True, True]))
+    assert out["judge_model"] == "test-judge"
+    assert out["rejudged_from"]["judge_model"] is None  # v1 files didn't record it
+
+
+# --------------------------------------------------------------------------
+# judge model comparison
+# --------------------------------------------------------------------------
+
+def test_compare_reports_perfect_agreement():
+    from evals.judge_models import compare
+
+    verdicts = {("q", "grief"): True, ("q", "anger"): False}
+    report = compare(verdicts, dict(verdicts))
+    assert report["agreement"] == 1.0
+    assert report["disagreements"] == []
+
+
+def test_compare_splits_disagreements_by_direction():
+    from evals.judge_models import compare
+
+    base = {("q", "a"): True, ("q", "b"): False, ("q", "c"): True, ("q", "d"): True}
+    cand = {("q", "a"): False, ("q", "b"): True, ("q", "c"): True, ("q", "d"): True}
+    report = compare(base, cand)
+
+    assert report["agreement"] == 0.5
+    # Direction matters: a uniformly looser judge shifts every retriever the
+    # same way and preserves the ranking. Scattered disagreement does not.
+    assert report["candidate_stricter"] == 1
+    assert report["candidate_looser"] == 1
+
+
+def test_compare_only_counts_facets_both_judges_graded():
+    from evals.judge_models import compare
+
+    base = {("q", "a"): True, ("q", "b"): True}
+    cand = {("q", "a"): True}
+    assert compare(base, cand)["n"] == 1
+
+
+def test_compare_refuses_when_there_is_no_overlap():
+    from evals.judge_models import compare
+
+    with pytest.raises(SystemExit, match="no facets in common"):
+        compare({("q", "a"): True}, {("z", "b"): True})
+
+
+def test_verdicts_for_skips_rows_the_judge_cannot_grade():
+    """A partially-graded judge is still worth comparing over its overlap.
+
+    The Opus verdicts only cover 15 of 20 queries — the run that produced them
+    ran out of credit. Bailing on the first uncached row would have thrown away
+    a usable 30-facet comparison.
+    """
+    from evals.judge_models import verdicts_for
+
+    class _PartialJudge:
+        model = "partial"
+
+        def judge(self, text, facets, quotes):
+            if text == "uncached":
+                raise RuntimeError("judge is offline and no cached verdict exists")
+            return [_verdict(f, True) for f in facets]
+
+    rows = [{"id": "a", "text": "cached", "quotes": []},
+            {"id": "b", "text": "uncached", "quotes": []}]
+    out = verdicts_for(_PartialJudge(), rows, {"a": ["x"], "b": ["y"]})
+
+    assert out == {("a", "x"): True}
 
 
 # --------------------------------------------------------------------------

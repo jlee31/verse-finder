@@ -27,7 +27,11 @@ from pathlib import Path
 
 CACHE_DIR = Path(__file__).resolve().parent / ".cache" / "judge"
 
-MODEL = "claude-opus-5"
+# Sonnet rather than Opus. Grading against a rubric this explicit is a
+# classification task, not a reasoning one, and the judge runs 3x per facet
+# across 5 retrievers — it is the most-called model in the project by a wide
+# margin. `judge_models.py` reports how far it drifts from the Opus verdicts.
+MODEL = "claude-sonnet-5"
 
 # Bump when the rubric below changes — it's part of the cache key, so old
 # verdicts are discarded rather than silently reused under new criteria.
@@ -91,17 +95,27 @@ RESPONSE_SCHEMA = {
 }
 
 
-def _cache_key(text: str, facets: list[str], quotes: list[dict], round_: int = 0) -> str:
+def _cache_key(
+    text: str,
+    facets: list[str],
+    quotes: list[dict],
+    round_: int = 0,
+    model: str = MODEL,
+) -> str:
     """Cache identity for one grading round.
 
     `round_` is in the key so the rounds of a majority vote cache separately.
     Without it the second round would read back the first one's verdict and the
     vote would be unanimous by construction.
+
+    `model` is in the key so swapping judges doesn't read back the old judge's
+    answers — and so both sets survive on disk, which is what makes comparing
+    two judges on identical inputs cost nothing.
     """
     payload = json.dumps(
         {
             "v": PROMPT_VERSION,
-            "model": MODEL,
+            "model": model,
             "round": round_,
             "text": text,
             "facets": facets,
@@ -139,6 +153,7 @@ class Judge:
         offline: bool = False,
         cache_dir: Path | None = None,
         rounds: int = ROUNDS,
+        model: str = MODEL,
     ):
         if rounds < 1 or rounds % 2 == 0:
             raise ValueError(f"rounds must be odd and >= 1, got {rounds}")
@@ -146,6 +161,7 @@ class Judge:
         self.cache_dir = cache_dir or CACHE_DIR
         self.cache_dir.mkdir(parents=True, exist_ok=True)
         self.rounds = rounds
+        self.model = model
         self._client = None
         self.hits = 0
         self.misses = 0
@@ -181,7 +197,7 @@ class Judge:
         self, text: str, facets: list[str], quotes: list[dict], round_: int
     ) -> list[dict]:
         """One independent grading pass, cached on disk."""
-        key = _cache_key(text, facets, quotes, round_)
+        key = _cache_key(text, facets, quotes, round_, self.model)
         cached = self.cache_dir / f"{key}.json"
 
         if cached.exists():
@@ -195,7 +211,7 @@ class Judge:
 
         self.misses += 1
         response = self._client_lazy().messages.create(
-            model=MODEL,
+            model=self.model,
             max_tokens=2048,
             system=SYSTEM_PROMPT,
             # Grading a handful of quotes is not hard work; low effort keeps the

@@ -4,12 +4,13 @@
   "total_seconds": 413.1,
   "summary": {
     "n_queries": 20,
-    "facet_coverage": 0.9583333333333334,
-    "facet_coverage_compound_only": 0.9509803921568627,
+    "facet_coverage": 0.8833333333333333,
+    "facet_coverage_compound_only": 0.8627450980392157,
     "n_compound": 17,
-    "fully_covered_rate": 0.9,
+    "fully_covered_rate": 0.8,
     "mean_top_score": 0.6272548347711563,
-    "mean_api_calls": 2.75
+    "mean_api_calls": 2.75,
+    "split_verdict_rate": 0.02564102564102564
   },
   "rows": [
     {
@@ -112,13 +113,17 @@
           "facet": "grief over losing a parent",
           "covered": true,
           "quote": "Don't grieve. Anything you lose comes round in another form.",
-          "reason": "Speaks directly to grief over loss, though not parent-specific."
+          "reason": "Directly addresses grief over loss.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "anger toward family",
           "covered": true,
-          "quote": "If we could learn to like ourselves, even a little, maybe our cruelties and angers might melt away.",
-          "reason": "Addresses anger and resentment, partially relevant though not family-specific."
+          "quote": "The greatest obstacle to connecting with our joy is resentment.",
+          "reason": "Speaks to resentment/anger as an emotional state.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -227,13 +232,17 @@
           "facet": "burnout and exhaustion from work",
           "covered": true,
           "quote": "Take rest; a field that has rested gives a bountiful crop.",
-          "reason": "Directly addresses need for rest from exhaustion."
+          "reason": "Speaks to needing rest from exhaustion, fitting burnout.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "fear of making a change",
           "covered": true,
-          "quote": "What you fear is that which requires action to overcome.",
-          "reason": "Speaks to acting despite fear."
+          "quote": "Only when we are no longer afraid do we begin to live.",
+          "reason": "Directly addresses fear as a barrier to moving forward.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -298,13 +307,17 @@
           "facet": "loneliness",
           "covered": true,
           "quote": "You cannot be lonely if you like the person you're alone with.",
-          "reason": "Directly addresses loneliness."
+          "reason": "Directly addresses the experience of loneliness.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "holding onto hope",
           "covered": true,
           "quote": "Once you choose hope, anythings possible.",
-          "reason": "Speaks to choosing and keeping hope."
+          "reason": "Speaks directly to embracing and holding onto hope.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -390,14 +403,18 @@
         {
           "facet": "fear of a new beginning",
           "covered": true,
-          "quote": "Nothing is predestined: The obstacles of your past can become the gateways that lead to new beginnings.",
-          "reason": "Quotes address fear and new beginnings/bold starts directly."
+          "quote": "Nothing in life is to be feared. It is only to be understood.",
+          "reason": "Directly addresses fear as an emotion to be overcome.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "excitement and anticipation",
           "covered": true,
-          "quote": "Hope arouses, as nothing else can arouse, a passion for the possible.",
-          "reason": "Speaks to eager anticipation of possibility."
+          "quote": "Passion creates the desire for more and action fuelled by passion creates a future.",
+          "reason": "Speaks to passionate anticipation for what's ahead.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -501,13 +518,17 @@
           "facet": "failure and setback",
           "covered": true,
           "quote": "Failure doesn't mean you are a failure it just means you haven't succeeded yet.",
-          "reason": "Directly reframes failure after a setback."
+          "reason": "Directly addresses experiencing failure and reframes it.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "perseverance despite difficulty",
           "covered": true,
-          "quote": "There is no failure except in no longer trying.",
-          "reason": "Explicitly urges continued effort."
+          "quote": "Never, never, never give up.",
+          "reason": "Directly speaks to persisting despite hardship.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -615,14 +636,18 @@
         {
           "facet": "heartbreak and lost love",
           "covered": true,
-          "quote": "Don't grieve. Anything you lose comes round in another form.",
-          "reason": "Speaks to loss and grief over what's gone, as does the Seuss line."
+          "quote": "Don't cry because it's over. Smile because it happened.",
+          "reason": "Directly addresses grief over lost love/relationship ending.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "low self-worth",
           "covered": true,
-          "quote": "Know that although in the eternal scheme of things you are small, you are also unique and irreplaceable",
-          "reason": "Directly affirms personal worth, alongside Roosevelt's line."
+          "quote": "No one can make you feel inferior without your consent.",
+          "reason": "Directly addresses feelings of inferiority/worthlessness.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -721,13 +746,17 @@
           "facet": "envy and comparison to others",
           "covered": true,
           "quote": "Do not overrate what you have received, nor envy others. He who envies others does not obtain peace of mind.",
-          "reason": "Directly addresses envy and comparison."
+          "reason": "Directly addresses envy toward others.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "ambition and drive",
           "covered": true,
           "quote": "Continuous effort, not strength or intelligence is the key to unlocking our potential.",
-          "reason": "Speaks to drive and sustained effort toward success."
+          "reason": "Speaks to effort and drive toward success.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -837,14 +866,18 @@
         {
           "facet": "guilt and regret",
           "covered": true,
-          "quote": "If you have made mistakes, there is always another chance for you. You may have a fresh start any moment you choose.",
-          "reason": "Addresses regret over mistakes and offers a fresh start."
+          "quote": "Remembering a wrong is like carrying a burden on the mind.",
+          "reason": "Speaks directly to the weight of guilt over a wrong done.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "self-forgiveness",
           "covered": true,
           "quote": "The more you know yourself, the more you forgive yourself.",
-          "reason": "Directly speaks to forgiving oneself."
+          "reason": "Directly addresses forgiving oneself.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -942,14 +975,18 @@
         {
           "facet": "facing change",
           "covered": true,
-          "quote": "Change is the law of life. And those who look only to the past or present are certain to miss the future.",
-          "reason": "Directly addresses accepting change."
+          "quote": "Change is the law of life. And those who look only to the past or present are certain to miss the future. \u2014 John Kennedy",
+          "reason": "Addresses adapting to change directly.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "nostalgia for the past",
           "covered": true,
-          "quote": "I love my past. I love my present. I'm not ashamed of what I've had, and I'm not sad because I have it no longer.",
-          "reason": "Speaks to longing for what's gone."
+          "quote": "I love my past. I love my present. I'm not ashamed of what I've had, and I'm not sad because I have it no longer. \u2014 Colette",
+          "reason": "Speaks to fond reflection on the past.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -1057,14 +1094,18 @@
         {
           "facet": "feeling overwhelmed",
           "covered": true,
-          "quote": "Take rest; a field that has rested gives a bountiful crop.",
-          "reason": "Speaks to being overworked and needing rest, with chaos/management quotes reinforcing it."
+          "quote": "Chaos is inherent in all compounded things. Strive on with diligence.",
+          "reason": "Speaks to managing chaos/overload.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "gratitude",
           "covered": true,
           "quote": "It is impossible to feel grateful and depressed in the same moment.",
-          "reason": "Directly addresses gratitude, as does the 'enjoy the little things' line."
+          "reason": "Directly addresses gratitude as an emotion.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -1184,14 +1225,18 @@
         {
           "facet": "persistence over a long time",
           "covered": true,
-          "quote": "All great achievements require time.",
-          "reason": "Directly addresses long-term effort and continued persistence."
+          "quote": "A little more persistence, a little more effort, and what seemed hopeless failure may turn to glorious success.",
+          "reason": "Directly addresses continued persistence and effort over time.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "frustration at lack of progress",
           "covered": true,
-          "quote": "A little more persistence, a little more effort, and what seemed hopeless failure may turn to glorious success.",
-          "reason": "Speaks to feeling of hopeless lack of results."
+          "quote": "I never see what has been done; I only see what remains to be done.",
+          "reason": "Reflects the feeling of never seeing enough progress despite effort.",
+          "votes": 2,
+          "rounds": 3
         }
       ]
     },
@@ -1299,14 +1344,18 @@
         {
           "facet": "courage to begin something",
           "covered": true,
-          "quote": "Courage is not the absence of fear, but simply moving on with dignity despite that fear.",
-          "reason": "Courage-to-act quotes plus 'dreams can propel new beginnings' address starting despite fear."
+          "quote": "Courage doesn't happen when you have all the answers. It happens when you are ready to face the questions you have been avoiding your whole life.",
+          "reason": "Speaks to courage needed to start despite uncertainty.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "self-doubt",
           "covered": true,
           "quote": "When you doubt your power, you give power to your doubt.",
-          "reason": "Directly addresses self-doubt."
+          "reason": "Directly addresses the feeling of self-doubt.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -1410,13 +1459,17 @@
           "facet": "loneliness in an unfamiliar place",
           "covered": true,
           "quote": "You cannot be lonely if you like the person you're alone with.",
-          "reason": "Directly addresses loneliness, though not the new-city aspect."
+          "reason": "Directly addresses the experience of loneliness.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "wanting friendship and connection",
           "covered": true,
           "quote": "Only through our connectedness to others can we really know and enhance the self. And only through working on the self can we begin to enhance our connectedness to others.",
-          "reason": "Speaks to the value and pursuit of connection with others."
+          "reason": "Speaks to the value and desire for connection with others.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -1424,7 +1477,7 @@
       "id": "aging-acceptance",
       "text": "i'm getting older and i haven't done what i wanted",
       "n_facets": 2,
-      "coverage": 1.0,
+      "coverage": 0.5,
       "top_score": 0.6454746127128601,
       "api_calls": 3,
       "seconds": 15.95,
@@ -1524,14 +1577,18 @@
         {
           "facet": "aging and time passing",
           "covered": true,
-          "quote": "There is a fountain of youth: it is your mind, your talents, the creativity you bring to your life and the lives of people you love. When you learn to tap this source, you will truly have defeated age.",
-          "reason": "Directly addresses aging and time's passage."
+          "quote": "The years teach much which the days never know.",
+          "reason": "Directly addresses the passage of time/aging.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "accepting the life one has",
-          "covered": true,
-          "quote": "Make it a rule of life never to regret and never to look back. Regret is an appalling waste of energy; you can't build on it; it's only for wallowing in.",
-          "reason": "Speaks to releasing regret over unlived plans and accepting one's path."
+          "covered": false,
+          "quote": "",
+          "reason": "Quotes focus on starting over or not regretting rather than accepting one's current life as it is.",
+          "votes": 0,
+          "rounds": 3
         }
       ]
     },
@@ -1678,14 +1735,18 @@
         {
           "facet": "death of a loved one",
           "covered": true,
-          "quote": "Don't be dismayed by good-byes. A farewell is necessary before you can meet again. And meeting again, after moments or lifetimes, is certain for those who are friends.",
-          "reason": "Directly addresses parting from a friend and grief."
+          "quote": "We never understand how little we need in this world until we know the loss of it.",
+          "reason": "speaks to loss of someone dear",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "searching for meaning",
           "covered": false,
           "quote": "",
-          "reason": "Quotes about comprehensibility or lessons are generic intellectual lines, not about making sense of senseless loss."
+          "reason": "quotes about understanding truths in general don't address grappling with a senseless death",
+          "votes": 0,
+          "rounds": 3
         }
       ]
     },
@@ -1832,20 +1893,26 @@
         {
           "facet": "exhaustion",
           "covered": true,
-          "quote": "Take rest; a field that has rested gives a bountiful crop.",
-          "reason": "Rest quotes directly address tiredness."
+          "quote": "Sleep that knits up the ravelled sleeve of care. The death of each days life, sore labors bath. Balm of hurt minds, great natures second course. Chief nourisher in life's feast.",
+          "reason": "Speaks to weariness and need for rest.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "loneliness",
           "covered": true,
           "quote": "You cannot be lonely if you like the person you're alone with.",
-          "reason": "Speaks directly to loneliness."
+          "reason": "Directly addresses loneliness.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "loss of meaning",
           "covered": false,
           "quote": "",
-          "reason": "Only generic 'life is what you make of it' platitudes, not meaninglessness."
+          "reason": "No quote genuinely addresses feeling of pointlessness or lost meaning.",
+          "votes": 0,
+          "rounds": 3
         }
       ]
     },
@@ -1853,7 +1920,7 @@
       "id": "job-money-family",
       "text": "i lost my job, i'm broke, and my family is disappointed in me",
       "n_facets": 3,
-      "coverage": 1.0,
+      "coverage": 0.0,
       "top_score": 0.6352412104606628,
       "api_calls": 3,
       "seconds": 18.58,
@@ -1947,21 +2014,27 @@
       "verdicts": [
         {
           "facet": "losing work",
-          "covered": true,
-          "quote": "For every failure, there's an alternative course of action. You just have to find it. When you come to a roadblock, take a detour.",
-          "reason": "Speaks to setback and finding a new path, plus opportunity knocking."
+          "covered": false,
+          "quote": "",
+          "reason": "No quote addresses job loss specifically or the emotional impact of it.",
+          "votes": 0,
+          "rounds": 3
         },
         {
           "facet": "financial worry",
-          "covered": true,
-          "quote": "The poor man is not he who is without a cent, but he who is without a dream.",
-          "reason": "Directly reframes poverty and bankruptcy."
+          "covered": false,
+          "quote": "",
+          "reason": "Quotes about poverty/bankruptcy redefine wealth philosophically rather than address financial worry.",
+          "votes": 0,
+          "rounds": 3
         },
         {
           "facet": "disappointing people you love",
-          "covered": true,
-          "quote": "To free us from the expectations of others, to give us back to ourselves there lies the great, singular power of self-respect.",
-          "reason": "Addresses others' expectations and judgment."
+          "covered": false,
+          "quote": "",
+          "reason": "No quote speaks to feeling like a disappointment to loved ones; several address self-respect vs others' opinions but not this specific guilt/shame.",
+          "votes": 0,
+          "rounds": 3
         }
       ]
     },
@@ -2043,7 +2116,9 @@
           "facet": "anxiety and worry",
           "covered": true,
           "quote": "Today I escaped anxiety. Or no, I discarded it, because it was within me, in my own perceptions \u2014 not outside.",
-          "reason": "Directly addresses anxiety and worry."
+          "reason": "Directly addresses the feeling of anxiety.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -2108,7 +2183,9 @@
           "facet": "anger",
           "covered": true,
           "quote": "Holding on to anger is like grasping a hot coal with the intent of throwing it at someone else; you are the one who gets burned.",
-          "reason": "Multiple quotes directly address anger."
+          "reason": "Directly addresses the emotion of anger and its effects.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -2211,10 +2288,20 @@
         {
           "facet": "identity and self-discovery",
           "covered": true,
-          "quote": "Do you want to know who you are? Don't ask. Act! Action will delineate and define you.",
-          "reason": "Multiple quotes directly address discovering who you are."
+          "quote": "You cannot find yourself by going into the past. You can find yourself by coming into the present.",
+          "reason": "Directly addresses finding one's self/identity.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     }
-  ]
+  ],
+  "judge_prompt_version": 2,
+  "judge_model": "claude-sonnet-5",
+  "rejudged_from": {
+    "judge_prompt_version": null,
+    "judge_model": null,
+    "facet_coverage": 0.9583333333333334
+  },
+  "rejudge_seconds": 169.4
 }

@@ -4,12 +4,13 @@
   "total_seconds": 97.6,
   "summary": {
     "n_queries": 20,
-    "facet_coverage": 0.7583333333333333,
-    "facet_coverage_compound_only": 0.7156862745098039,
+    "facet_coverage": 0.7166666666666667,
+    "facet_coverage_compound_only": 0.6666666666666666,
     "n_compound": 17,
     "fully_covered_rate": 0.55,
     "mean_top_score": 0.4732659891247749,
-    "mean_api_calls": 0
+    "mean_api_calls": 0,
+    "split_verdict_rate": 0.02564102564102564
   },
   "rows": [
     {
@@ -94,13 +95,17 @@
           "facet": "grief over losing a parent",
           "covered": true,
           "quote": "Don't grieve. Anything you lose comes round in another form.",
-          "reason": "Rumi's line directly addresses grieving a loss, though not parent-specific."
+          "reason": "Directly addresses grief and loss.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "anger toward family",
           "covered": true,
           "quote": "Holding on to anger is like grasping a hot coal with the intent of throwing it at someone else; you are the one who gets burned.",
-          "reason": "Speaks directly to holding anger at others."
+          "reason": "Directly addresses the emotion of anger and its consequences.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -184,15 +189,19 @@
       "verdicts": [
         {
           "facet": "burnout and exhaustion from work",
-          "covered": false,
-          "quote": "",
-          "reason": "Quotes urge effort or job love but none address exhaustion/burnout; the worry-exhaustion line is about worry, not burnout."
+          "covered": true,
+          "quote": "A day of worry is more exhausting than a day of work.",
+          "reason": "Directly addresses exhaustion related to work and worry.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "fear of making a change",
-          "covered": true,
-          "quote": "Some people thrive on huge, dramatic change. Some people prefer the slow and steady route. Do what's right for you.",
-          "reason": "Directly addresses pacing change to one's comfort, easing fear of change."
+          "covered": false,
+          "quote": "",
+          "reason": "No quote addresses fear or hesitation about making a change.",
+          "votes": 1,
+          "rounds": 3
         }
       ]
     },
@@ -278,13 +287,17 @@
           "facet": "loneliness",
           "covered": true,
           "quote": "You cannot be lonely if you like the person you're alone with.",
-          "reason": "Directly addresses loneliness."
+          "reason": "Directly addresses loneliness.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "holding onto hope",
           "covered": true,
-          "quote": "I find hope in the darkest of days, and focus in the brightest.",
-          "reason": "Multiple quotes speak to sustaining hope."
+          "quote": "Once you choose hope, anythings possible.",
+          "reason": "Directly speaks to hope.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -369,14 +382,18 @@
         {
           "facet": "fear of a new beginning",
           "covered": true,
-          "quote": "I am not afraid of tomorrow, for I have seen yesterday and I love today.",
-          "reason": "Several quotes directly address facing fear of what's ahead."
+          "quote": "Let everything happen to you. Beauty and terror. Just keep going. No feeling is final",
+          "reason": "Speaks directly to facing fear and terror in transitions.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "excitement and anticipation",
           "covered": true,
-          "quote": "Don't turn away from possible futures before you're certain you don't have anything to learn from them.",
-          "reason": "Speaks to eager openness toward new futures, plus 'enjoy it!' affirms zest."
+          "quote": "All I can say about life is, Oh God, enjoy it!",
+          "reason": "Expresses enthusiastic anticipation of life.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -462,13 +479,17 @@
           "facet": "failure and setback",
           "covered": true,
           "quote": "Failure doesn't mean you are a failure it just means you haven't succeeded yet.",
-          "reason": "Directly reframes failure after a setback."
+          "reason": "Directly addresses the emotional experience of failure.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "perseverance despite difficulty",
           "covered": true,
-          "quote": "There is no failure except in no longer trying.",
-          "reason": "Encourages continued effort despite failure."
+          "quote": "Never, never, never give up.",
+          "reason": "Speaks directly to continuing effort despite hardship.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -553,14 +574,18 @@
         {
           "facet": "heartbreak and lost love",
           "covered": true,
-          "quote": "Love is never lost. If not reciprocated, it will flow back and soften and purify the heart.",
-          "reason": "Directly addresses unreciprocated lost love."
+          "quote": "Love is never lost. If not reciprocated, it will flow back and soften and purify the heart. \u2014 Washington Irving",
+          "reason": "Directly addresses grief over lost love.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "low self-worth",
           "covered": true,
-          "quote": "Know that although in the eternal scheme of things you are small, you are also unique and irreplaceable",
-          "reason": "Affirms inherent worth and irreplaceability."
+          "quote": "Know that although in the eternal scheme of things you are small, you are also unique and irreplaceable, as are all your fellow humans everywhere in the world. \u2014 Margaret Laurence",
+          "reason": "Speaks to feelings of worthlessness by affirming inherent value.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -646,13 +671,17 @@
           "facet": "envy and comparison to others",
           "covered": false,
           "quote": "",
-          "reason": "No quote addresses comparing oneself to others or envy."
+          "reason": "No quote addresses feelings of envy or comparing oneself to others.",
+          "votes": 0,
+          "rounds": 3
         },
         {
           "facet": "ambition and drive",
           "covered": true,
           "quote": "Set your goals high, and don't stop till you get there.",
-          "reason": "Directly speaks to ambition and hard work."
+          "reason": "This quote directly speaks to ambition and working harder toward goals.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -738,13 +767,17 @@
           "facet": "guilt and regret",
           "covered": true,
           "quote": "Mistakes are always forgivable, if one has the courage to admit them.",
-          "reason": "Speaks directly to having made a mistake and its forgivability."
+          "reason": "Speaks to the burden of mistakes and regret.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "self-forgiveness",
           "covered": true,
           "quote": "The more you know yourself, the more you forgive yourself.",
-          "reason": "Explicitly addresses forgiving oneself."
+          "reason": "Directly addresses forgiving oneself.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -830,13 +863,17 @@
           "facet": "facing change",
           "covered": true,
           "quote": "Change is the law of life. And those who look only to the past or present are certain to miss the future.",
-          "reason": "Directly addresses navigating change and departure."
+          "reason": "Directly addresses the emotion of confronting change and moving forward.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "nostalgia for the past",
           "covered": true,
           "quote": "There is nothing like returning to a place that remains unchanged to find the ways in which you yourself have altered.",
-          "reason": "Speaks to longing for and revisiting the past."
+          "reason": "Speaks to longing/reflection about how things used to be.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -921,14 +958,18 @@
         {
           "facet": "feeling overwhelmed",
           "covered": true,
-          "quote": "There is never enough time to do everything, but there is always enough time to do the most important thing.",
-          "reason": "Directly addresses having too much to do."
+          "quote": "Blessed is the person who is too busy to worry in the daytime, and too sleepy to worry at night.",
+          "reason": "Speaks to busyness/overwhelm.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "gratitude",
           "covered": false,
           "quote": "",
-          "reason": "Luck quotes are about causation/work, not feeling grateful."
+          "reason": "No quote expresses thankfulness or luck as gratitude, only luck as chance.",
+          "votes": 0,
+          "rounds": 3
         }
       ]
     },
@@ -936,7 +977,7 @@
       "id": "patience-frustration",
       "text": "i've been working at this for years and nothing has changed",
       "n_facets": 2,
-      "coverage": 0.5,
+      "coverage": 0.0,
       "top_score": 0.4843331575393677,
       "api_calls": 0,
       "seconds": 0.08,
@@ -1014,13 +1055,17 @@
           "facet": "persistence over a long time",
           "covered": false,
           "quote": "",
-          "reason": "No quote acknowledges sustained long-term effort or perseverance."
+          "reason": "No quote addresses sustained effort over years.",
+          "votes": 0,
+          "rounds": 3
         },
         {
           "facet": "frustration at lack of progress",
-          "covered": true,
-          "quote": "If you focus on results, you will never change. If you focus on change, you will get results.",
-          "reason": "Speaks directly to effort that isn't yielding results and suggests a reframe."
+          "covered": false,
+          "quote": "",
+          "reason": "Quotes are generic advice about change, not expressions of frustration.",
+          "votes": 0,
+          "rounds": 3
         }
       ]
     },
@@ -1106,13 +1151,17 @@
           "facet": "courage to begin something",
           "covered": true,
           "quote": "Small opportunities are often the beginning of great enterprises.",
-          "reason": "Encourages starting from small beginnings, plus 'if you can dream it, you can do it'."
+          "reason": "Speaks to starting a new venture.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "self-doubt",
           "covered": true,
           "quote": "Trust yourself. You know more than you think you do.",
-          "reason": "Directly addresses doubting oneself."
+          "reason": "Directly addresses lack of self-belief.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -1198,13 +1247,17 @@
           "facet": "loneliness in an unfamiliar place",
           "covered": false,
           "quote": "",
-          "reason": "No quote addresses loneliness or being new somewhere."
+          "reason": "No quote addresses feelings of isolation or being new somewhere.",
+          "votes": 0,
+          "rounds": 3
         },
         {
           "facet": "wanting friendship and connection",
           "covered": true,
           "quote": "The only way to have a friend is to be one.",
-          "reason": "Speaks directly to seeking and making friends."
+          "reason": "This quote speaks directly to the desire for and pursuit of friendship.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -1290,13 +1343,17 @@
           "facet": "aging and time passing",
           "covered": true,
           "quote": "It is never too late to be what you might have been.",
-          "reason": "Directly addresses time having passed and lateness."
+          "reason": "Directly addresses aging and time running out but offers hope.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "accepting the life one has",
           "covered": false,
           "quote": "",
-          "reason": "Quotes urge change, regret-avoidance, or ambition rather than acceptance."
+          "reason": "All quotes push toward changing or pursuing goals, none about accepting current life.",
+          "votes": 0,
+          "rounds": 3
         }
       ]
     },
@@ -1381,14 +1438,18 @@
         {
           "facet": "death of a loved one",
           "covered": true,
-          "quote": "Don't grieve. Anything you lose comes round in another form.",
-          "reason": "Rumi's line directly addresses grief over loss."
+          "quote": "Don't grieve. Anything you lose comes round in another form. \u2014 Rumi",
+          "reason": "Directly addresses loss and grief.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "searching for meaning",
           "covered": false,
           "quote": "",
-          "reason": "Quotes offer platitudes about life, not meaning amid senseless loss."
+          "reason": "No quote addresses the confusion of senselessness or search for meaning in tragedy.",
+          "votes": 0,
+          "rounds": 3
         }
       ]
     },
@@ -1474,19 +1535,25 @@
           "facet": "exhaustion",
           "covered": false,
           "quote": "",
-          "reason": "No quote addresses tiredness or depletion."
+          "reason": "No quote addresses physical or emotional tiredness.",
+          "votes": 0,
+          "rounds": 3
         },
         {
           "facet": "loneliness",
           "covered": true,
           "quote": "You cannot be lonely if you like the person you're alone with.",
-          "reason": "Directly speaks to loneliness."
+          "reason": "Directly addresses loneliness.",
+          "votes": 3,
+          "rounds": 3
         },
         {
           "facet": "loss of meaning",
           "covered": false,
           "quote": "",
-          "reason": "Only generic motivational lines about not quitting, not meaning-making despair."
+          "reason": "No quote genuinely addresses lack of purpose or meaninglessness.",
+          "votes": 0,
+          "rounds": 3
         }
       ]
     },
@@ -1494,7 +1561,7 @@
       "id": "job-money-family",
       "text": "i lost my job, i'm broke, and my family is disappointed in me",
       "n_facets": 3,
-      "coverage": 0.3333333333333333,
+      "coverage": 0.0,
       "top_score": 0.46672922372817993,
       "api_calls": 0,
       "seconds": 0.17,
@@ -1572,19 +1639,25 @@
           "facet": "losing work",
           "covered": false,
           "quote": "",
-          "reason": "Only generic motivation, nothing about job loss."
+          "reason": "No quote addresses job loss or unemployment specifically.",
+          "votes": 0,
+          "rounds": 3
         },
         {
           "facet": "financial worry",
-          "covered": true,
-          "quote": "The poor man is not he who is without a cent, but he who is without a dream.",
-          "reason": "Directly addresses being without money."
+          "covered": false,
+          "quote": "",
+          "reason": "Quote 7 redefines poverty metaphorically rather than addressing financial anxiety.",
+          "votes": 0,
+          "rounds": 3
         },
         {
           "facet": "disappointing people you love",
           "covered": false,
           "quote": "",
-          "reason": "No quote speaks to family disappointment or shame."
+          "reason": "No quote speaks to guilt or shame about disappointing loved ones.",
+          "votes": 0,
+          "rounds": 3
         }
       ]
     },
@@ -1669,8 +1742,10 @@
         {
           "facet": "anxiety and worry",
           "covered": true,
-          "quote": "Nothing diminishes anxiety faster than action.",
-          "reason": "Multiple quotes directly address anxiety and worry."
+          "quote": "Worry often gives a small thing a big shadow.",
+          "reason": "Directly addresses worry, matching the anxiety facet.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -1756,7 +1831,9 @@
           "facet": "anger",
           "covered": true,
           "quote": "Holding on to anger is like grasping a hot coal with the intent of throwing it at someone else; you are the one who gets burned.",
-          "reason": "Multiple quotes directly address anger."
+          "reason": "Directly addresses the emotion of anger.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     },
@@ -1841,10 +1918,20 @@
         {
           "facet": "identity and self-discovery",
           "covered": true,
-          "quote": "Do you want to know who you are? Don't ask. Act! Action will delineate and define you.",
-          "reason": "Multiple quotes directly address not knowing who you are."
+          "quote": "Life isn't about finding yourself. Life is about creating yourself. \u2014 George Bernard Shaw",
+          "reason": "Directly addresses self-discovery and identity formation.",
+          "votes": 3,
+          "rounds": 3
         }
       ]
     }
-  ]
+  ],
+  "judge_prompt_version": 2,
+  "judge_model": "claude-sonnet-5",
+  "rejudged_from": {
+    "judge_prompt_version": null,
+    "judge_model": null,
+    "facet_coverage": 0.7583333333333333
+  },
+  "rejudge_seconds": 170.1
 }

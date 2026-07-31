@@ -101,35 +101,43 @@ Other flags:
 Where things stand (20 queries, compound-only coverage is the number that
 matters — those are the queries the agent exists to fix):
 
-                     baseline  baseline-wide  agentic  agentic-lc
-    facet coverage      0.500       0.758      0.900      0.958
-    compound only       0.412       0.716      0.882      0.951
-    mean top-1 score    0.473       0.473      0.629      0.627
-    API calls / query       0           0       2.70       2.75
-    seconds / query       0.2         0.3         16         16
+                    baseline  baseline-wide  agentic  agentic-run2  agentic-lc
+    facet coverage     0.500       0.717      0.808       0.900        0.883
+    compound only      0.412       0.667      0.775       0.882        0.863
+    mean top-1 score   0.473       0.473      0.629       0.661        0.627
+    API calls / query      0           0       2.70        2.80         2.75
+    seconds / query      0.2         0.3         16          16           16
 
 baseline-wide is the control: the same dumb single search, just returning 12
 quotes instead of 3. It exists so you can tell "searched better" apart from
-"returned more" — about two-thirds of the agent's raw gain is volume, and this
-is how you see that. Mean top-1 score is the part volume CAN'T explain: more
-results never improve the best one, so 0.473 -> 0.629 is the agent searching
-better.
+"returned more" — more than half the agent's raw gain is volume, and this is
+how you see that.
 
-Do NOT read agentic-lc as better than agentic. They are the same agent with the
-same prompt, and the gap is the JUDGE being inconsistent, not the code. Check
-it yourself:
+Mean top-1 score is the number to trust most. It's raw cosine similarity with no
+LLM judge anywhere in it, and volume can't move it: returning 9 more quotes
+never improves the BEST one. baseline and baseline-wide are pinned at exactly
+0.473; every agent run lands at 0.63-0.66.
 
-    python evals/judge_stability.py                  the raw judge
-    python evals/judge_stability.py --vote 3         what run.py actually uses
+agentic and agentic-run2 are THE SAME CODE RUN TWICE: 0.775 and 0.882. That
+0.107 spread is the real noise floor — the agent rewords its searches every run
+and retrieves different quotes. agentic-lc (0.863) sits inside that band, so
+there's no evidence LangGraph does anything different. Don't read any gap under
+about 0.11 as meaning something.
 
-Every disagreement was one question the old rubric never answered: does a quote
-about anger cover the facet "anger toward FAMILY"? Judge prompt v2 rules on it
-(grade the feeling, not its object) and votes three times per facet. The three
-queries that used to flip now come back 6/6.
+The judge is claude-sonnet-5, not Opus — it's the most-called model here (3x per
+facet x 5 retrievers), and grading against a strict rubric doesn't need Opus.
+That's checked, not assumed:
 
-  NOTE: the results/*.json files here are still scored under the OLD rubric
-  (v1). The regrade ran out of API credit partway through. Finishing it is five
-  --rejudge commands; the details are in backend/evals/results/README.md.
+    python evals/judge_models.py --offline    opus vs sonnet, costs nothing
+
+It agrees with Opus on 90% of facets, and every disagreement is Sonnet being
+STRICTER — never looser. A one-directional bias shifts every retriever the same
+way and keeps the ranking, which is all this eval needs.
+
+Other things you can run:
+
+    python evals/judge_stability.py              judge the same quotes 6x
+    python evals/judge_stability.py --vote 3     ...the way run.py does
 
 Full write-up of the numbers: backend/evals/results/README.md
 How the harness works:        backend/evals/README.md

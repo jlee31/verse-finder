@@ -114,9 +114,11 @@ def evaluate(retriever, queries: list[dict], judge: Judge | None) -> dict:
     return {
         "retriever": retriever.name,
         "judged": judge is not None,
-        # Which rubric produced these numbers. Two files scored under different
-        # versions are not comparable, and without this you cannot tell.
+        # Which rubric and which judge produced these numbers. Two files scored
+        # under different versions are not comparable, and without this you
+        # cannot tell.
         "judge_prompt_version": PROMPT_VERSION if judge is not None else None,
+        "judge_model": judge.model if judge is not None else None,
         "total_seconds": round(time.time() - started, 1),
         "summary": metrics.summarize(rows) if judge is not None else None,
         "rows": rows,
@@ -167,8 +169,10 @@ def rejudge(report: dict, queries: list[dict], judge: Judge) -> dict:
     return {
         **report,
         "judge_prompt_version": PROMPT_VERSION,
+        "judge_model": judge.model,
         "rejudged_from": {
             "judge_prompt_version": report.get("judge_prompt_version"),
+            "judge_model": report.get("judge_model"),
             "facet_coverage": report["summary"]["facet_coverage"],
         },
         # The retrieval time is the original run's and stays; this is only how
