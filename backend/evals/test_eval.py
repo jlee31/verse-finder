@@ -12,13 +12,14 @@ from pathlib import Path
 import pytest
 
 from evals import metrics
-from evals.judge import Judge, _align, _cache_key
+from evals.judge import Judge, _align, _cache_key, _vote
 from evals.run import (
     BACKEND_DIR,
     EVALS_DIR,
     default_out_path,
     display_path,
     load_queries,
+    rejudge,
     validate_queries,
 )
 
@@ -225,23 +226,203 @@ def test_align_restores_requested_order():
     assert out[1]["covered"] is True
 
 
+def test_cache_key_differs_per_round():
+    # Rounds sharing a key would read back round 0's verdict and make every
+    # vote unanimous by construction — the noise would vanish from the numbers
+    # without ever leaving the judge.
+    assert _cache_key("x", ["anger"], QUOTES, 0) != _cache_key("x", ["anger"], QUOTES, 1)
+
+
 def test_offline_judge_raises_instead_of_calling_api(tmp_path):
     judge = Judge(offline=True, cache_dir=tmp_path)
     with pytest.raises(RuntimeError, match="offline"):
         judge.judge("i'm angry", ["anger"], QUOTES)
 
 
-def test_judge_reads_a_cached_verdict_without_the_api(tmp_path):
-    judge = Judge(offline=True, cache_dir=tmp_path)
-    key = _cache_key("i'm angry", ["anger"], QUOTES)
-    payload = {"facets": [{"facet": "anger", "covered": True,
-                           "quote": QUOTES[0]["text"], "reason": "on point"}]}
+def _cache_round(tmp_path, round_, covered, text="i'm angry", facets=("anger",)):
+    key = _cache_key(text, list(facets), QUOTES, round_)
+    payload = {"facets": [{"facet": f, "covered": c, "quote": "", "reason": "r"}
+                          for f, c in zip(facets, covered)]}
     (tmp_path / f"{key}.json").write_text(json.dumps(payload))
+
+
+def test_judge_reads_cached_verdicts_without_the_api(tmp_path):
+    judge = Judge(offline=True, cache_dir=tmp_path, rounds=3)
+    for r in range(3):
+        _cache_round(tmp_path, r, [True])
 
     out = judge.judge("i'm angry", ["anger"], QUOTES)
     assert out[0]["covered"] is True
-    assert judge.hits == 1
+    assert judge.hits == 3
     assert judge.misses == 0
+
+
+def test_a_majority_carries_a_split_facet(tmp_path):
+    # Two rounds say covered, one says not. The whole point of voting: the
+    # verdict is the majority, and `votes` records that it was not unanimous.
+    judge = Judge(offline=True, cache_dir=tmp_path, rounds=3)
+    for r, covered in enumerate([True, False, True]):
+        _cache_round(tmp_path, r, [covered])
+
+    out = judge.judge("i'm angry", ["anger"], QUOTES)
+    assert out[0]["covered"] is True
+    assert (out[0]["votes"], out[0]["rounds"]) == (2, 3)
+    assert judge.split == 1
+
+
+def test_a_minority_does_not_carry(tmp_path):
+    judge = Judge(offline=True, cache_dir=tmp_path, rounds=3)
+    for r, covered in enumerate([True, False, False]):
+        _cache_round(tmp_path, r, [covered])
+
+    out = judge.judge("i'm angry", ["anger"], QUOTES)
+    assert out[0]["covered"] is False
+    assert out[0]["votes"] == 1
+
+
+def test_a_unanimous_verdict_is_not_counted_as_split(tmp_path):
+    judge = Judge(offline=True, cache_dir=tmp_path, rounds=3)
+    for r in range(3):
+        _cache_round(tmp_path, r, [False])
+
+    judge.judge("i'm angry", ["anger"], QUOTES)
+    assert judge.split == 0
+
+
+def test_an_even_round_count_is_rejected(tmp_path):
+    # Two rounds have no majority to take.
+    with pytest.raises(ValueError, match="odd"):
+        Judge(offline=True, cache_dir=tmp_path, rounds=2)
+
+
+def _verdict(facet, covered, votes=3, rounds=3):
+    return {"facet": facet, "covered": covered, "quote": "",
+            "reason": f"{facet} reason", "votes": votes, "rounds": rounds}
+
+
+def test_vote_takes_the_reason_from_the_winning_side():
+    # A 2-1 verdict quoting the dissent's reason would read as a contradiction
+    # of the verdict recorded next to it.
+    rounds = [
+        [{"facet": "anger", "covered": True, "quote": "q", "reason": "yes it does"}],
+        [{"facet": "anger", "covered": False, "quote": "", "reason": "no it doesn't"}],
+        [{"facet": "anger", "covered": True, "quote": "q", "reason": "clearly anger"}],
+    ]
+    out = _vote(rounds, ["anger"])
+    assert out[0]["covered"] is True
+    assert out[0]["reason"] == "yes it does"
+
+
+def test_vote_scores_each_facet_independently():
+    rounds = [
+        [{"facet": "grief", "covered": True, "quote": "", "reason": "r"},
+         {"facet": "anger", "covered": False, "quote": "", "reason": "r"}],
+        [{"facet": "grief", "covered": True, "quote": "", "reason": "r"},
+         {"facet": "anger", "covered": True, "quote": "", "reason": "r"}],
+        [{"facet": "grief", "covered": True, "quote": "", "reason": "r"},
+         {"facet": "anger", "covered": False, "quote": "", "reason": "r"}],
+    ]
+    out = _vote(rounds, ["grief", "anger"])
+    assert [v["covered"] for v in out] == [True, False]
+    assert [v["votes"] for v in out] == [3, 1]
+
+
+def test_split_verdict_rate_counts_only_disagreements():
+    verdicts = [_verdict("a", True, votes=3), _verdict("b", True, votes=2),
+                _verdict("c", False, votes=0), _verdict("d", False, votes=1)]
+    assert metrics.split_verdict_rate(verdicts) == pytest.approx(0.5)
+
+
+def test_split_verdict_rate_is_none_for_single_round_verdicts():
+    # Results files written before voting existed carry no vote counts. They
+    # must report "unknown", not a confident zero.
+    assert metrics.split_verdict_rate([{"facet": "a", "covered": True}]) is None
+
+
+# --------------------------------------------------------------------------
+# rejudge
+# --------------------------------------------------------------------------
+
+def _report(coverage=0.5, covered=(True, False)):
+    return {
+        "retriever": "agentic",
+        "judged": True,
+        "judge_prompt_version": 1,
+        "total_seconds": 400.0,
+        "summary": {"facet_coverage": coverage},
+        "rows": [{
+            "id": "grief-anger",
+            "text": "grieving my dad and angry at my family",
+            "n_facets": 2,
+            "coverage": coverage,
+            "top_score": 0.63,
+            "api_calls": 3,
+            "seconds": 16.0,
+            "quotes": list(QUOTES),
+            "trace": [{"step": 1}],
+            "verdicts": [_verdict("grief", covered[0]), _verdict("anger", covered[1])],
+        }],
+    }
+
+
+QUERY_SET = [{"id": "grief-anger",
+              "text": "grieving my dad and angry at my family",
+              "facets": ["grief", "anger toward family"]}]
+
+
+class _FixedJudge:
+    """Returns a set verdict without touching the network."""
+
+    def __init__(self, covered):
+        self.covered = covered
+        self.hits = self.misses = self.split = 0
+
+    def judge(self, text, facets, quotes):
+        return [_verdict(f, c) for f, c in zip(facets, self.covered)]
+
+
+def test_rejudge_recomputes_coverage_from_the_new_verdicts():
+    out = rejudge(_report(coverage=0.5), QUERY_SET, _FixedJudge([True, True]))
+    assert out["rows"][0]["coverage"] == 1.0
+    assert out["summary"]["facet_coverage"] == 1.0
+
+
+def test_rejudge_keeps_what_the_retriever_measured():
+    # Regrading must not touch retrieval numbers, or the table would credit a
+    # rubric change with a latency or API-call difference.
+    row = rejudge(_report(), QUERY_SET, _FixedJudge([True, True]))["rows"][0]
+    assert (row["top_score"], row["api_calls"], row["seconds"]) == (0.63, 3, 16.0)
+    assert row["quotes"] == list(QUOTES)
+    assert row["trace"] == [{"step": 1}]
+
+
+def test_rejudge_records_where_it_came_from():
+    # Without this a regraded file is indistinguishable from a fresh run, and
+    # you cannot tell which rubric produced the number.
+    out = rejudge(_report(coverage=0.5), QUERY_SET, _FixedJudge([True, True]))
+    assert out["rejudged_from"] == {"judge_prompt_version": 1, "facet_coverage": 0.5}
+    assert out["judge_prompt_version"] != 1
+
+
+def test_rejudge_takes_facets_from_the_dataset_not_the_old_verdicts():
+    # The old file labels the facet "anger"; the dataset says "anger toward
+    # family". The dataset is the source of truth, or a rename would silently
+    # keep grading against the stale label.
+    out = rejudge(_report(), QUERY_SET, _FixedJudge([True, True]))
+    assert [v["facet"] for v in out["rows"][0]["verdicts"]] == QUERY_SET[0]["facets"]
+
+
+def test_rejudge_refuses_an_unjudged_run():
+    report = _report()
+    report["judged"] = False
+    with pytest.raises(SystemExit, match="never judged"):
+        rejudge(report, QUERY_SET, _FixedJudge([True]))
+
+
+def test_rejudge_refuses_when_the_dataset_no_longer_has_the_query():
+    with pytest.raises(SystemExit, match="dataset has changed"):
+        rejudge(_report(), [{"id": "other", "text": "x", "facets": ["y"]}],
+                _FixedJudge([True]))
 
 
 # --------------------------------------------------------------------------

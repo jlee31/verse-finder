@@ -12,11 +12,20 @@ pytest evals -q -m slow                           # retriever integration (loads
 
 python evals/run.py --retriever baseline --no-judge   # retrieval only, no API calls
 python evals/run.py --retriever baseline              # full scoring -> results/baseline.json
+python evals/run.py --rejudge results/baseline.json   # regrade stored quotes, don't re-retrieve
 ```
 
 A `--no-judge` run writes `results/<retriever>.smoke.json`, not
 `<retriever>.json` — it has no coverage numbers, and landing it on the tracked
 baseline would wipe the reference every later stage is compared against.
+
+`--rejudge` is for changing the *judge*. The agents are slow, expensive and
+non-deterministic, so re-running them after a rubric change confounds two
+variables: you can't tell whether a number moved because the judge changed its
+mind or because the agent searched differently. Regrading the stored quote sets
+holds retrieval fixed and swaps only the rubric. `top_score`, `api_calls` and
+`seconds` carry over untouched; the file records `rejudged_from` so a regraded
+run is never mistaken for a fresh one.
 
 ## The metric
 
@@ -25,8 +34,13 @@ emotional facets it contains. Coverage is the fraction of those facets that at
 least one returned quote genuinely speaks to.
 
 Cosine similarity can't answer that: a quote can score 0.42 and still be filler.
-So `judge.py` asks `claude-opus-5` once per query, with the facets and quotes
+So `judge.py` asks `claude-opus-5` per query, with the facets and quotes
 together, under a rubric that explicitly rejects generic inspirational lines.
+
+Each facet is graded **three times and the majority wins** (`ROUNDS` in
+`judge.py`), and each verdict records its `votes` so a 2–1 call stays visible in
+the results file. `summary.split_verdict_rate` is how often the rounds
+disagreed — the metric's own error bar, measured on the run it belongs to.
 
 The summary reports overall coverage and **compound-only** coverage separately.
 Single-facet queries are controls — the baseline scores 1.00 on all three, which
@@ -35,40 +49,24 @@ is what proves the metric isn't just measuring a broken retriever.
 ## Caching
 
 Judge verdicts are cached under `.cache/judge/`, keyed by query + facets + the
-exact quote texts. A re-run costs nothing (80s → 4s) and stays deterministic
-while you iterate. Scores are excluded from the key so float drift doesn't cause
-a spurious miss. Bump `PROMPT_VERSION` in `judge.py` when the rubric changes —
-it's part of the key, so old verdicts are discarded rather than reused under new
+exact quote texts + the round index. A re-run costs nothing (80s → 4s) and stays
+deterministic while you iterate. Scores are excluded from the key so float drift
+doesn't cause a spurious miss; the round index *is* in the key, or the rounds of
+a majority vote would read back each other's verdicts and be unanimous by
+construction. Bump `PROMPT_VERSION` in `judge.py` when the rubric changes — it's
+part of the key, so old verdicts are discarded rather than reused under new
 criteria.
 
 The cache is gitignored; `results/` is tracked.
 
-## Results (2026-07-31, 20 queries)
+## Results
 
-| metric | baseline | baseline-wide | agentic | agentic-lc |
-| --- | --- | --- | --- | --- |
-| facet coverage | 0.500 | 0.758 | 0.900 | 0.958 |
-| compound only (17 queries) | 0.412 | 0.716 | 0.882 | 0.951 |
-| fully covered | 0.300 | 0.550 | 0.800 | 0.900 |
-| mean top-1 score | 0.473 | 0.473 | **0.629** | **0.627** |
-| API calls / query | 0 | 0 | 2.70 | 2.75 |
-| seconds / query | 0.4 | 0.4 | 16 | 16 |
-
-`agentic` is the hand-rolled loop; `agentic-lc` is the same agent in LangGraph.
-
-`baseline-wide` is the same one-shot search at k=12 — the **volume control**. The
-agent returns roughly that many quotes across all its searches, and more quotes
-means more chances to cover a facet. Without this column, most of the agent's
-apparent win is just volume: raw k takes compound coverage from 0.412 to 0.716
-with no intelligence at all.
-
-Against that honest bar the agent still wins clearly, 0.716 → 0.882. The
-cleanest evidence it isn't volume is the **mean top-1 score**: k cannot change
-which quote ranks first, so `baseline-wide` is pinned at the baseline's 0.473,
-while the agent reaches 0.629. Rephrasing a facet into its own query finds
-better matches, not just more of them.
-
-It costs 2.7 API calls and ~40x the latency per query.
+**The scored comparison lives in [`results/README.md`](results/README.md)** —
+one table, so it can't drift out of sync with a copy. The short version:
+compound coverage goes 0.412 (baseline) → 0.716 (same search, 12 results) →
+0.882 (agent), so about two-thirds of the raw gain is volume and the rest is the
+agent decomposing the query. Mean top-1 score, which volume cannot move at all,
+goes 0.473 → 0.629.
 
 ### The 0.882 vs 0.951 gap is the judge, not the implementations
 
@@ -103,12 +101,15 @@ where a quote names the emotion but not its object — the judge is roughly a
 coin flip, and one such facet is worth ~0.06 of compound coverage on a 17-query
 set.
 
-**Consequence for Stage 5.** Any coverage difference under ~0.1 on this query
-set is unmeasurable as things stand. Fixing it means majority-voting the judge
-over 3 rounds, or sharpening the rubric so "names the emotion but not its
-object" resolves the same way every time — and re-running every retriever after
-a `PROMPT_VERSION` bump. The baseline-to-agent gap (0.716 → 0.88) is many times
-the noise floor and stands regardless.
+**Consequence.** Any coverage difference under ~0.1 on this query set was
+unmeasurable under prompt v1. The baseline-to-agent gap (0.716 → 0.88) is many
+times that and stood regardless — but the implementation comparison did not.
+
+**Resolved in Stage 5 (prompt v2).** The rubric now rules on the borderline
+explicitly — *grade the feeling, not its object* — and each facet is graded
+three times with the majority winning. All three previously-unstable queries now
+come back 6/6. Full account, including what is still outstanding, in
+[`results/README.md`](results/README.md#judge-reliability).
 
 ### Where it still fails, and why
 

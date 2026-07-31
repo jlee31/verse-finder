@@ -91,6 +91,13 @@ Other flags:
     --limit 3        only score the first 3 queries (quick check)
     --out FILE       write somewhere else
 
+    --rejudge evals/results/agentic.json
+        Re-grade a finished run's stored quotes under the current rubric,
+        WITHOUT running the retriever again. Use this after changing the judge:
+        re-running the agent would change the quotes too, and then you couldn't
+        tell whether a number moved because the judge changed its mind or
+        because the agent searched differently.
+
 Where things stand (20 queries, compound-only coverage is the number that
 matters — those are the queries the agent exists to fix):
 
@@ -99,24 +106,33 @@ matters — those are the queries the agent exists to fix):
     compound only       0.412       0.716      0.882      0.951
     mean top-1 score    0.473       0.473      0.629      0.627
     API calls / query       0           0       2.70       2.75
-    seconds / query       0.4         0.4         16         16
+    seconds / query       0.2         0.3         16         16
 
 baseline-wide is the control: the same dumb single search, just returning 12
 quotes instead of 3. It exists so you can tell "searched better" apart from
-"returned more" — most of the agent's raw gain is volume, and this is how you
-see that.
+"returned more" — about two-thirds of the agent's raw gain is volume, and this
+is how you see that. Mean top-1 score is the part volume CAN'T explain: more
+results never improve the best one, so 0.473 -> 0.629 is the agent searching
+better.
 
 Do NOT read agentic-lc as better than agentic. They are the same agent with the
-same prompt, and the gap is the JUDGE being inconsistent, not the code. Held the
-quote set fixed and judged it 6 times: one facet came back covered 2/6. Check it
-yourself:
+same prompt, and the gap is the JUDGE being inconsistent, not the code. Check
+it yourself:
 
-    python evals/judge_stability.py
+    python evals/judge_stability.py                  the raw judge
+    python evals/judge_stability.py --vote 3         what run.py actually uses
 
-Any coverage difference under about 0.1 on this query set is below the noise
-floor. The baseline-to-agent gap (0.716 -> 0.88) is far above it and is real.
+Every disagreement was one question the old rubric never answered: does a quote
+about anger cover the facet "anger toward FAMILY"? Judge prompt v2 rules on it
+(grade the feeling, not its object) and votes three times per facet. The three
+queries that used to flip now come back 6/6.
 
-More detail: backend/evals/README.md
+  NOTE: the results/*.json files here are still scored under the OLD rubric
+  (v1). The regrade ran out of API credit partway through. Finishing it is five
+  --rejudge commands; the details are in backend/evals/results/README.md.
+
+Full write-up of the numbers: backend/evals/results/README.md
+How the harness works:        backend/evals/README.md
 
 
 4. TRY THE TOOL BY HAND              (added in stage 1)
