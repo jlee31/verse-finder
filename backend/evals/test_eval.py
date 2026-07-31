@@ -123,6 +123,24 @@ def test_display_path_handles_paths_outside_backend():
     assert display_path(Path("/tmp/cold.json")) == "/tmp/cold.json"
 
 
+def test_judge_stability_finds_the_requested_query(tmp_path):
+    from evals.judge_stability import load_row
+
+    results = tmp_path / "r.json"
+    results.write_text(json.dumps({"rows": [{"id": "a"}, {"id": "b"}]}))
+    assert load_row(results, "b") == {"id": "b"}
+
+
+def test_judge_stability_lists_the_ids_it_does_have(tmp_path):
+    # A typo'd --query should say what's available, not just fail.
+    from evals.judge_stability import load_row
+
+    results = tmp_path / "r.json"
+    results.write_text(json.dumps({"rows": [{"id": "grief-anger"}]}))
+    with pytest.raises(SystemExit, match="grief-anger"):
+        load_row(results, "typo")
+
+
 def test_every_registered_retriever_reports_its_registry_name():
     """`name` picks the results filename.
 

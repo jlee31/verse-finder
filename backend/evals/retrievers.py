@@ -60,21 +60,25 @@ class BaselineRetriever:
 
 
 class AgenticRetriever:
-    """The hand-rolled loop from `app.rag.agent`.
+    """An agent loop, scored like any other retriever.
 
     It decides how many searches to run and with what wording, so there's no `k`
     to set here — the count of quotes is an output, not an input.
+
+    `module` picks the implementation. Both expose the same `reflect()`, which
+    is the entire point of building the loop twice.
     """
 
-    def __init__(self, name: str = "agentic"):
+    def __init__(self, name: str = "agentic", module: str = "app.rag.agent"):
         self.name = name
+        self.module = module
         self._reflect = None
 
     def search(self, text: str) -> Result:
         if self._reflect is None:
-            from app.rag.agent import reflect
+            from importlib import import_module
 
-            self._reflect = reflect
+            self._reflect = import_module(self.module).reflect
 
         result = self._reflect(text)
         return Result(
@@ -91,7 +95,11 @@ REGISTRY: dict[str, callable] = {
     # coverage win over `baseline` alone doesn't prove the decomposition helped.
     # This separates "searched better" from "returned more".
     "baseline-wide": lambda: BaselineRetriever(k=12, name="baseline-wide"),
+    # The same agent, twice over. Scoring both head-to-head is what makes the
+    # comparison meaningful: a large gap means one has a bug, not that a
+    # framework is smarter.
     "agentic": AgenticRetriever,
+    "agentic-lc": lambda: AgenticRetriever(name="agentic-lc", module="app.rag.agent_lc"),
 }
 
 

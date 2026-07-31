@@ -43,16 +43,18 @@ criteria.
 
 The cache is gitignored; `results/` is tracked.
 
-## Results (2026-07-30, 20 queries)
+## Results (2026-07-31, 20 queries)
 
-| metric | baseline | baseline-wide | agentic |
-| --- | --- | --- | --- |
-| facet coverage | 0.500 | 0.758 | **0.900** |
-| compound only (17 queries) | 0.412 | 0.716 | **0.882** |
-| fully covered | 0.300 | 0.550 | **0.800** |
-| mean top-1 score | 0.473 | 0.473 | **0.629** |
-| API calls / query | 0 | 0 | 2.7 |
-| seconds / query | 0.4 | 0.4 | 16 |
+| metric | baseline | baseline-wide | agentic | agentic-lc |
+| --- | --- | --- | --- | --- |
+| facet coverage | 0.500 | 0.758 | 0.900 | 0.958 |
+| compound only (17 queries) | 0.412 | 0.716 | 0.882 | 0.951 |
+| fully covered | 0.300 | 0.550 | 0.800 | 0.900 |
+| mean top-1 score | 0.473 | 0.473 | **0.629** | **0.627** |
+| API calls / query | 0 | 0 | 2.70 | 2.75 |
+| seconds / query | 0.4 | 0.4 | 16 | 16 |
+
+`agentic` is the hand-rolled loop; `agentic-lc` is the same agent in LangGraph.
 
 `baseline-wide` is the same one-shot search at k=12 — the **volume control**. The
 agent returns roughly that many quotes across all its searches, and more quotes
@@ -67,6 +69,46 @@ while the agent reaches 0.629. Rephrasing a facet into its own query finds
 better matches, not just more of them.
 
 It costs 2.7 API calls and ~40x the latency per query.
+
+### The 0.882 vs 0.951 gap is the judge, not the implementations
+
+`agentic-lc` scored 0.951 against `agentic`'s 0.882. Chasing that through both
+implementations found nothing wrong with either — the difference is the **judge
+changing its mind about identical input**.
+
+The trail:
+
+1. A second `agentic` run scored 0.892 / 0.873 compound, near-identical to the
+   first. Only 2 of 20 queries moved, in opposite directions. So the harness is
+   reproducible in aggregate and the 0.951 isn't obviously sampling luck.
+2. But `grief-anger` and `burnout-fear` failed in **both** `agentic` runs and
+   passed for `agentic-lc` — stable disagreement, not coin flips.
+3. Both agents had retrieved the same anger material. The judge's own words
+   give it away. On `agentic`: *"Anger quotes are generic and not about family
+   conflict"* → uncovered. On `agentic-lc`: covered, because *"quotes address
+   anger and resentment, **though not the family relational aspect**"* — the
+   same observation, opposite verdict.
+4. Held the quote set fixed and judged it six times with a cold cache:
+
+   ```text
+   grief over losing a parent       covered 6/6
+   anger toward family              covered 2/6   <- UNSTABLE
+   ```
+
+Reproduce it with `python evals/judge_stability.py`.
+
+So the two implementations are the same agent, as designed. What the exercise
+actually found is a **reliability limit in the metric**: on borderline facets —
+where a quote names the emotion but not its object — the judge is roughly a
+coin flip, and one such facet is worth ~0.06 of compound coverage on a 17-query
+set.
+
+**Consequence for Stage 5.** Any coverage difference under ~0.1 on this query
+set is unmeasurable as things stand. Fixing it means majority-voting the judge
+over 3 rounds, or sharpening the rubric so "names the emotion but not its
+object" resolves the same way every time — and re-running every retriever after
+a `PROMPT_VERSION` bump. The baseline-to-agent gap (0.716 → 0.88) is many times
+the noise floor and stands regardless.
 
 ### Where it still fails, and why
 

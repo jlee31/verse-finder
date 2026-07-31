@@ -69,8 +69,10 @@ Retrievers you can pass to --retriever:
     baseline-wide   one search, top 12. The volume control — the agent returns
                     about this many quotes, so this separates "searched better"
                     from "just returned more".
-    agentic         the hand-rolled agent loop (stage 2). Slow, ~15 min, and it
-                    makes real API calls for every query.
+    agentic         the hand-rolled agent loop (stage 2). Slow, ~7-15 min, and
+                    it makes real API calls for every query.
+    agentic-lc      the same agent built with LangGraph (stage 3). Same model,
+                    same prompt, same tool — only the machinery differs.
 
 Verdicts are cached in evals/.cache/, so re-running is nearly free and gives
 identical numbers. The first judged run takes about 80s; after that, ~5s.
@@ -82,17 +84,27 @@ Other flags:
 Where things stand (20 queries, compound-only coverage is the number that
 matters — those are the queries the agent exists to fix):
 
-                        baseline   baseline-wide   agentic
-    facet coverage        0.500        0.758        0.900
-    compound only         0.412        0.716        0.882
-    mean top-1 score      0.473        0.473        0.629
-    API calls / query         0            0          2.7
-    seconds / query         0.4          0.4           16
+                     baseline  baseline-wide  agentic  agentic-lc
+    facet coverage      0.500       0.758      0.900      0.958
+    compound only       0.412       0.716      0.882      0.951
+    mean top-1 score    0.473       0.473      0.629      0.627
+    API calls / query       0           0       2.70       2.75
+    seconds / query       0.4         0.4         16         16
 
 baseline-wide is the control: the same dumb single search, just returning 12
 quotes instead of 3. It exists so you can tell "searched better" apart from
 "returned more" — most of the agent's raw gain is volume, and this is how you
 see that.
+
+Do NOT read agentic-lc as better than agentic. They are the same agent with the
+same prompt, and the gap is the JUDGE being inconsistent, not the code. Held the
+quote set fixed and judged it 6 times: one facet came back covered 2/6. Check it
+yourself:
+
+    python evals/judge_stability.py
+
+Any coverage difference under about 0.1 on this query set is below the noise
+floor. The baseline-to-agent gap (0.716 -> 0.88) is far above it and is real.
 
 More detail: backend/evals/README.md
 
@@ -131,6 +143,25 @@ different wording each time. That is the agent deciding to look again — the on
 thing the plain pipeline cannot do.
 
 Nothing in the web app calls this yet. That's stage 4.
+
+
+6. RUN THE LANGGRAPH VERSION         (added in stage 3)
+----------------------------------
+
+Same command as above, with one word changed:
+
+    from app.rag.agent_lc import reflect      instead of  app.rag.agent
+
+Same model, same prompt, same tool, same return type. Only the machinery is
+different — a while-loop you can read top to bottom, versus a StateGraph.
+
+To SEE the graph run step by step, put these in backend/.env and re-run:
+
+    LANGSMITH_TRACING=true
+    LANGSMITH_API_KEY=...        (free account at smith.langchain.com)
+
+Every node, every tool call, every prompt shows up as a visual trace. It is the
+best agent-debugging tool you get for two lines of config.
 
 
 IF SOMETHING BREAKS

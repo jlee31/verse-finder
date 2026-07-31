@@ -13,7 +13,7 @@ Two stages turn a free-text message into a grounded reflection:
 `main.py` wires them together: `POST /api/verses/search` runs `retrieve()` then
 `generate_reflection()` and returns the reflection plus the source quotes.
 
-```
+```text
 query ──▶ retrieve(k=3) ──▶ quotes ──▶ generate_reflection() ──▶ reflection
 ```
 
@@ -40,7 +40,7 @@ with the tool schemas attached, run whatever searches come back, feed the result
 in, repeat until the model stops asking. It returns the reflection, the deduped
 quotes, and a trace of every search it ran.
 
-```
+```text
 text ──▶ [ model ] ──tool_use──▶ search_quotes ──tool_result──┐
             ▲                                                 │
             └─────────────────────────────────────────────────┘
@@ -61,7 +61,35 @@ Three details do the work, and each fails quietly when you get it wrong:
   measured, each of those alone fails — dropping tools returns empty text, and
   `tool_choice: none` makes the model emit literal `<invoke>` XML as prose.
 
-Nothing in the API calls this yet — that's Stage 4.
+## The same agent in LangGraph (`agent_lc.py`)
+
+Same model, same tool, same system prompt — imported from `agent.py` rather than
+copied, so the only difference is the machinery. A gap in the eval scores means
+one of them has a bug, not that a framework is smarter.
+
+| hand-rolled (`agent.py`) | LangGraph (`agent_lc.py`) |
+| --- | --- |
+| `while` loop you wrote | `StateGraph` + edges |
+| `if stop_reason == "tool_use"` | `should_continue` conditional edge |
+| build `tool_result` blocks by hand | `ToolNode` |
+| append to a `messages` list | `add_messages` reducer on the state |
+| `for _ in range(LOOP_BUDGET)` | `recursion_limit` + `GraphRecursionError` |
+
+The graph is written out explicitly instead of with `create_react_agent`, which
+would collapse it into one call and hide the part worth seeing: the conditional
+edge *is* the `stop_reason` branch.
+
+Two costs the framework imposes, both visible in the code:
+
+- **`_Collector`.** The hand-rolled loop had the structured search results in
+  hand. `ToolNode` only forwards the rendered string, so recovering the quotes
+  means threading a recorder through a closure — which is also why the graph is
+  built per run rather than once at import.
+- **The budget is now off-by-one-able.** `recursion_limit` counts *graph steps*,
+  not model calls, and one turn is two steps. `2N-1` looks right and silently
+  cuts the graph off before the last searches run.
+
+Nothing in the API calls either agent yet — that's Stage 4.
 
 ## Data files
 
