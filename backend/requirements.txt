@@ -1,5 +1,10 @@
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
+# FastAPI 0.104.1 ships starlette 0.27, whose TestClient calls httpx with the
+# `app=` shortcut that httpx 0.28 removed. Without this pin every API test in
+# tests/test_api.py errors on construction. Nothing else here wants >=0.28:
+# anthropic and langsmith both ask only for httpx<1.
+httpx==0.27.2
 # Raised from 2.5.0 by langchain. Verified against FastAPI 0.104.1: request
 # parsing, response serialization, and OpenAPI generation all still pass.
 pydantic==2.13.4

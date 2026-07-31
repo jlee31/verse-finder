@@ -26,10 +26,20 @@ Leave it running. Then open the frontend in a SECOND terminal:
 
 Open http://localhost:5500 in a browser and type how you feel.
 
+Pick how it searches with the radio buttons under the box:
+
+    One-shot     the original pipeline. One search, ~0.4s.
+    Agent        the hand-rolled loop. Searches as many times as it needs, ~15s.
+    Agent        the same thing built in LangGraph, ~15s.
+
+Either agent mode adds a "How it searched" panel under the reflection. Click it
+open to see every search it ran and what came back. One-shot has no panel —
+it made no decisions, so there's nothing to show.
+
 API docs (try the endpoints directly): http://localhost:8000/docs
 
-First request is slow (~20s) — that's the mpnet model loading. After that it's
-fast.
+Startup takes ~20s — that's the mpnet model loading, before the server starts
+accepting requests. Once it says "Application startup complete", it's ready.
 
 
 2. RUN THE TESTS
@@ -142,8 +152,6 @@ What you're looking for in the trace: it should search two or more times, with
 different wording each time. That is the agent deciding to look again — the one
 thing the plain pipeline cannot do.
 
-Nothing in the web app calls this yet. That's stage 4.
-
 
 6. RUN THE LANGGRAPH VERSION         (added in stage 3)
 ----------------------------------
@@ -164,6 +172,37 @@ Every node, every tool call, every prompt shows up as a visual trace. It is the
 best agent-debugging tool you get for two lines of config.
 
 
+7. HIT THE AGENT OVER HTTP           (added in stage 4)
+----------------------------------
+
+The browser is the easy way (section 1). To call it directly, with the server
+running:
+
+    curl -s -X POST localhost:8000/api/verses/search/agentic \
+      -H 'Content-Type: application/json' \
+      -d '{"mainPrompt": "i'"'"'m grieving my dad and angry at my family"}'
+
+Add ?implementation=langgraph to run the other loop:
+
+    curl -s -X POST 'localhost:8000/api/verses/search/agentic?implementation=langgraph' \
+      -H 'Content-Type: application/json' -d '{"mainPrompt": "..."}'
+
+The three endpoints:
+
+    POST /api/verses/search            one-shot. Unchanged — this is the
+                                       baseline every claim is measured against.
+    POST /api/verses/search/agentic    the agent. Same fields plus "trace",
+                                       "implementation", "stopped_early".
+    POST /api/verses/explain           LIME: which words drove the top match.
+
+"trace" is the list of searches it actually ran, in order — the same thing the
+panel in the browser shows. "stopped_early": true means it used up its budget
+of 6 turns still searching, and the reflection was written from whatever it had
+by then. The quotes are still real; the run was just cut short.
+
+Costs money — every agentic call is 3-4 real API calls.
+
+
 IF SOMETHING BREAKS
 -------------------
 
@@ -178,6 +217,12 @@ IF SOMETHING BREAKS
 "ANTHROPIC_API_KEY is not set"
     The key lives in backend/.env, which is gitignored. Only the judged eval
     and the reflection step need it. Add --no-judge to skip it.
+
+"Client.__init__() got an unexpected keyword argument 'app'"
+    Every test in tests/test_api.py errors like this when httpx is too new.
+    FastAPI 0.104 ships an old starlette whose TestClient uses a shortcut that
+    httpx 0.28 removed. Fix: python -m pip install 'httpx==0.27.2'
+    (it's pinned in requirements.txt for this reason).
 
 Port already in use
     Something's still running from last time. Change the port, or:

@@ -20,6 +20,29 @@
           placeholder="Tell me what's on your mind…"
           required
         ></textarea>
+
+        <!--
+          The same question, three ways. One-shot searches once and averages a
+          compound feeling into a vector that matches neither half; the two
+          agent modes decide for themselves how many times to search, and show
+          you what they searched for.
+        -->
+        <fieldset class="modes">
+          <legend>How to search</legend>
+          <label>
+            <input type="radio" name="mode" value="baseline" checked />
+            One-shot <span class="hint">single lookup, fast</span>
+          </label>
+          <label>
+            <input type="radio" name="mode" value="handrolled" />
+            Agent <span class="hint">hand-rolled loop, ~15s</span>
+          </label>
+          <label>
+            <input type="radio" name="mode" value="langgraph" />
+            Agent <span class="hint">LangGraph, ~15s</span>
+          </label>
+        </fieldset>
+
         <button type="submit" id="submit">Reflect</button>
       </form>
 
