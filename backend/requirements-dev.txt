@@ -1,0 +1,20 @@
+# Everything needed to serve a request, plus the tools that only matter while
+# developing. This is the file to install locally:
+#
+#     pip install -r requirements-dev.txt
+#
+# The Dockerfile installs requirements.txt instead, so neither of these ships
+# to production.
+
+-r requirements.txt
+
+# Explainability: which query words drove the retrieval (the "R" in RAG).
+# Pulls scikit-image, matplotlib and scipy behind it — about 150 MB. That is
+# the whole reason it is here and not in requirements.txt.
+#
+# app.main registers /api/verses/explain only when this import resolves, so a
+# build without it simply has no such route rather than a route that 500s.
+lime==0.2.0.1
+
+# Test runner for tests/ and evals/ — run: pytest -q
+pytest==9.1.1

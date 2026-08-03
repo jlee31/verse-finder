@@ -10,6 +10,7 @@ The trace is the reason the agentic response has its own shape. A one-shot
 lookup has nothing to show; the agent's decision to search again for the facet
 it missed is the whole product, so it goes in the payload rather than the logs.
 """
+import importlib.util
 from contextlib import asynccontextmanager
 from enum import Enum
 from importlib import import_module
@@ -199,6 +200,27 @@ def search_verses_agentic(
     )
 
 
+# --------------------------------------------------------------------------
+# the explainer — optional
+# --------------------------------------------------------------------------
+# lime pulls scikit-image, matplotlib and scipy behind it, roughly 150 MB, for
+# an endpoint the frontend never calls. It lives in requirements-dev.txt, so a
+# production image built from requirements.txt does not have it.
+#
+# Detected rather than configured. A flag would be a second thing to keep in
+# sync with the actual install, and it would let you switch on a route whose
+# import cannot succeed. `find_spec` asks the only question that matters — is
+# the package importable — without paying the import cost here; `_lazy` still
+# defers that to the first request.
+#
+# When it is absent the route is not registered at all, so it 404s and /docs
+# stops advertising it. The alternative — always register, fail at request time
+# with an explanation — documents itself better but publishes an endpoint that
+# cannot work, which is the worse lie.
+
+EXPLAIN_AVAILABLE = importlib.util.find_spec("lime") is not None
+
+
 class WordImportance(BaseModel):
     """One query word and how much it pulled toward the matched quote."""
     word: str
@@ -212,10 +234,15 @@ class ExplainResponse(BaseModel):
     score: float
     word_importances: list[WordImportance]
 
-@app.post("/api/verses/explain", response_model=ExplainResponse)
-def explain_verses(request: PromptRequest):
-    """Explain the retrieval: which query words drove the top match (LIME)."""
-    return _lazy("app.rag.explain", "explain_retrieval")(request.mainPrompt)
+
+if EXPLAIN_AVAILABLE:
+    @app.post("/api/verses/explain", response_model=ExplainResponse)
+    def explain_verses(request: PromptRequest):
+        """Explain the retrieval: which query words drove the top match (LIME).
+
+        Development-only: served when lime is installed (requirements-dev.txt).
+        """
+        return _lazy("app.rag.explain", "explain_retrieval")(request.mainPrompt)
 
 
 # --------------------------------------------------------------------------

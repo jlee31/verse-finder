@@ -12,7 +12,9 @@ backend:
 
 ```uvicorn app.main:app --reload --port 8000```
 
-# to be deployed on flyquest or railway
+# deployed on railway
 
 ```
+https://quote-finder-production.up.railway.app/
 ```
+

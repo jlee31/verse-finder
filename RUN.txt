@@ -13,6 +13,17 @@ You should see (.venv) in your prompt. Check it worked:
 If that prints something else, the venv isn't active and nothing below will
 work. Just run the "source" line again.
 
+Installing, if the venv is new or a dependency changed:
+
+    pip install -r requirements-dev.txt
+
+Use the -dev file locally. It pulls in requirements.txt and adds pytest plus
+lime, the explainer behind /api/verses/explain. Both are development-only:
+lime alone drags in scikit-image and matplotlib, ~150 MB, so the Dockerfile
+installs plain requirements.txt and the deployed build has no /explain route
+at all. That is deliberate, not a broken deploy — app/main.py registers the
+route only when lime is importable.
+
 
 1. RUN THE APP
 --------------
@@ -215,6 +226,10 @@ The three endpoints:
     POST /api/verses/search/agentic    the agent. Same fields plus "trace",
                                        "implementation", "stopped_early".
     POST /api/verses/explain           LIME: which words drove the top match.
+                                       Local only — needs lime, which is in
+                                       requirements-dev.txt. Absent (404) on
+                                       the deployed build, and missing from
+                                       /docs there too.
 
 "trace" is the list of searches it actually ran, in order — the same thing the
 panel in the browser shows. "stopped_early": true means it used up its budget

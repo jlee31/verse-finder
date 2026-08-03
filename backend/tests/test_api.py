@@ -191,6 +191,41 @@ def test_both_implementations_name_a_module_that_exists():
     assert set(AGENT_MODULES) == set(Implementation)
 
 
+# --------------------------------------------------------------------------
+# the optional explainer
+# --------------------------------------------------------------------------
+
+def test_the_explain_route_tracks_whether_lime_is_installed():
+    """The route must exist exactly when it can work.
+
+    lime ships in requirements-dev.txt, not requirements.txt, so a production
+    image has no explainer. Registering the route anyway would publish an
+    endpoint whose first request dies on ImportError; suppressing it in a build
+    that *can* serve it would silently drop a working feature. Either drift is
+    a bug, so this asserts the two agree rather than asserting a fixed answer.
+    """
+    routes = {getattr(r, "path", None) for r in app.routes}
+    assert ("/api/verses/explain" in routes) is main.EXPLAIN_AVAILABLE
+
+
+@pytest.mark.skipif(not main.EXPLAIN_AVAILABLE, reason="lime not installed")
+def test_explain_returns_word_weights(monkeypatch):
+    monkeypatch.setattr(main, "_lazy", lambda module, attr: lambda text: {
+        "query": text,
+        "matched_quote": QUOTES[0]["text"],
+        "matched_author": "Buddha",
+        "score": 0.49,
+        "word_importances": [{"word": "angry", "weight": 0.31},
+                             {"word": "dad", "weight": -0.12}],
+    })
+
+    body = _post("/api/verses/explain").json()
+    # A negative weight is the point of the endpoint: "dad" pulled the query
+    # away from the quote that "angry" pulled it toward. That is dimension loss
+    # made visible, and the response model must not clamp it to zero.
+    assert body["word_importances"][1]["weight"] < 0
+
+
 def test_a_stopped_early_run_says_so(fake_backends):
     _, state = fake_backends
     state["result"] = AgentResult(reflection="salvaged", quotes=list(QUOTES),
