@@ -213,9 +213,12 @@ def search_verses_agentic(
 # the package importable — without paying the import cost here; `_lazy` still
 # defers that to the first request.
 #
-# When it is absent the route is not registered at all, so it 404s and /docs
-# stops advertising it. The alternative — always register, fail at request time
-# with an explanation — documents itself better but publishes an endpoint that
+# When it is absent the route is not registered at all and /docs stops
+# advertising it. The request then falls through to the static mount below,
+# which answers a POST with 405 rather than 404 — it only serves GET and HEAD.
+# Slightly odd to read, but it is the truthful answer: there is no such
+# endpoint here. The alternative — always register, fail at request time with
+# an explanation — documents itself better but publishes an endpoint that
 # cannot work, which is the worse lie.
 
 EXPLAIN_AVAILABLE = importlib.util.find_spec("lime") is not None

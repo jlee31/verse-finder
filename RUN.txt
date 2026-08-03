@@ -227,9 +227,11 @@ The three endpoints:
                                        "implementation", "stopped_early".
     POST /api/verses/explain           LIME: which words drove the top match.
                                        Local only — needs lime, which is in
-                                       requirements-dev.txt. Absent (404) on
+                                       requirements-dev.txt. Not registered on
                                        the deployed build, and missing from
-                                       /docs there too.
+                                       /docs there too. A POST to it lands on
+                                       the static mount instead, which answers
+                                       405 (it serves GET and HEAD only).
 
 "trace" is the list of searches it actually ran, in order — the same thing the
 panel in the browser shows. "stopped_early": true means it used up its budget

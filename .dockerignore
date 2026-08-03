@@ -1,0 +1,59 @@
+# Railway builds from a git clone, so it only ever sees tracked files. A local
+# `docker build` sees the whole working directory instead — including the
+# virtualenv, which is 940 MB of macOS arm64 binaries that a linux/amd64 image
+# cannot execute and does not need, since the image installs its own.
+#
+# Without this file the two builds produce different images from the same
+# commit, and the local one is the misleading one.
+
+# virtualenvs
+.venv/
+venv/
+backend/.venv/
+env/
+
+# python bytecode. Same ** rule as above — without it, backend/tests/__pycache__
+# ships, full of .pyc files compiled by the host's Python 3.12 for an image that
+# runs 3.11. They are ignored at runtime, just dead weight and confusion.
+**/__pycache__/
+**/*.py[cod]
+**/*.egg-info/
+**/.pytest_cache/
+
+# tests and the eval harness. Neither is reachable from a served request, and
+# the results JSON is read by humans in the repo, not by the app.
+backend/tests/
+backend/evals/
+
+# secrets — the image gets its key from the environment at runtime.
+#
+# The ** matters. Docker matches these patterns against the path relative to
+# the context root, so a bare `.env` excludes only ./.env and would happily
+# copy backend/.env — the one that actually holds the key — into the image.
+# Verified by grepping the built image for the key prefix; see the commit.
+**/.env
+**/*.env
+!**/.env.example
+
+# derived eval data. Judge verdicts are re-fetchable and the results files are
+# read by humans, not by the app.
+backend/evals/.cache/
+
+# vcs and editor noise
+.git/
+.gitignore
+.github/
+.vscode/
+.idea/
+.DS_Store
+
+# docs and planning — none of it is served
+docs/
+tasks/
+notes.txt
+*.md
+RUN.txt
+
+# local tooling
+.claude/
+docker-compose.yml
