@@ -42,13 +42,18 @@ def fake_backends(monkeypatch):
     calls = []
     result = AgentResult(reflection="a reflection", quotes=list(QUOTES),
                          trace=list(TRACE), api_calls=3, stopped_early=False)
-    state = {"result": result, "raises": None}
+    state = {"result": result, "raises": None, "generate_raises": None}
 
     def reflect(text, **kwargs):
         calls.append(("reflect", text))
         if state["raises"] is not None:
             raise state["raises"]
         return state["result"]
+
+    def generate_reflection(text, sources):
+        if state["generate_raises"] is not None:
+            raise state["generate_raises"]
+        return "a one-shot reflection"
 
     def fake_lazy(module, attr):
         calls.append((module, attr))
@@ -57,7 +62,7 @@ def fake_backends(monkeypatch):
         if attr == "retrieve":
             return lambda text, k=3: list(QUOTES)[:k]
         if attr == "generate_reflection":
-            return lambda text, sources: "a one-shot reflection"
+            return generate_reflection
         raise AssertionError(f"unexpected lazy import {module}.{attr}")
 
     monkeypatch.setattr(main, "_lazy", fake_lazy)
@@ -88,6 +93,47 @@ def test_baseline_search_has_no_trace(fake_backends):
     # The one-shot pipeline made no decisions, so it has nothing to show. If a
     # trace ever appears here, the two endpoints have been conflated.
     assert "trace" not in _post("/api/verses/search").json()
+
+
+def test_a_failed_reflection_is_a_502_with_the_reason(fake_backends):
+    # Deploying without ANTHROPIC_API_KEY used to surface here as a bare 500
+    # with no body, which reads as "the server is broken" — so the first place
+    # you look is the server, not the missing variable. The agent route already
+    # answered this case properly; this one didn't.
+    _, state = fake_backends
+    state["generate_raises"] = RuntimeError("The api_key client option must be set")
+
+    res = _post("/api/verses/search")
+    assert res.status_code == 502
+    assert "api_key" in res.json()["detail"]
+    assert "RuntimeError" in res.json()["detail"]
+
+
+def test_retrieval_failures_are_not_disguised_as_upstream_ones(monkeypatch):
+    # Retrieval is local, so a failure there is our bug and must not be laundered
+    # into a 502. Only the call that leaves the process gets that treatment.
+    def broken_lazy(module, attr):
+        if attr == "retrieve":
+            raise RuntimeError("embedding matrix is missing")
+        raise AssertionError("generation should never be reached")
+
+    monkeypatch.setattr(main, "_lazy", broken_lazy)
+
+    with pytest.raises(RuntimeError, match="embedding matrix"):
+        _post("/api/verses/search")
+
+
+def test_cors_never_pairs_a_wildcard_origin_with_credentials(fake_backends):
+    # The combination that makes a public API callable by any site on a logged-in
+    # visitor's behalf. There are no cookies here yet, which is exactly why this
+    # needs a test: the flag would otherwise be noticed only after auth shipped.
+    res = client.post(
+        "/api/verses/search",
+        json={"mainPrompt": "hello"},
+        headers={"Origin": "https://evil.example"},
+    )
+    assert res.headers.get("access-control-allow-credentials") is None
+    assert res.headers["access-control-allow-origin"] == "*"
 
 
 # --------------------------------------------------------------------------

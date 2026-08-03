@@ -57,13 +57,21 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Verse Finder API", lifespan=lifespan)
 
-# middleware
+# The app serves its own frontend (see the static mount at the bottom), so the
+# browser never makes a cross-origin request and none of this is load-bearing.
+# It stays for direct API callers — curl, /docs, a separately-hosted frontend.
+#
+# `allow_credentials` is off deliberately. Paired with `allow_origins=["*"]` it
+# is the one combination that turns a public read-only API into an authenticated
+# one that any site can call on a visitor's behalf. There are no cookies here
+# today, so it was inert — but this is a public URL now, and the flag would only
+# be noticed after whatever made it dangerous had already shipped.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # fine for a local MVP; tighten for production
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type"],
 )
 
 
@@ -88,11 +96,24 @@ def health():
 @app.post("/api/verses/search", response_model=PromptResponse)
 def search_verses(request: PromptRequest):
     # RAG PIPELINE FOUND HERE
-    # 1. Retrieve: find the quotes most similar to what the user wrote.
+    # 1. Retrieve: find the quotes most similar to what the user wrote. This is
+    #    local and in-process — if it raises, that is our bug, and the 500 that
+    #    FastAPI produces is the honest answer. Left unwrapped on purpose.
     sources = _lazy("app.rag.retriever", "retrieve")(request.mainPrompt, k=3)
 
     # 2. Generate: hand those quotes to Claude to write a grounded reflection.
-    reflection = _lazy("app.rag.generator", "generate_reflection")(request.mainPrompt, sources)
+    #    This one leaves the process, so its failures are not our bug: a missing
+    #    ANTHROPIC_API_KEY, an exhausted credit balance, an upstream outage. The
+    #    agent route already answers those with a 502 and a reason; without the
+    #    same treatment here, a deployment missing its key looked like a crash.
+    try:
+        reflection = _lazy("app.rag.generator", "generate_reflection")(
+            request.mainPrompt, sources
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=502, detail=f"reflection failed: {type(e).__name__}: {e}"
+        )
 
     return PromptResponse(
         query=request.mainPrompt,
