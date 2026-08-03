@@ -43,7 +43,8 @@ backend/evals/results/*.smoke.json
 # other
 DEVNOTES.md
 BACKEND_SETUP.md
-
+RUN.txt
+notes.txt
 HOW_IT_WORKS.txt
 DOCKER_CONNECTION.txt
 
