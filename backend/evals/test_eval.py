@@ -12,8 +12,16 @@ from pathlib import Path
 import pytest
 
 from evals import metrics
-from evals.judge import Judge, _align, _cache_key
-from evals.run import BACKEND_DIR, EVALS_DIR, display_path, load_queries, validate_queries
+from evals.judge import Judge, _align, _cache_key, _vote
+from evals.run import (
+    BACKEND_DIR,
+    EVALS_DIR,
+    default_out_path,
+    display_path,
+    load_queries,
+    rejudge,
+    validate_queries,
+)
 
 
 # --------------------------------------------------------------------------
@@ -116,6 +124,46 @@ def test_display_path_handles_paths_outside_backend():
     assert display_path(Path("/tmp/cold.json")) == "/tmp/cold.json"
 
 
+def test_judge_stability_finds_the_requested_query(tmp_path):
+    from evals.judge_stability import load_row
+
+    results = tmp_path / "r.json"
+    results.write_text(json.dumps({"rows": [{"id": "a"}, {"id": "b"}]}))
+    assert load_row(results, "b") == {"id": "b"}
+
+
+def test_judge_stability_lists_the_ids_it_does_have(tmp_path):
+    # A typo'd --query should say what's available, not just fail.
+    from evals.judge_stability import load_row
+
+    results = tmp_path / "r.json"
+    results.write_text(json.dumps({"rows": [{"id": "grief-anger"}]}))
+    with pytest.raises(SystemExit, match="grief-anger"):
+        load_row(results, "typo")
+
+
+def test_every_registered_retriever_reports_its_registry_name():
+    """`name` picks the results filename.
+
+    A variant that inherited `name = "baseline"` would quietly overwrite the
+    reference numbers the moment it was scored.
+    """
+    from evals import retrievers
+
+    for key in retrievers.REGISTRY:
+        assert retrievers.build(key).name == key
+
+
+def test_a_smoke_run_cannot_clobber_the_reference_baseline():
+    # `--no-judge` produces summary: null. Landing that on baseline.json wipes
+    # the numbers every later stage is measured against — which is exactly what
+    # happened once.
+    judged = default_out_path("baseline", judged=True)
+    smoke = default_out_path("baseline", judged=False)
+    assert judged.name == "baseline.json"
+    assert judged != smoke
+
+
 @pytest.mark.parametrize("bad, msg", [
     ([], "empty"),
     ([{"id": "a", "text": "hi"}], "facets"),
@@ -178,23 +226,287 @@ def test_align_restores_requested_order():
     assert out[1]["covered"] is True
 
 
+def test_cache_key_differs_per_model():
+    # Two judges must not read back each other's verdicts. This is also what
+    # lets both sets survive on disk, which is what makes judge_models.py free.
+    assert (_cache_key("x", ["anger"], QUOTES, 0, "claude-opus-5")
+            != _cache_key("x", ["anger"], QUOTES, 0, "claude-sonnet-5"))
+
+
+def test_cache_key_differs_per_round():
+    # Rounds sharing a key would read back round 0's verdict and make every
+    # vote unanimous by construction — the noise would vanish from the numbers
+    # without ever leaving the judge.
+    assert _cache_key("x", ["anger"], QUOTES, 0) != _cache_key("x", ["anger"], QUOTES, 1)
+
+
 def test_offline_judge_raises_instead_of_calling_api(tmp_path):
     judge = Judge(offline=True, cache_dir=tmp_path)
     with pytest.raises(RuntimeError, match="offline"):
         judge.judge("i'm angry", ["anger"], QUOTES)
 
 
-def test_judge_reads_a_cached_verdict_without_the_api(tmp_path):
-    judge = Judge(offline=True, cache_dir=tmp_path)
-    key = _cache_key("i'm angry", ["anger"], QUOTES)
-    payload = {"facets": [{"facet": "anger", "covered": True,
-                           "quote": QUOTES[0]["text"], "reason": "on point"}]}
+def _cache_round(tmp_path, round_, covered, text="i'm angry", facets=("anger",)):
+    key = _cache_key(text, list(facets), QUOTES, round_)
+    payload = {"facets": [{"facet": f, "covered": c, "quote": "", "reason": "r"}
+                          for f, c in zip(facets, covered)]}
     (tmp_path / f"{key}.json").write_text(json.dumps(payload))
+
+
+def test_judge_reads_cached_verdicts_without_the_api(tmp_path):
+    judge = Judge(offline=True, cache_dir=tmp_path, rounds=3)
+    for r in range(3):
+        _cache_round(tmp_path, r, [True])
 
     out = judge.judge("i'm angry", ["anger"], QUOTES)
     assert out[0]["covered"] is True
-    assert judge.hits == 1
+    assert judge.hits == 3
     assert judge.misses == 0
+
+
+def test_a_majority_carries_a_split_facet(tmp_path):
+    # Two rounds say covered, one says not. The whole point of voting: the
+    # verdict is the majority, and `votes` records that it was not unanimous.
+    judge = Judge(offline=True, cache_dir=tmp_path, rounds=3)
+    for r, covered in enumerate([True, False, True]):
+        _cache_round(tmp_path, r, [covered])
+
+    out = judge.judge("i'm angry", ["anger"], QUOTES)
+    assert out[0]["covered"] is True
+    assert (out[0]["votes"], out[0]["rounds"]) == (2, 3)
+    assert judge.split == 1
+
+
+def test_a_minority_does_not_carry(tmp_path):
+    judge = Judge(offline=True, cache_dir=tmp_path, rounds=3)
+    for r, covered in enumerate([True, False, False]):
+        _cache_round(tmp_path, r, [covered])
+
+    out = judge.judge("i'm angry", ["anger"], QUOTES)
+    assert out[0]["covered"] is False
+    assert out[0]["votes"] == 1
+
+
+def test_a_unanimous_verdict_is_not_counted_as_split(tmp_path):
+    judge = Judge(offline=True, cache_dir=tmp_path, rounds=3)
+    for r in range(3):
+        _cache_round(tmp_path, r, [False])
+
+    judge.judge("i'm angry", ["anger"], QUOTES)
+    assert judge.split == 0
+
+
+def test_an_even_round_count_is_rejected(tmp_path):
+    # Two rounds have no majority to take.
+    with pytest.raises(ValueError, match="odd"):
+        Judge(offline=True, cache_dir=tmp_path, rounds=2)
+
+
+def _verdict(facet, covered, votes=3, rounds=3):
+    return {"facet": facet, "covered": covered, "quote": "",
+            "reason": f"{facet} reason", "votes": votes, "rounds": rounds}
+
+
+def test_vote_takes_the_reason_from_the_winning_side():
+    # A 2-1 verdict quoting the dissent's reason would read as a contradiction
+    # of the verdict recorded next to it.
+    rounds = [
+        [{"facet": "anger", "covered": True, "quote": "q", "reason": "yes it does"}],
+        [{"facet": "anger", "covered": False, "quote": "", "reason": "no it doesn't"}],
+        [{"facet": "anger", "covered": True, "quote": "q", "reason": "clearly anger"}],
+    ]
+    out = _vote(rounds, ["anger"])
+    assert out[0]["covered"] is True
+    assert out[0]["reason"] == "yes it does"
+
+
+def test_vote_scores_each_facet_independently():
+    rounds = [
+        [{"facet": "grief", "covered": True, "quote": "", "reason": "r"},
+         {"facet": "anger", "covered": False, "quote": "", "reason": "r"}],
+        [{"facet": "grief", "covered": True, "quote": "", "reason": "r"},
+         {"facet": "anger", "covered": True, "quote": "", "reason": "r"}],
+        [{"facet": "grief", "covered": True, "quote": "", "reason": "r"},
+         {"facet": "anger", "covered": False, "quote": "", "reason": "r"}],
+    ]
+    out = _vote(rounds, ["grief", "anger"])
+    assert [v["covered"] for v in out] == [True, False]
+    assert [v["votes"] for v in out] == [3, 1]
+
+
+def test_split_verdict_rate_counts_only_disagreements():
+    verdicts = [_verdict("a", True, votes=3), _verdict("b", True, votes=2),
+                _verdict("c", False, votes=0), _verdict("d", False, votes=1)]
+    assert metrics.split_verdict_rate(verdicts) == pytest.approx(0.5)
+
+
+def test_split_verdict_rate_is_none_for_single_round_verdicts():
+    # Results files written before voting existed carry no vote counts. They
+    # must report "unknown", not a confident zero.
+    assert metrics.split_verdict_rate([{"facet": "a", "covered": True}]) is None
+
+
+# --------------------------------------------------------------------------
+# rejudge
+# --------------------------------------------------------------------------
+
+def _report(coverage=0.5, covered=(True, False)):
+    return {
+        "retriever": "agentic",
+        "judged": True,
+        "judge_prompt_version": 1,
+        "total_seconds": 400.0,
+        "summary": {"facet_coverage": coverage},
+        "rows": [{
+            "id": "grief-anger",
+            "text": "grieving my dad and angry at my family",
+            "n_facets": 2,
+            "coverage": coverage,
+            "top_score": 0.63,
+            "api_calls": 3,
+            "seconds": 16.0,
+            "quotes": list(QUOTES),
+            "trace": [{"step": 1}],
+            "verdicts": [_verdict("grief", covered[0]), _verdict("anger", covered[1])],
+        }],
+    }
+
+
+QUERY_SET = [{"id": "grief-anger",
+              "text": "grieving my dad and angry at my family",
+              "facets": ["grief", "anger toward family"]}]
+
+
+class _FixedJudge:
+    """Returns a set verdict without touching the network."""
+
+    model = "test-judge"
+
+    def __init__(self, covered):
+        self.covered = covered
+        self.hits = self.misses = self.split = 0
+
+    def judge(self, text, facets, quotes):
+        return [_verdict(f, c) for f, c in zip(facets, self.covered)]
+
+
+def test_rejudge_recomputes_coverage_from_the_new_verdicts():
+    out = rejudge(_report(coverage=0.5), QUERY_SET, _FixedJudge([True, True]))
+    assert out["rows"][0]["coverage"] == 1.0
+    assert out["summary"]["facet_coverage"] == 1.0
+
+
+def test_rejudge_keeps_what_the_retriever_measured():
+    # Regrading must not touch retrieval numbers, or the table would credit a
+    # rubric change with a latency or API-call difference.
+    row = rejudge(_report(), QUERY_SET, _FixedJudge([True, True]))["rows"][0]
+    assert (row["top_score"], row["api_calls"], row["seconds"]) == (0.63, 3, 16.0)
+    assert row["quotes"] == list(QUOTES)
+    assert row["trace"] == [{"step": 1}]
+
+
+def test_rejudge_records_where_it_came_from():
+    # Without this a regraded file is indistinguishable from a fresh run, and
+    # you cannot tell which rubric produced the number.
+    out = rejudge(_report(coverage=0.5), QUERY_SET, _FixedJudge([True, True]))
+    assert out["rejudged_from"] == {"judge_prompt_version": 1, "judge_model": None,
+                                    "facet_coverage": 0.5}
+    assert out["judge_prompt_version"] != 1
+
+
+def test_rejudge_takes_facets_from_the_dataset_not_the_old_verdicts():
+    # The old file labels the facet "anger"; the dataset says "anger toward
+    # family". The dataset is the source of truth, or a rename would silently
+    # keep grading against the stale label.
+    out = rejudge(_report(), QUERY_SET, _FixedJudge([True, True]))
+    assert [v["facet"] for v in out["rows"][0]["verdicts"]] == QUERY_SET[0]["facets"]
+
+
+def test_rejudge_refuses_an_unjudged_run():
+    report = _report()
+    report["judged"] = False
+    with pytest.raises(SystemExit, match="never judged"):
+        rejudge(report, QUERY_SET, _FixedJudge([True]))
+
+
+def test_rejudge_refuses_when_the_dataset_no_longer_has_the_query():
+    with pytest.raises(SystemExit, match="dataset has changed"):
+        rejudge(_report(), [{"id": "other", "text": "x", "facets": ["y"]}],
+                _FixedJudge([True]))
+
+
+def test_rejudge_records_which_judge_scored_it():
+    # A Sonnet-scored file next to an Opus-scored one, with no way to tell them
+    # apart, is how you end up comparing two different instruments.
+    out = rejudge(_report(), QUERY_SET, _FixedJudge([True, True]))
+    assert out["judge_model"] == "test-judge"
+    assert out["rejudged_from"]["judge_model"] is None  # v1 files didn't record it
+
+
+# --------------------------------------------------------------------------
+# judge model comparison
+# --------------------------------------------------------------------------
+
+def test_compare_reports_perfect_agreement():
+    from evals.judge_models import compare
+
+    verdicts = {("q", "grief"): True, ("q", "anger"): False}
+    report = compare(verdicts, dict(verdicts))
+    assert report["agreement"] == 1.0
+    assert report["disagreements"] == []
+
+
+def test_compare_splits_disagreements_by_direction():
+    from evals.judge_models import compare
+
+    base = {("q", "a"): True, ("q", "b"): False, ("q", "c"): True, ("q", "d"): True}
+    cand = {("q", "a"): False, ("q", "b"): True, ("q", "c"): True, ("q", "d"): True}
+    report = compare(base, cand)
+
+    assert report["agreement"] == 0.5
+    # Direction matters: a uniformly looser judge shifts every retriever the
+    # same way and preserves the ranking. Scattered disagreement does not.
+    assert report["candidate_stricter"] == 1
+    assert report["candidate_looser"] == 1
+
+
+def test_compare_only_counts_facets_both_judges_graded():
+    from evals.judge_models import compare
+
+    base = {("q", "a"): True, ("q", "b"): True}
+    cand = {("q", "a"): True}
+    assert compare(base, cand)["n"] == 1
+
+
+def test_compare_refuses_when_there_is_no_overlap():
+    from evals.judge_models import compare
+
+    with pytest.raises(SystemExit, match="no facets in common"):
+        compare({("q", "a"): True}, {("z", "b"): True})
+
+
+def test_verdicts_for_skips_rows_the_judge_cannot_grade():
+    """A partially-graded judge is still worth comparing over its overlap.
+
+    The Opus verdicts only cover 15 of 20 queries — the run that produced them
+    ran out of credit. Bailing on the first uncached row would have thrown away
+    a usable 30-facet comparison.
+    """
+    from evals.judge_models import verdicts_for
+
+    class _PartialJudge:
+        model = "partial"
+
+        def judge(self, text, facets, quotes):
+            if text == "uncached":
+                raise RuntimeError("judge is offline and no cached verdict exists")
+            return [_verdict(f, True) for f in facets]
+
+    rows = [{"id": "a", "text": "cached", "quotes": []},
+            {"id": "b", "text": "uncached", "quotes": []}]
+    out = verdicts_for(_PartialJudge(), rows, {"a": ["x"], "b": ["y"]})
+
+    assert out == {("a", "x"): True}
 
 
 # --------------------------------------------------------------------------

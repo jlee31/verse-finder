@@ -34,6 +34,8 @@ venv/
 # eval harness — judge verdicts are derived, and re-fetchable from the API.
 # evals/results/ IS tracked: those numbers are the reference baseline.
 backend/evals/.cache/
+# --no-judge output: no coverage numbers, throwaway.
+backend/evals/results/*.smoke.json
 
 # secrets
 .env

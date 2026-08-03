@@ -27,6 +27,7 @@ def summarize(rows: list[dict]) -> dict:
         raise ValueError("no rows to summarize")
 
     compound = [r for r in rows if r["n_facets"] > 1]
+    verdicts = [v for r in rows for v in r.get("verdicts", [])]
 
     return {
         "n_queries": len(rows),
@@ -41,7 +42,24 @@ def summarize(rows: list[dict]) -> dict:
         "fully_covered_rate": mean(1.0 if r["coverage"] == 1.0 else 0.0 for r in rows),
         "mean_top_score": mean(r["top_score"] for r in rows),
         "mean_api_calls": mean(r["api_calls"] for r in rows),
+        # How often the judge's rounds disagreed about the same facet on the
+        # same quotes. This is the metric's own error bar, measured on the run
+        # it belongs to: two retrievers whose coverage differs by less than
+        # this have not been shown to differ at all.
+        "split_verdict_rate": split_verdict_rate(verdicts),
     }
+
+
+def split_verdict_rate(verdicts: list[dict]) -> float | None:
+    """Fraction of facet verdicts the judge's rounds did not agree on.
+
+    None when the verdicts carry no vote counts — a single-round run, or a
+    results file written before majority voting existed.
+    """
+    voted = [v for v in verdicts if v.get("rounds", 1) > 1]
+    if not voted:
+        return None
+    return mean(1.0 if 0 < v["votes"] < v["rounds"] else 0.0 for v in voted)
 
 
 def format_table(summary: dict, label: str) -> str:
@@ -57,4 +75,5 @@ def format_table(summary: dict, label: str) -> str:
         f"    fully covered         {fmt(summary['fully_covered_rate'])}",
         f"    mean top-1 score      {fmt(summary['mean_top_score'])}",
         f"    mean API calls/query  {fmt(summary['mean_api_calls'])}",
+        f"    split judge verdicts  {fmt(summary.get('split_verdict_rate'))}",
     ])

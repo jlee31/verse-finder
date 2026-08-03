@@ -34,10 +34,12 @@ class BaselineRetriever:
     later stage is measured against.
     """
 
-    name = "baseline"
-
-    def __init__(self, k: int = 3):
+    def __init__(self, k: int = 3, name: str = "baseline"):
         self.k = k
+        # Carried on the instance, not the class: `name` picks the results
+        # filename, and a wide-k variant writing to baseline.json would
+        # overwrite the reference numbers.
+        self.name = name
         self._retrieve = None
 
     def search(self, text: str) -> Result:
@@ -57,8 +59,47 @@ class BaselineRetriever:
         )
 
 
-REGISTRY: dict[str, type] = {
+class AgenticRetriever:
+    """An agent loop, scored like any other retriever.
+
+    It decides how many searches to run and with what wording, so there's no `k`
+    to set here — the count of quotes is an output, not an input.
+
+    `module` picks the implementation. Both expose the same `reflect()`, which
+    is the entire point of building the loop twice.
+    """
+
+    def __init__(self, name: str = "agentic", module: str = "app.rag.agent"):
+        self.name = name
+        self.module = module
+        self._reflect = None
+
+    def search(self, text: str) -> Result:
+        if self._reflect is None:
+            from importlib import import_module
+
+            self._reflect = import_module(self.module).reflect
+
+        result = self._reflect(text)
+        return Result(
+            quotes=result.quotes,
+            trace=result.trace,
+            api_calls=result.api_calls,
+        )
+
+
+REGISTRY: dict[str, callable] = {
     "baseline": BaselineRetriever,
+    # The volume control. The agent returns roughly this many quotes across all
+    # its searches, and more quotes means more chances to cover a facet — so a
+    # coverage win over `baseline` alone doesn't prove the decomposition helped.
+    # This separates "searched better" from "returned more".
+    "baseline-wide": lambda: BaselineRetriever(k=12, name="baseline-wide"),
+    # The same agent, twice over. Scoring both head-to-head is what makes the
+    # comparison meaningful: a large gap means one has a bug, not that a
+    # framework is smarter.
+    "agentic": AgenticRetriever,
+    "agentic-lc": lambda: AgenticRetriever(name="agentic-lc", module="app.rag.agent_lc"),
 }
 
 

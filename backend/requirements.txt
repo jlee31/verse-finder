@@ -1,9 +1,16 @@
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
-pydantic==2.5.0
+# FastAPI 0.104.1 ships starlette 0.27, whose TestClient calls httpx with the
+# `app=` shortcut that httpx 0.28 removed. Without this pin every API test in
+# tests/test_api.py errors on construction. Nothing else here wants >=0.28:
+# anthropic and langsmith both ask only for httpx<1.
+httpx==0.27.2
+# Raised from 2.5.0 by langchain. Verified against FastAPI 0.104.1: request
+# parsing, response serialization, and OpenAPI generation all still pass.
+pydantic==2.13.4
 
 # RAG generation step
-anthropic>=0.40.0
+anthropic==0.120.2
 python-dotenv==1.0.1
 
 
@@ -15,6 +22,12 @@ sentence-transformers==2.6.1
 
 # Explainability: which query words drove the retrieval (the "R" in RAG)
 lime==0.2.0.1
+
+# The LangGraph agent (app/rag/agent_lc.py). Installing these raises pydantic
+# and anthropic above; the pins at the top already reflect that.
+langchain==1.3.14
+langchain-anthropic==1.5.3
+langgraph==1.2.10
 
 # Eval harness (evals/) — run: pytest evals -q
 pytest==9.1.1
