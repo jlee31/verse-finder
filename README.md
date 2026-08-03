@@ -2,7 +2,7 @@
 
 a web application that uses RAG to identify useful quotes, with an agent that puts it altogether
 
-## to run 
+## to run
 
 ```bash
 git clone https://github.com/jlee31/verse-finder.git

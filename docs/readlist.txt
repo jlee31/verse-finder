@@ -1,0 +1,7 @@
+Order	File	The question it answers
+1	retriever.py (48)	How does text become a vector, and how is "similar" computed?
+2	generator.py (56)	How do quotes become a reflection?
+3	tools.py (160)	How does a model call your search function?
+4	agent.py (237)	What is an agent loop, really?
+5	agent_lc.py (238)	What does LangGraph add over #4?
+6	main.py (261)	How is all of it exposed over HTTP?
