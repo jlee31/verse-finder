@@ -19,12 +19,9 @@ work. Just run the "source" line again.
 
     uvicorn app.main:app --reload --port 8000
 
-Leave it running. Then open the frontend in a SECOND terminal:
-
-    cd ~/dev/projects/verse-finder/frontend
-    python3 -m http.server 5500
-
-Open http://localhost:5500 in a browser and type how you feel.
+The backend serves the frontend too (app/main.py mounts frontend/ as static
+files), so that's the only process you need. Open http://localhost:8000 in a
+browser and type how you feel.
 
 Pick how it searches with the radio buttons under the box:
 

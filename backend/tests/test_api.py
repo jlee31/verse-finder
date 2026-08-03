@@ -73,7 +73,7 @@ def _post(path, prompt="i'm grieving my dad and angry at my family", **params):
 # --------------------------------------------------------------------------
 
 def test_root_reports_ok():
-    assert client.get("/").json()["status"] == "ok"
+    assert client.get("/api/health").json()["status"] == "ok"
 
 
 def test_baseline_search_still_returns_the_original_shape(fake_backends):

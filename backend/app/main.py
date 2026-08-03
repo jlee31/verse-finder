@@ -13,10 +13,12 @@ it missed is the whole product, so it goes in the payload rather than the logs.
 from contextlib import asynccontextmanager
 from enum import Enum
 from importlib import import_module
+from pathlib import Path
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 load_dotenv() # get the anthropic api key
@@ -78,8 +80,8 @@ class PromptResponse(BaseModel): # response (generated reflection AG and R from 
     reflection: str
     sources: list[Source]
 
-@app.get("/")
-def root():
+@app.get("/api/health")
+def health():
     """Health check endpoint."""
     return {"status": "ok", "message": "Verse Finder API is running"}
 
@@ -193,3 +195,16 @@ class ExplainResponse(BaseModel):
 def explain_verses(request: PromptRequest):
     """Explain the retrieval: which query words drove the top match (LIME)."""
     return _lazy("app.rag.explain", "explain_retrieval")(request.mainPrompt)
+
+
+# --------------------------------------------------------------------------
+# the frontend
+# --------------------------------------------------------------------------
+# Mounted last and at "/" so the API routes above (all exact paths) still win;
+# only requests that don't match one of them fall through to static files.
+# This makes the API and the UI one deployable unit — no separate frontend
+# host, no CORS story, no hardcoded API base URL in app.js.
+
+FRONTEND_DIR = Path(__file__).resolve().parent.parent.parent / "frontend"
+if FRONTEND_DIR.is_dir():
+    app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")

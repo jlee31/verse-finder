@@ -1,5 +1,6 @@
-// Where the FastAPI backend lives.
-const API_BASE = "http://localhost:8000";
+// The backend now serves this file too, so API calls are always same-origin —
+// no separate host to hardcode, and it works unchanged in every environment.
+const API_BASE = "";
 
 // The one-shot pipeline and the two agent loops. The agents return an extra
 // `trace` — the searches they chose to run — which is the only reason the
@@ -61,7 +62,7 @@ form.addEventListener("submit", async (e) => {
     }
     render(await res.json());
   } catch (err) {
-    output.innerHTML = `<p class="error">${esc(err.message)}. Is the backend running on :8000?</p>`;
+    output.innerHTML = `<p class="error">${esc(err.message)}. Is the backend running?</p>`;
   } finally {
     submitEl.disabled = false;
     submitEl.textContent = "Reflect";
